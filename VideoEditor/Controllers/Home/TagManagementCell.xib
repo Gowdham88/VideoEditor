@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Regular.ttf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TagManagementCell" id="v1t-xc-d5o" customClass="TagManagementCell" customModule="VideoEditor" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v1t-xc-d5o" id="b0a-Ra-AD2">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="44.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="maP-TC-Cvr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="actiontag" translatesAutoresizingMaskIntoConstraints="NO" id="jpL-wM-1xT">
+                                <rect key="frame" x="5" y="7.5" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="VKh-Df-ERw"/>
+                                    <constraint firstAttribute="width" constant="30" id="n9g-fl-ZNl"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVT-xR-JiJ">
+                                <rect key="frame" x="45" y="10" width="223" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="o2H-tm-aHd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.6470588235294118" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSx-3n-hT0" customClass="CustomButton" customModule="VideoEditor" customModuleProvider="target">
+                                <rect key="frame" x="341" y="2" width="32" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="41" id="AXf-vj-gw4"/>
+                                    <constraint firstAttribute="width" constant="32" id="OkI-9i-XUA"/>
+                                </constraints>
+                                <state key="normal" image="more_rectangle_blue"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;&lt; 15&quot;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDP-h8-7tu">
+                                <rect key="frame" x="273" y="10" width="60" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="6yb-Qw-TBd"/>
+                                    <constraint firstAttribute="height" constant="25" id="t5o-EX-vgL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.64705882349999999" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1dp-2E-scE">
+                                <rect key="frame" x="0.0" y="44" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.86274509803921573" green="0.86274509803921573" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="LjD-aV-ZhG"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="PDP-h8-7tu" firstAttribute="top" secondItem="maP-TC-Cvr" secondAttribute="top" constant="10" id="1gE-g1-guX"/>
+                            <constraint firstAttribute="bottom" secondItem="PDP-h8-7tu" secondAttribute="bottom" constant="9.5" id="6c4-kq-Q9P"/>
+                            <constraint firstAttribute="trailing" secondItem="pSx-3n-hT0" secondAttribute="trailing" constant="2" id="94j-Ps-tpV"/>
+                            <constraint firstItem="pSx-3n-hT0" firstAttribute="leading" secondItem="PDP-h8-7tu" secondAttribute="trailing" constant="8" id="I79-qr-grx"/>
+                            <constraint firstAttribute="bottom" secondItem="1dp-2E-scE" secondAttribute="bottom" id="KlJ-7S-mWv"/>
+                            <constraint firstItem="jpL-wM-1xT" firstAttribute="centerY" secondItem="maP-TC-Cvr" secondAttribute="centerY" id="R7H-sf-vIX"/>
+                            <constraint firstItem="jpL-wM-1xT" firstAttribute="leading" secondItem="maP-TC-Cvr" secondAttribute="leading" constant="5" id="SA1-Nl-Ome"/>
+                            <constraint firstAttribute="trailing" secondItem="1dp-2E-scE" secondAttribute="trailing" id="Y64-gw-HFg"/>
+                            <constraint firstItem="hVT-xR-JiJ" firstAttribute="top" secondItem="maP-TC-Cvr" secondAttribute="top" constant="10" id="Yfu-BD-JtB"/>
+                            <constraint firstItem="PDP-h8-7tu" firstAttribute="leading" secondItem="hVT-xR-JiJ" secondAttribute="trailing" constant="5" id="Ywj-RP-h0u"/>
+                            <constraint firstAttribute="bottom" secondItem="hVT-xR-JiJ" secondAttribute="bottom" constant="9.5" id="dgr-rN-K5Z"/>
+                            <constraint firstItem="1dp-2E-scE" firstAttribute="leading" secondItem="maP-TC-Cvr" secondAttribute="leading" id="fRP-Oh-FkJ"/>
+                            <constraint firstItem="hVT-xR-JiJ" firstAttribute="leading" secondItem="jpL-wM-1xT" secondAttribute="trailing" constant="10" id="juZ-b6-DeS"/>
+                            <constraint firstItem="pSx-3n-hT0" firstAttribute="centerY" secondItem="maP-TC-Cvr" secondAttribute="centerY" id="sEj-m5-VCr"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="maP-TC-Cvr" firstAttribute="leading" secondItem="b0a-Ra-AD2" secondAttribute="leading" id="9c3-tf-KBd"/>
+                    <constraint firstAttribute="trailing" secondItem="maP-TC-Cvr" secondAttribute="trailing" id="pK3-SO-zBc"/>
+                    <constraint firstItem="maP-TC-Cvr" firstAttribute="top" secondItem="b0a-Ra-AD2" secondAttribute="top" id="t2S-QN-eFt"/>
+                    <constraint firstAttribute="bottom" secondItem="maP-TC-Cvr" secondAttribute="bottom" id="wuD-OA-jlA"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="8UD-gj-Tcp"/>
+            <connections>
+                <outlet property="btnMore" destination="pSx-3n-hT0" id="42M-ye-BUe"/>
+                <outlet property="secondLabel" destination="PDP-h8-7tu" id="rcz-x4-rPm"/>
+                <outlet property="tagImageView" destination="jpL-wM-1xT" id="B5T-6j-gCH"/>
+                <outlet property="tagLabel" destination="hVT-xR-JiJ" id="4aL-io-GYy"/>
+            </connections>
+            <point key="canvasLocation" x="117.5" y="94.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="actiontag" width="512" height="512"/>
+        <image name="more_rectangle_blue" width="31" height="40"/>
+    </resources>
+</document>

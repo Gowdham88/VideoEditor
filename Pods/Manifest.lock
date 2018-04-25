@@ -1,0 +1,30 @@
+PODS:
+  - Alamofire (4.6.0)
+  - GPUImage (0.1.7)
+  - IQKeyboardManagerSwift (5.0.7)
+  - MARKRangeSlider (1.1.1)
+  - MBProgressHUD (1.0.0)
+  - Segmentio (2.1.2)
+  - SwipeCellKit (2.0.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.5)
+  - GPUImage
+  - IQKeyboardManagerSwift
+  - MARKRangeSlider
+  - MBProgressHUD (~> 1.0.0)
+  - Segmentio (~> 2.1)
+  - SwipeCellKit
+
+SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
+  IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
+  MARKRangeSlider: ef7e1fe84d22996f47fd72dcb8de50b9410aac47
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  Segmentio: f85114993e305bd9c522952eef8c2c4db732fd17
+  SwipeCellKit: 76888d93d1843dc568fdf38fff21b15dbbcf6b28
+
+PODFILE CHECKSUM: 7c3c3c9936036608cf5b5c4ba2cd8cce736ce03b
+
+COCOAPODS: 1.3.1

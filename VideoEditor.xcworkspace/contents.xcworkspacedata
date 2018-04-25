@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:VideoEditor/Coredata DB/TagInfo+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VideoEditor/Coredata DB/TagInfo+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VideoEditor/Coredata DB/RecVideoClips+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VideoEditor/Coredata DB/RecVideoClips+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VideoEditor/Coredata DB/RecEventList+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VideoEditor/Coredata DB/RecEventList+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VideoEditor.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Bold.ttf">
+            <string>Montserrat-Bold</string>
+        </array>
+        <array key="Montserrat-Regular.ttf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="videoListCell" rowHeight="230" id="KGk-i7-Jjw" customClass="videoListCell" customModule="VideoEditor" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="229.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GtQ-oB-OzJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Aod-Ei-Q6u">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YiT-LC-nWm">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a5e-j0-FLW">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serie A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dws-kQ-TDs">
+                                        <rect key="frame" x="12" y="5" width="296" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="uMe-ob-nt9"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MILAN VS ROMA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOv-Y1-dEX">
+                                        <rect key="frame" x="12" y="20" width="296" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="18" id="Z2z-hZ-v9J"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="12"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recorded 12 Dec '17 Rome, Via A, Monti 189" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42G-vy-kZv">
+                                        <rect key="frame" x="12" y="35" width="296" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="HhQ-Z3-lUP"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="10"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="42G-vy-kZv" secondAttribute="trailing" constant="12" id="9Le-ZY-NIu"/>
+                                    <constraint firstItem="a5e-j0-FLW" firstAttribute="top" secondItem="YiT-LC-nWm" secondAttribute="top" id="Cux-rg-Cni"/>
+                                    <constraint firstItem="Dws-kQ-TDs" firstAttribute="top" secondItem="YiT-LC-nWm" secondAttribute="top" constant="5" id="Kdd-ne-c6X"/>
+                                    <constraint firstAttribute="trailing" secondItem="Dws-kQ-TDs" secondAttribute="trailing" constant="12" id="Kg4-ht-MTK"/>
+                                    <constraint firstItem="42G-vy-kZv" firstAttribute="top" secondItem="Dws-kQ-TDs" secondAttribute="bottom" constant="14" id="NNR-6o-5he"/>
+                                    <constraint firstAttribute="height" constant="55" id="Qoo-oC-GAw"/>
+                                    <constraint firstItem="GOv-Y1-dEX" firstAttribute="leading" secondItem="YiT-LC-nWm" secondAttribute="leading" constant="12" id="QwM-3Q-NxQ"/>
+                                    <constraint firstItem="42G-vy-kZv" firstAttribute="leading" secondItem="YiT-LC-nWm" secondAttribute="leading" constant="12" id="YT9-pL-mEo"/>
+                                    <constraint firstItem="a5e-j0-FLW" firstAttribute="leading" secondItem="YiT-LC-nWm" secondAttribute="leading" id="cvM-o2-kC8"/>
+                                    <constraint firstItem="GOv-Y1-dEX" firstAttribute="top" secondItem="YiT-LC-nWm" secondAttribute="top" constant="20" id="d6H-9W-3Bz"/>
+                                    <constraint firstAttribute="trailing" secondItem="GOv-Y1-dEX" secondAttribute="trailing" constant="12" id="kUb-dp-zDx"/>
+                                    <constraint firstAttribute="trailing" secondItem="a5e-j0-FLW" secondAttribute="trailing" id="ldU-yT-qDh"/>
+                                    <constraint firstItem="Dws-kQ-TDs" firstAttribute="leading" secondItem="YiT-LC-nWm" secondAttribute="leading" constant="12" id="nho-Eu-UFL"/>
+                                    <constraint firstAttribute="bottom" secondItem="a5e-j0-FLW" secondAttribute="bottom" id="pfT-b6-0gR"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hnp-Z3-R6B">
+                                <rect key="frame" x="5" y="195" width="55" height="25"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="D68-ex-xf7"/>
+                                    <constraint firstAttribute="height" constant="25" id="oof-rW-nNB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                <state key="normal" title="Delete" backgroundImage="button_bg_blue_small"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvG-n2-aIl">
+                                <rect key="frame" x="61" y="195" width="55" height="25"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="1R8-HM-d5H"/>
+                                    <constraint firstAttribute="height" constant="25" id="Alm-kN-yt4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                <state key="normal" title="Optimize" backgroundImage="button_bg_blue_small"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTF-8S-Xn3">
+                                <rect key="frame" x="117" y="195" width="55" height="25"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="oEp-6P-WNu"/>
+                                    <constraint firstAttribute="width" constant="55" id="pQc-7B-oRc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                <state key="normal" title="Rename" backgroundImage="button_bg_blue_small"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xkm-b3-JuM">
+                                <rect key="frame" x="216" y="195" width="50" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="TMr-Eb-b3e"/>
+                                    <constraint firstAttribute="width" constant="50" id="V7t-kQ-sBg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="326 MB" image="video_file_blue">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LbE-dz-Qoq">
+                                <rect key="frame" x="169" y="195" width="47" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="47" id="K7B-16-ZWq"/>
+                                    <constraint firstAttribute="height" constant="25" id="PuO-el-fyT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                <inset key="imageEdgeInsets" minX="-9" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="53.19" image="watch_blue">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 - 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdT-cY-UNa">
+                                <rect key="frame" x="110" y="95" width="100" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="EMk-3U-q5o"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HTY-Cm-Bbn">
+                                <rect key="frame" x="266" y="195" width="52" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="0Qq-sK-Ins"/>
+                                    <constraint firstAttribute="width" constant="52" id="tSa-AR-bCY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Ultra HD" image="videoPreset">
+                                    <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="HTY-Cm-Bbn" secondAttribute="trailing" constant="2" id="0Zf-D8-VAP"/>
+                            <constraint firstItem="xkm-b3-JuM" firstAttribute="leading" secondItem="LbE-dz-Qoq" secondAttribute="trailing" id="2Kv-LK-n9H"/>
+                            <constraint firstAttribute="trailing" secondItem="Aod-Ei-Q6u" secondAttribute="trailing" id="46x-oM-wqa"/>
+                            <constraint firstItem="WdT-cY-UNa" firstAttribute="centerY" secondItem="GtQ-oB-OzJ" secondAttribute="centerY" id="BQN-Pd-afw"/>
+                            <constraint firstAttribute="trailing" secondItem="YiT-LC-nWm" secondAttribute="trailing" id="FiJ-wZ-qYX"/>
+                            <constraint firstItem="Hnp-Z3-R6B" firstAttribute="top" secondItem="Aod-Ei-Q6u" secondAttribute="bottom" constant="5" id="GBU-KG-4tX"/>
+                            <constraint firstItem="WdT-cY-UNa" firstAttribute="centerX" secondItem="GtQ-oB-OzJ" secondAttribute="centerX" id="KHE-Iy-rPy"/>
+                            <constraint firstItem="Aod-Ei-Q6u" firstAttribute="leading" secondItem="GtQ-oB-OzJ" secondAttribute="leading" id="Mai-Ug-5m2"/>
+                            <constraint firstAttribute="bottom" secondItem="EvG-n2-aIl" secondAttribute="bottom" constant="10" id="PDQ-gw-6hm"/>
+                            <constraint firstItem="YiT-LC-nWm" firstAttribute="leading" secondItem="GtQ-oB-OzJ" secondAttribute="leading" id="PmV-nY-qbi"/>
+                            <constraint firstAttribute="bottom" secondItem="Hnp-Z3-R6B" secondAttribute="bottom" constant="10" id="Psj-M5-JTV"/>
+                            <constraint firstAttribute="bottom" secondItem="cTF-8S-Xn3" secondAttribute="bottom" constant="10" id="Pzn-HP-c65"/>
+                            <constraint firstItem="EvG-n2-aIl" firstAttribute="top" secondItem="Aod-Ei-Q6u" secondAttribute="bottom" constant="5" id="T4x-OM-BnR"/>
+                            <constraint firstItem="cTF-8S-Xn3" firstAttribute="top" secondItem="Aod-Ei-Q6u" secondAttribute="bottom" constant="5" id="UvN-JF-lKX"/>
+                            <constraint firstItem="YiT-LC-nWm" firstAttribute="top" secondItem="GtQ-oB-OzJ" secondAttribute="top" id="V8g-3d-XQ8"/>
+                            <constraint firstAttribute="bottom" secondItem="HTY-Cm-Bbn" secondAttribute="bottom" constant="10" id="WXK-ps-fSA"/>
+                            <constraint firstItem="xkm-b3-JuM" firstAttribute="top" secondItem="Aod-Ei-Q6u" secondAttribute="bottom" constant="5" id="XqO-5M-qr6"/>
+                            <constraint firstAttribute="bottom" secondItem="xkm-b3-JuM" secondAttribute="bottom" constant="10" id="a7x-1m-7Er"/>
+                            <constraint firstItem="Aod-Ei-Q6u" firstAttribute="top" secondItem="GtQ-oB-OzJ" secondAttribute="top" id="aJu-fN-5bc"/>
+                            <constraint firstItem="LbE-dz-Qoq" firstAttribute="top" secondItem="Aod-Ei-Q6u" secondAttribute="bottom" constant="5" id="fhT-02-muM"/>
+                            <constraint firstItem="HTY-Cm-Bbn" firstAttribute="leading" secondItem="xkm-b3-JuM" secondAttribute="trailing" id="iu1-jN-BRo"/>
+                            <constraint firstItem="Hnp-Z3-R6B" firstAttribute="leading" secondItem="GtQ-oB-OzJ" secondAttribute="leading" constant="5" id="sDX-WE-Bqj"/>
+                            <constraint firstAttribute="bottom" secondItem="LbE-dz-Qoq" secondAttribute="bottom" constant="10" id="sOI-VD-aeT"/>
+                            <constraint firstAttribute="trailing" secondItem="WdT-cY-UNa" secondAttribute="trailing" constant="110" id="tuP-n7-g9x"/>
+                            <constraint firstItem="cTF-8S-Xn3" firstAttribute="leading" secondItem="EvG-n2-aIl" secondAttribute="trailing" constant="1" id="wPf-x4-s6u"/>
+                            <constraint firstItem="EvG-n2-aIl" firstAttribute="leading" secondItem="Hnp-Z3-R6B" secondAttribute="trailing" constant="1" id="wlM-S1-JXX"/>
+                            <constraint firstItem="WdT-cY-UNa" firstAttribute="leading" secondItem="GtQ-oB-OzJ" secondAttribute="leading" constant="110" id="zpO-Ju-gZ0"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="GtQ-oB-OzJ" secondAttribute="bottom" constant="-0.5" id="1Jn-hs-4Ig"/>
+                    <constraint firstAttribute="trailing" secondItem="GtQ-oB-OzJ" secondAttribute="trailing" id="IGy-hd-fhs"/>
+                    <constraint firstItem="GtQ-oB-OzJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="dfY-Km-RS3"/>
+                    <constraint firstItem="GtQ-oB-OzJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="fSB-mZ-cKz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="btnDelete" destination="Hnp-Z3-R6B" id="44m-Vt-kkl"/>
+                <outlet property="btnOptimize" destination="EvG-n2-aIl" id="TBq-5o-PIz"/>
+                <outlet property="btnPresetValue" destination="HTY-Cm-Bbn" id="1cP-sO-YMG"/>
+                <outlet property="btnRename" destination="cTF-8S-Xn3" id="Ks8-0b-gBg"/>
+                <outlet property="btnVideoLength" destination="LbE-dz-Qoq" id="pAz-jl-0B7"/>
+                <outlet property="btnVideoSize" destination="xkm-b3-JuM" id="L3M-dJ-rf5"/>
+                <outlet property="imgPhoto" destination="Aod-Ei-Q6u" id="Rtt-Oa-iSH"/>
+                <outlet property="lblGameDescription" destination="42G-vy-kZv" id="uVQ-QP-RcC"/>
+                <outlet property="lblGameName" destination="GOv-Y1-dEX" id="Vgc-z8-9h9"/>
+                <outlet property="lblScore" destination="WdT-cY-UNa" id="Cfc-Nc-5We"/>
+                <outlet property="lblSeriesName" destination="Dws-kQ-TDs" id="ACl-aa-qvI"/>
+            </connections>
+            <point key="canvasLocation" x="47" y="182"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="button_bg_blue_small" width="26" height="27"/>
+        <image name="videoPreset" width="11" height="11"/>
+        <image name="video_file_blue" width="8" height="10"/>
+        <image name="watch_blue" width="10" height="10"/>
+    </resources>
+</document>

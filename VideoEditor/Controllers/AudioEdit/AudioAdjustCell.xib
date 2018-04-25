@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioAdjustCell" rowHeight="50" id="KGk-i7-Jjw" customClass="AudioAdjustCell" customModule="VideoEditor" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dL6-1d-eXj">
+                        <rect key="frame" x="8" y="0.0" width="304" height="50"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2players_bg" translatesAutoresizingMaskIntoConstraints="NO" id="4lT-q8-K6L">
+                                <rect key="frame" x="0.0" y="7" width="50" height="35"/>
+                                <color key="backgroundColor" red="0.20568251609999999" green="0.63400250670000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="ArV-qI-3XQ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10&quot;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="juN-2X-efW">
+                                <rect key="frame" x="8" y="15" width="35" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="BlB-RK-ES4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0b-MX-GpN">
+                                <rect key="frame" x="274" y="5" width="30" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="xqT-Nk-wAn"/>
+                                </constraints>
+                                <state key="normal" image="trash_rectangle_blue"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4lT-q8-K6L" firstAttribute="leading" secondItem="dL6-1d-eXj" secondAttribute="leading" id="5JZ-Ki-Fop"/>
+                            <constraint firstItem="juN-2X-efW" firstAttribute="leading" secondItem="dL6-1d-eXj" secondAttribute="leading" constant="8" id="Ngg-QC-ZUF"/>
+                            <constraint firstItem="4lT-q8-K6L" firstAttribute="top" secondItem="dL6-1d-eXj" secondAttribute="top" constant="7" id="ka7-tB-brR"/>
+                            <constraint firstAttribute="bottom" secondItem="r0b-MX-GpN" secondAttribute="bottom" constant="5" id="rMq-YJ-DgM"/>
+                            <constraint firstItem="r0b-MX-GpN" firstAttribute="top" secondItem="dL6-1d-eXj" secondAttribute="top" constant="5" id="wBB-bF-O4P"/>
+                            <constraint firstAttribute="bottom" secondItem="juN-2X-efW" secondAttribute="bottom" constant="14" id="xzU-yA-f5E"/>
+                            <constraint firstAttribute="trailing" secondItem="r0b-MX-GpN" secondAttribute="trailing" id="zAZ-lo-9yx"/>
+                            <constraint firstItem="juN-2X-efW" firstAttribute="top" secondItem="dL6-1d-eXj" secondAttribute="top" constant="15" id="zZc-KI-L9B"/>
+                            <constraint firstAttribute="bottom" secondItem="4lT-q8-K6L" secondAttribute="bottom" constant="8" id="zov-BM-uwG"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="dL6-1d-eXj" secondAttribute="bottom" constant="-0.5" id="DRx-LO-TeC"/>
+                    <constraint firstItem="dL6-1d-eXj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="FYp-Ww-zMb"/>
+                    <constraint firstAttribute="trailing" secondItem="dL6-1d-eXj" secondAttribute="trailing" constant="8" id="IFD-1E-EUL"/>
+                    <constraint firstItem="dL6-1d-eXj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="mZr-Wc-9kb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="btnDelete" destination="r0b-MX-GpN" id="Baz-jj-VPd"/>
+                <outlet property="imgPhoto" destination="4lT-q8-K6L" id="1E7-bc-whi"/>
+                <outlet property="viewContainer" destination="dL6-1d-eXj" id="Ckp-dJ-AM8"/>
+            </connections>
+            <point key="canvasLocation" x="33" y="62"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="2players_bg" width="480" height="320"/>
+        <image name="trash_rectangle_blue" width="31" height="40"/>
+    </resources>
+</document>
