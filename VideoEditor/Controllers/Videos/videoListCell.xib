@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -68,6 +68,21 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jyu-hU-egA">
+                                        <rect key="frame" x="275" y="20" width="40" height="10"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="8"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fb_live" translatesAutoresizingMaskIntoConstraints="NO" id="Y76-OJ-5cv">
+                                        <rect key="frame" x="250" y="5" width="40" height="15"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwU-af-S3w">
+                                        <rect key="frame" x="300" y="4" width="15" height="15"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -210,6 +225,8 @@
                 <outlet property="btnRename" destination="cTF-8S-Xn3" id="Ks8-0b-gBg"/>
                 <outlet property="btnVideoLength" destination="LbE-dz-Qoq" id="pAz-jl-0B7"/>
                 <outlet property="btnVideoSize" destination="xkm-b3-JuM" id="L3M-dJ-rf5"/>
+                <outlet property="deviceImage" destination="vwU-af-S3w" id="p40-56-zGk"/>
+                <outlet property="deviceModel" destination="Jyu-hU-egA" id="7cF-uM-1Zu"/>
                 <outlet property="imgPhoto" destination="Aod-Ei-Q6u" id="Rtt-Oa-iSH"/>
                 <outlet property="lblGameDescription" destination="42G-vy-kZv" id="uVQ-QP-RcC"/>
                 <outlet property="lblGameName" destination="GOv-Y1-dEX" id="Vgc-z8-9h9"/>
@@ -221,6 +238,7 @@
     </objects>
     <resources>
         <image name="button_bg_blue_small" width="26" height="27"/>
+        <image name="fb_live" width="960" height="411"/>
         <image name="videoPreset" width="11" height="11"/>
         <image name="video_file_blue" width="8" height="10"/>
         <image name="watch_blue" width="10" height="10"/>

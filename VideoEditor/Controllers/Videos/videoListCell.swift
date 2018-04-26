@@ -18,6 +18,8 @@ class videoListCell: UITableViewCell {
     @IBOutlet weak var btnVideoSize: UIButton!
     @IBOutlet weak var btnVideoLength: UIButton!
     @IBOutlet weak var lblScore: UILabel!
+    @IBOutlet var deviceImage: UIImageView!
+    @IBOutlet var deviceModel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

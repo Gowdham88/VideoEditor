@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var tabbarController: MainTabbarVC?
     var isCheckedForServiceStatus: Bool = false
     var currentProductKeyInProgress: String = ""
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         isCheckedForServiceStatus = false
         IQKeyboardManager.sharedManager().enable = true

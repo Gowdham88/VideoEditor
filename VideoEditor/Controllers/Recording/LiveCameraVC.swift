@@ -491,6 +491,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         }
     }
     
+    @IBAction func takePicture_PhotoTag(_ sender: Any) {
+        
+        
+    }
+    
+    
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
        
         if selectedCameraSource == 3
@@ -1182,8 +1188,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     {
         self.selectedVideoURL = info[UIImagePickerControllerMediaURL] as? URL
         
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
-        
+        print("Finished picking image: \(image.size)")
         self.dismiss(animated: true) {
             
             let videoSize: CGSize = APP_DELEGATE.resolutionForLocalVideo(url: self.selectedVideoURL)!
