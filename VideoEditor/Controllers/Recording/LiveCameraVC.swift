@@ -77,6 +77,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     @IBOutlet weak var viewCameraContainer: UIView!
     
+    @IBOutlet weak var phototagONbutton: UIButton!
+    @IBOutlet weak var phototagOFFbutton: UIButton!
+    
     let captureSession = AVCaptureSession()
     var currentDevice: AVCaptureDevice?
     var videoFileOutput: AVCaptureMovieFileOutput?
@@ -90,7 +93,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         setCornerRadiusToButton(button: btnHD)
         setCornerRadiusToButton(button: btnFHD)
         setCornerRadiusToButton(button: btn4K)
-        
+       
         setCornerRadiusToButton(button: btnFrontCam)
         setCornerRadiusToButton(button: btnBackCam)
         setCornerRadiusToButton(button: btnRollRec)
@@ -105,12 +108,17 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         setCornerRadiusToButton(button: btnFPS60)
         setCornerRadiusToButton(button: btnH264)
         setCornerRadiusToButton(button: btnH265)
+        setCornerRadiusToButton(button: phototagONbutton)
+        setCornerRadiusToButton(button: phototagOFFbutton)
+        
         //        setCornerRadiusToButton(button: btnFBYT)
         
         //        setCornerRadiusAndShadowOnButton(button: btnZoom, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnStartRecoding, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnLiveSettings, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnBackToDetails, backColor: COLOR_APP_THEME())
+        
+
         
         // set default to back camera
         btnFrontCam.backgroundColor = COLOR_WHITE_ALPHA_40()
@@ -167,8 +175,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             videoSettingDict["Codec"] = "not exist"
         }
+        
+        phototagONbutton.backgroundColor = COLOR_WHITE_ALPHA_40()
+        phototagOFFbutton.backgroundColor = COLOR_APP_THEME()
+        
         APP_DELEGATE.DeleteAllFilesInTempFolder()
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -469,6 +481,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     }
     //MARK:- button click events
     @IBAction func btnZoomSwitchClicked(_ sender: Any) {
+        
         if btnZoomSwitch.image(for: .normal) == UIImage(named: "switch_off")
         {
             btnZoomSwitch.setImage(UIImage(named: "switch_on"), for: .normal)
@@ -490,9 +503,37 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             self.btnMinusZoomSpeed.isEnabled = false
         }
     }
-    
-    @IBAction func takePicture_PhotoTag(_ sender: Any) {
+    var isProductPurchased = Bool()
+
+    @IBAction func phototagON(_ sender: Any) {
         
+        if UserDefaults.standard.value(forKey: Constants.kFotoTag_PurchaseKey) != nil
+        {
+            let value: String = UserDefaults.standard.value(forKey: Constants.kFotoTag_PurchaseKey) as! String
+            
+            if value == "YES"
+            {
+                phototagONbutton.backgroundColor = COLOR_APP_THEME()
+                phototagOFFbutton.backgroundColor = COLOR_WHITE_ALPHA_40()
+                
+                isProductPurchased = true
+            }
+        }
+        //        isProductPurchased = true
+        if !isProductPurchased
+        {
+            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "You have to purchase Photo Tag product to use Photo Tag feature. You can purchase it from Home Page.", withTitle: "Alert")
+            return
+        }
+        
+       
+        
+    }
+    
+    @IBAction func phototagOFF(_ sender: Any) {
+        
+        phototagONbutton.backgroundColor = COLOR_WHITE_ALPHA_40()
+        phototagOFFbutton.backgroundColor = COLOR_APP_THEME()
         
     }
     

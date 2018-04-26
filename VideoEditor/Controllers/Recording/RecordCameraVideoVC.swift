@@ -83,6 +83,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var isRecordingInProgress: Bool = false
     var recordEventInfo: RecordingInfo!
     var videoSettingDict: Dictionary<String, Any>!
+    var photoTagImage = Data()
     
     var overlayScoreBoardImage:UIImage?
     
@@ -197,6 +198,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var swipeRightOnVideoRecording = UISwipeGestureRecognizer()
     var swipeLeftOnOverlay = UISwipeGestureRecognizer()
     var videoClipsArray: NSMutableArray = NSMutableArray.init()
+    var matchEventvideoClipsArray: NSMutableArray = NSMutableArray.init()
     var selectedtagsArray: NSMutableArray = NSMutableArray.init()
     var totalNumberOfButtons = 11
     let arrButtonTitles = ["1","2","3","4","5","6","7","8","9","0","-","+"]
@@ -451,6 +453,21 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
         
     }
+    
+    public enum ImageFormat {
+        case png
+        case jpeg(CGFloat)
+    }
+    
+    func convertImageTobase64(format: ImageFormat, image:UIImage) -> String? {
+        var imageData: Data?
+        switch format {
+        case .png: imageData = UIImagePNGRepresentation(image)
+        case .jpeg(let compression): imageData = UIImageJPEGRepresentation(image, compression)
+        }
+        return imageData?.base64EncodedString()
+    }
+
     
     @IBAction func BtnPlayVideoStart(_ sender: UIButton)
     {
@@ -1030,6 +1047,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @IBAction func HightLightButtonClicked(_ sender: UIButton)
     {
 //        return
+        
         self.selectedtagsArray = NSMutableArray.init()
 
         if self.recordEventInfo.isDayEvent
@@ -1046,7 +1064,31 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             ]
             
             self.videoClipsArray.add(dict)
+        } else if self.recordEventInfo.isMatchEvent {
+            
+            
+//            picker.sourceType = .camera
+//            picker.delegate =  self
+//            self.present(picker, animated: true, completion: nil)
+            
+            let clipSecond: Int64 = 30
+            let clipName: String = "Hightlight"
+            let dict: Dictionary <String, Any> = [
+                "clipcapturesecond" : Int64(self.totalRecordedSecond),
+                "cliptagsecond" : clipSecond,
+                "clipname" : clipName,
+                "teamname" : "",
+                "tagsArray": self.selectedtagsArray,
+                "clipDate": Date.init(),
+                "clipImage": photoTagImage
+            ]
+            
+            print("phototagimage: \(photoTagImage)")
+            
+            self.matchEventvideoClipsArray.add(dict)
+            
         }
+        
         else
         {
             self.OpenHightLightView(selectedIndex: sender.tag)
@@ -3328,9 +3370,57 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
         self.dismiss(animated: true, completion: nil)
         self.viewOverlayContainer.bringSubview(toFront: self.imageUploadButton)
     }
+    
+   
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
+        
+        
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        let docDir = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        let imageUniqueName : Int64 = Int64(NSDate().timeIntervalSince1970 * 1000);
+        
+        let filePath = docDir.appendingPathComponent("\(imageUniqueName).png");
+        
+        do{
+            if let pngimage = UIImagePNGRepresentation((info[UIImagePickerControllerOriginalImage] as? UIImage)!){
+                
+                photoTagImage = pngimage
+
+                try pngimage.write(to : filePath , options : .atomic)
+                
+                /*FETCH DATA:
+                 public static func fetchData(nameImage : String) -> UIImage{
+                 
+                 let docDir = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                 let filePath = docDir.appendingPathComponent(nameImage);
+                 
+                 if FileManager.default.fileExists(atPath: filePath.path){
+                 
+                 if let containOfFilePath = UIImage(contentsOfFile : filePath.path){
+                 
+                 return containOfFilePath;
+                 
+                 }
+                 
+                 }
+                 
+                 return UIImage();
+                 }
+                 */
+            }
+            
+        } catch {
+            
+            print("couldn't write image")
+            
+        }
+
+        
+        
         self.dismiss(animated: true) {
             let draggableView: DrageImageView = DrageImageView()
             

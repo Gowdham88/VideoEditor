@@ -19,6 +19,7 @@ class RecordingInfo: NSObject {
     var videoFolderName: String = ""
     
     var isDayEvent: Bool = true
+    var isMatchEvent: Bool = true
     
     var homeTeamLogo: UIImage? = nil
     var awayTeamLogo: UIImage? = nil
