@@ -86,8 +86,16 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     var previewLayerConnection: AVCaptureConnection?
     
+    @IBOutlet weak var livesettingEqaulheight: NSLayoutConstraint!
+    @IBOutlet weak var liveSettingTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var BactBtnTopConstraint: NSLayoutConstraint!
+//    let notificationhide = Notification.Name("hideLiveBtn")
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       
+
+      
         
         APP_DELEGATE.myOrientation = .all
         setCornerRadiusToButton(button: btnHD)
@@ -118,6 +126,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         setCornerRadiusAndShadowOnButton(button: btnLiveSettings, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnBackToDetails, backColor: COLOR_APP_THEME())
         
+        
+        
 
         
         // set default to back camera
@@ -141,6 +151,21 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         self.AddCameraViewAndSetConfig()
         self.captureSession.startRunning()
         self.viewCameraContainer.frame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.height, height: self.view.frame.size.width)
+        
+        if self.recordEventInfo.recADay {
+            self.btnLiveSettings.isHidden = true
+             liveSettingTopConstraint.constant = 0
+             livesettingEqaulheight.constant = 0
+        }
+        
+        if self.recordEventInfo.createEvent {
+            liveSettingTopConstraint.constant = 7
+            livesettingEqaulheight.constant = 40
+            self.btnLiveSettings.isHidden = false
+        }
+        
+        
+        
         if self.recordEventInfo.isDayEvent
         {
 //            self.lblTime.isHidden = true
@@ -180,7 +205,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         phototagOFFbutton.backgroundColor = COLOR_APP_THEME()
         
         APP_DELEGATE.DeleteAllFilesInTempFolder()
-        
+       
+     
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -200,7 +226,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         //  self.AddCameraViewAndSetConfig()
         //        viewCameraContainer.frame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.height, height: self.view.frame.size.width)
-        
+      
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -233,9 +259,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = false
-        // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
+    
+       // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
+         NotificationCenter.default.removeObserver("hideLiveBtn")
     }
     
+ 
     
     func setCornerRadiusToButton(button: UIButton) {
         button.layer.cornerRadius = 3.0
@@ -1712,3 +1741,5 @@ extension LiveCameraVC
  
  return false
  }*/
+
+

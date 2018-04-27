@@ -1071,6 +1071,36 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
 //            picker.delegate =  self
 //            self.present(picker, animated: true, completion: nil)
             
+            highLightView.isHidden = true
+            home_ScoreView.isHidden = true
+            away_ScoreView.isHidden = true
+            viewProgressiveZoomContainer.isHidden = true
+            btnPause.isHidden = true
+            highLightView.isHidden = true
+            
+            overlayNameScoreView.isHidden = true
+            overlayHomeTeamView.isHidden = true
+            overlayAwayTeamView.isHidden = true
+            overlayScoreView.isHidden = true
+            overlayPeriodView.isHidden = true
+            overlayTimerView.isHidden = true
+
+            
+            overlayNameScoreView.isHidden = true
+            overlayHomeNameBtn.isHidden = true
+            overlayAwayNameBtn.isHidden = true
+            overlayScoreBtn.isHidden = true
+            overlayPeriodBtn.isHidden = true
+            overlayTimerBtn.isHidden = true
+            
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height), false, 0.0)
+            self.view.drawHierarchy(in: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), afterScreenUpdates: true)
+            if let image = UIGraphicsGetImageFromCurrentImageContext() {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            
+            }
+            UIGraphicsEndImageContext();
+            
             let clipSecond: Int64 = 30
             let clipName: String = "Hightlight"
             let dict: Dictionary <String, Any> = [
@@ -1082,8 +1112,28 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 "clipDate": Date.init(),
                 "clipImage": photoTagImage
             ]
+            highLightView.isHidden = false
+            home_ScoreView.isHidden = false
+            away_ScoreView.isHidden = false
+            viewProgressiveZoomContainer.isHidden = false
+            btnPause.isHidden = false
+            highLightView.isHidden = false
             
-            print("phototagimage: \(photoTagImage)")
+            overlayNameScoreView.isHidden = false
+            overlayHomeTeamView.isHidden = false
+            overlayAwayTeamView.isHidden = false
+            overlayScoreView.isHidden = false
+            overlayPeriodView.isHidden = false
+            overlayTimerView.isHidden = false
+
+            
+            overlayNameScoreView.isHidden = false
+            overlayHomeNameBtn.isHidden = false
+            overlayAwayNameBtn.isHidden = false
+            overlayScoreBtn.isHidden = false
+            overlayPeriodBtn.isHidden = false
+            overlayTimerBtn.isHidden = false
+       
             
             self.matchEventvideoClipsArray.add(dict)
             
@@ -3389,6 +3439,8 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
             if let pngimage = UIImagePNGRepresentation((info[UIImagePickerControllerOriginalImage] as? UIImage)!){
                 
                 photoTagImage = pngimage
+                
+                print("photoImage::::::\(photoTagImage)")
 
                 try pngimage.write(to : filePath , options : .atomic)
                 

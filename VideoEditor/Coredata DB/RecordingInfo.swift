@@ -27,5 +27,8 @@ class RecordingInfo: NSObject {
     var awayTeamScore: Int64 = 0
     var homeTeamScore: Int64 = 0
 
+    var recADay: Bool = true
+    var createEvent: Bool = true
+    
 }
 

@@ -119,6 +119,8 @@ class CreateMatchVC: BaseVC, UIImagePickerControllerDelegate {
         
         recordEventInfo.eventName = eventName
         recordEventInfo.sportName = sportName
+        recordEventInfo.createEvent = true
+        recordEventInfo.recADay = false
         recordEventInfo.isDayEvent = false
         let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idLiveCameraVC) as! LiveCameraVC
         redirectTo.recordEventInfo = recordEventInfo
