@@ -1162,6 +1162,7 @@
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="BactBtnTopConstraint" destination="8hl-kq-mvY" id="edN-cq-4E8"/>
                         <outlet property="btn4K" destination="qif-do-aWA" id="na2-Bg-V2D"/>
                         <outlet property="btnAwayName" destination="jIv-XA-1Da" id="gp6-yI-yed"/>
                         <outlet property="btnBackCam" destination="9qc-cE-r4l" id="fPS-F7-6gO"/>
@@ -1190,6 +1191,8 @@
                         <outlet property="lblHomeTeam" destination="rAN-mr-6fr" id="2Ej-36-Zdz"/>
                         <outlet property="lblTime" destination="jtL-LO-4Uq" id="lWQ-II-pu5"/>
                         <outlet property="lblZoomSpeed" destination="f1g-4c-2Xk" id="OQh-US-lJ9"/>
+                        <outlet property="liveSettingTopConstraint" destination="3eV-10-VVD" id="rR2-4l-zT0"/>
+                        <outlet property="livesettingEqaulheight" destination="3yd-6x-6OE" id="kLB-yd-mN6"/>
                         <outlet property="phototagOFFbutton" destination="aUk-ht-eaF" id="AIE-Hb-6Wh"/>
                         <outlet property="phototagONbutton" destination="SLn-yJ-r2a" id="qol-Ov-ZUG"/>
                         <outlet property="scoreView" destination="S6Z-1s-5oF" id="In6-le-qqQ"/>
@@ -2240,8 +2243,8 @@
                                             <constraint firstItem="hQH-8r-gaW" firstAttribute="leading" secondItem="LK0-yk-i7m" secondAttribute="leading" id="zfP-If-bGy"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1o-uR-teu">
-                                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P1o-uR-teu">
+                                        <rect key="frame" x="667" y="0.0" width="667" height="375"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0LI-oc-blX">
                                                 <rect key="frame" x="0.0" y="187.5" width="667" height="187.5"/>
