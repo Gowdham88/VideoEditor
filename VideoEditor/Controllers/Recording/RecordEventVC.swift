@@ -184,8 +184,6 @@ class RecordEventVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         }
         else {
             
-            
-            
             APP_DELEGATE.myOrientation = .all
             let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idLiveCameraVC) as! LiveCameraVC
             

@@ -95,7 +95,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
        
 
-      
+        self.imgRotateScreen.isHidden = false
         
         APP_DELEGATE.myOrientation = .all
         setCornerRadiusToButton(button: btnHD)
@@ -134,7 +134,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         btnFrontCam.backgroundColor = COLOR_WHITE_ALPHA_40()
         btnBackCam.backgroundColor = COLOR_APP_THEME()
         
-        self.imgRotateScreen.isHidden = false
         self.view.bringSubview(toFront: viewCameraContainer)
         self.view.bringSubview(toFront: imgRotateScreen)
         btnZoomSwitch.setImage(UIImage(named: "switch_on"), for: .normal)
@@ -1258,9 +1257,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     {
         self.selectedVideoURL = info[UIImagePickerControllerMediaURL] as? URL
         
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        print("Finished picking image: \(image.size)")
+//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+//
+//        print("Finished picking image: \(image.size)")
         self.dismiss(animated: true) {
             
             let videoSize: CGSize = APP_DELEGATE.resolutionForLocalVideo(url: self.selectedVideoURL)!

@@ -227,6 +227,7 @@
                 <outlet property="btnVideoSize" destination="xkm-b3-JuM" id="L3M-dJ-rf5"/>
                 <outlet property="deviceImage" destination="vwU-af-S3w" id="p40-56-zGk"/>
                 <outlet property="deviceModel" destination="Jyu-hU-egA" id="7cF-uM-1Zu"/>
+                <outlet property="fb_live" destination="Y76-OJ-5cv" id="Hq4-LP-7bG"/>
                 <outlet property="imgPhoto" destination="Aod-Ei-Q6u" id="Rtt-Oa-iSH"/>
                 <outlet property="lblGameDescription" destination="42G-vy-kZv" id="uVQ-QP-RcC"/>
                 <outlet property="lblGameName" destination="GOv-Y1-dEX" id="Vgc-z8-9h9"/>

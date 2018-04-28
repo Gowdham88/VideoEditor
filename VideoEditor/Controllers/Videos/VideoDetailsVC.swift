@@ -892,8 +892,6 @@ class VideoDetailsVC: BaseVC, UITableViewDelegate, UITableViewDataSource, Highli
         
         self.sliderVideo.value = Float(elapsedTime)
         
-        
-        
     }
     
     @IBAction func BtnPlayVideoStart(_ sender: UIButton)

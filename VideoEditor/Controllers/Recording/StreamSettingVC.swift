@@ -147,10 +147,20 @@ class StreamSettingVC: UIViewController {
     }
     
     @IBAction func btnSaveClicked(_ sender: Any) {
+        
+        
 //        btnPages.isHidden = false
 //        btnProfile.isHidden = false
 //        let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idStreamRecordingVC) as! StreamRecordingVC
 //        self.navigationController?.pushViewController(redirectTo, animated: true)
+        
+        //============== CHECK FB linked and set fbavailable to true/false
+        
+        
+        fbAvailable = true
+        //=============
+    
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -180,6 +190,7 @@ class StreamSettingVC: UIViewController {
             txtEventName.isHidden = false
             txtPassword.isHidden = false
         }
+        
     }
     
     

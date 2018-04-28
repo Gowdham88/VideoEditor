@@ -122,6 +122,15 @@ class CreateMatchVC: BaseVC, UIImagePickerControllerDelegate {
         recordEventInfo.createEvent = true
         recordEventInfo.recADay = false
         recordEventInfo.isDayEvent = false
+        if fbAvailable == true {
+            
+        recordEventInfo.fbLive = true
+            
+        } else {
+            
+        recordEventInfo.fbLive = false
+            
+        }
         let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idLiveCameraVC) as! LiveCameraVC
         redirectTo.recordEventInfo = recordEventInfo
 

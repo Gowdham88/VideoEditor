@@ -4,6 +4,11 @@
 
 
 import UIKit
+import MobileCoreServices
+import MediaWatermark
+import AVFoundation
+
+
 
 class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -126,16 +131,44 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
             return
         }
         
+        let fannersharingURL = addFannerLogo(sharingURL: sharingURL as AnyObject)
         let sharingItems:[AnyObject?] = [
             sharingText as AnyObject,
             sharingImage as AnyObject,
-            sharingURL as AnyObject
+            fannersharingURL as AnyObject
         ]
-        let activityViewController = UIActivityViewController(activityItems: sharingItems.flatMap({$0}), applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: sharingItems.compactMap({$0}), applicationActivities: nil)
         if UIDevice.current.userInterfaceIdiom == .pad {
             activityViewController.popoverPresentationController?.sourceView = view
         }
         present(activityViewController, animated: true, completion: nil)
+    }
+
+    func addFannerLogo(sharingURL: AnyObject) -> AnyObject {
+        
+        var shareurl: AnyObject?
+
+        if let item = MediaItem(url: sharingURL as! URL) {
+            let logoImage = UIImage(named: "logo")
+            
+            let firstElement = MediaElement(image: logoImage!)
+            firstElement.frame = CGRect(x: 0, y: 0, width: logoImage!.size.width, height: logoImage!.size.height)
+            
+            
+            item.add(elements: [firstElement])
+            
+            let mediaProcessor = MediaProcessor()
+            mediaProcessor.processElements(item: item) { [weak self] (result, error) in
+                
+                shareurl = result.processedUrl as AnyObject
+                
+                
+            }
+            
+        }
+        
+        return shareurl!
+
     }
 }
 //extension SocialShareVC: UICollectionViewDelegateFlowLayout {

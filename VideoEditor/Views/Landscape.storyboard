@@ -1103,7 +1103,7 @@
                                     <constraint firstAttribute="trailing" secondItem="eci-bM-oKi" secondAttribute="trailing" constant="8" id="u0f-3q-wnd"/>
                                 </constraints>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dc3-eY-Slw">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dc3-eY-Slw">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rotate_phone_white" translatesAutoresizingMaskIntoConstraints="NO" id="fn7-EP-d7H">
@@ -1124,7 +1124,6 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="fn7-EP-d7H" firstAttribute="centerX" secondItem="Dc3-eY-Slw" secondAttribute="centerX" id="R8q-Hx-V3V"/>
                                     <constraint firstItem="3o8-M1-zHf" firstAttribute="centerX" secondItem="Dc3-eY-Slw" secondAttribute="centerX" id="j5b-bd-ig3"/>
