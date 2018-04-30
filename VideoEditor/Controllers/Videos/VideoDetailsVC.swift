@@ -457,7 +457,7 @@ class VideoDetailsVC: BaseVC, UITableViewDelegate, UITableViewDataSource, Highli
         outputFilePath = outputFilePath + outputFileName! + "/mynew.mov"
         self.fullVideoPath = outputFilePath
         let videoURL = URL.init(fileURLWithPath: self.fullVideoPath)
-        
+        SharevideoURL = videoURL
         let playerItem = AVPlayerItem.init(url: videoURL)
         self.avPlayer.replaceCurrentItem(with: playerItem)
         self.avPlayerLayer.backgroundColor=UIColor.clear.cgColor
@@ -891,8 +891,6 @@ class VideoDetailsVC: BaseVC, UITableViewDelegate, UITableViewDataSource, Highli
         }
         
         self.sliderVideo.value = Float(elapsedTime)
-        
-        
         
     }
     

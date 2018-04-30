@@ -12,6 +12,7 @@ class RecordEventVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
     
     var twoDimensionalArray = NSArray()
     var arrBuyOptions: NSArray = NSArray()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -182,6 +183,7 @@ class RecordEventVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             self.navigationController?.pushViewController(redirectTo, animated: true)
         }
         else {
+            
             APP_DELEGATE.myOrientation = .all
             let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idLiveCameraVC) as! LiveCameraVC
             
@@ -195,6 +197,8 @@ class RecordEventVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             recordEventInfo.eventName = ""
             recordEventInfo.sportName = ""
             recordEventInfo.isDayEvent = true
+            recordEventInfo.recADay = true
+            recordEventInfo.createEvent = false
             redirectTo.recordEventInfo = recordEventInfo
             APP_DELEGATE.currentRecordingEvent = Constants.RecordDayEvent
             self.navigationController?.pushViewController(redirectTo, animated: true)

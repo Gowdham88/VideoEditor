@@ -19,6 +19,7 @@ class RecordingInfo: NSObject {
     var videoFolderName: String = ""
     
     var isDayEvent: Bool = true
+    var isMatchEvent: Bool = true
     
     var homeTeamLogo: UIImage? = nil
     var awayTeamLogo: UIImage? = nil
@@ -26,5 +27,12 @@ class RecordingInfo: NSObject {
     var awayTeamScore: Int64 = 0
     var homeTeamScore: Int64 = 0
 
+    var recADay: Bool = true
+    var createEvent: Bool = true
+    
+    var fbLive: Bool = false
+    
+    
+    
 }
 

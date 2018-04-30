@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17B1003" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="RecEventList" representedClassName="RecEventList" syncable="YES" codeGenerationType="class">
         <attribute name="awayTeamLogo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="awayTeamName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="awayTeamScore" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fbLive" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="homeTeamLogo" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="homeTeamName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="homeTeamScore" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -23,6 +24,7 @@
         <attribute name="clipSecond" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="clipStartTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="clipTagSecond" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="fbLive" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isHighlightClip" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isPostClip" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="teamName" optional="YES" attributeType="String" syncable="YES"/>
@@ -40,8 +42,8 @@
         <relationship name="tagToRecording" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RecVideoClips" inverseName="recordingToTagList" inverseEntity="RecVideoClips" syncable="YES"/>
     </entity>
     <elements>
-        <element name="RecEventList" positionX="-54" positionY="45" width="128" height="225"/>
-        <element name="RecVideoClips" positionX="-54" positionY="99" width="128" height="240"/>
+        <element name="RecEventList" positionX="-54" positionY="45" width="128" height="240"/>
+        <element name="RecVideoClips" positionX="-54" positionY="99" width="128" height="255"/>
         <element name="TagInfo" positionX="-54" positionY="-9" width="128" height="165"/>
     </elements>
 </model>

@@ -107,6 +107,8 @@ public let idStreamRecordingVC = "streamRecording_view"
 public let idSearchVC = "search_view"
 public let idLiveCameraVC = "liveCamera_view"
 public let idRecordCameraVideoVC = "recordCameraVideo_view"
+public var fbAvailable = Bool()
+
 
 //MARK:-
 //MARK:- Application related variables

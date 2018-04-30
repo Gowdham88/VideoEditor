@@ -40,7 +40,6 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         viewSegmentControl.addSubview(segmentioView)
         
         var contentsArr = [SegmentioItem]()
-        
         contentsArr.append(SegmentioBuilder.setupSegmentItem(stroption: "All", strImage: ""))
         contentsArr.append(SegmentioBuilder.setupSegmentItem(stroption: "Recorded", strImage: ""))
         contentsArr.append(SegmentioBuilder.setupSegmentItem(stroption: "By Studio", strImage: ""))
@@ -251,10 +250,14 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let devicemodel = UIDevice.current.model
+        
         //        let cell = tableView.dequeueReusableCell(withIdentifier: "simpleCell", for: indexPath)
         //        cell.selectionStyle = .none
         //        cell.textLabel?.text = "Record your own videos."
         //        return cell
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "videoListCell", for: indexPath) as! videoListCell
         cell.selectionStyle = .none
         
@@ -264,10 +267,12 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         let recordedEvent: RecEventList = self.videoRecordingList.object(at: indexPath.row) as! RecEventList
         
         cell.lblGameName.text = "sasas"
+        cell.fb_live.isHidden = true
         
         //        if ((indexPath.row%2) == 0 && segmentioView.selectedSegmentioIndex == 0) ||  segmentioView.selectedSegmentioIndex == 1
         //        {
         let myString = "Recorded"
+        
         let myAttribute = [ NSAttributedStringKey.foregroundColor: UIColor.red ]
         let myAttrString = NSMutableAttributedString(string: myString, attributes: myAttribute)
         
@@ -313,6 +318,10 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             cell.lblSeriesName.text = "Day Series"
             cell.lblGameName.text = "Local A VS Local B"
             cell.lblScore.text = ""
+            cell.deviceImage.image = UIImage(named: "recorded_by_phone")
+            cell.deviceModel.text = devicemodel
+            
+            
         }
         else
         {
@@ -320,6 +329,12 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             cell.lblSeriesName.text = recordedEvent.eventName
             
             cell.lblScore.text = "\(recordedEvent.homeTeamScore)" + " - " + "\(recordedEvent.awayTeamScore)"
+            cell.deviceImage.image = UIImage(named: "recorded_by_phone")
+            cell.deviceModel.text = devicemodel
+            if recordedEvent.fbLive == true {
+                cell.fb_live.isHidden = false
+            }
+            
         }
         
         if let cachedImage = imageCache.object(forKey: outputFilePath as NSString)
@@ -341,6 +356,8 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
 //        {
 //
 //        }
+        
+
         var presetValue: String = Constants.HDQuality
         if recordedEvent.videoPreset == Constants.HDQuality
         {
@@ -408,7 +425,6 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
 //            self.tblAllVideos.deleteRows(at: [IndexPath.init(row: index, section: 0)], with: .none)
             
             let fullVideoPath: String = APP_DELEGATE.FetchFullVideoPath(videoFolderName: recordedEvent.videoFolderID!)
-            
             
             if FileManager.default.fileExists(atPath: fullVideoPath as String)
             {

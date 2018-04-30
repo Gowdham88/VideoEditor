@@ -14,4 +14,6 @@ target 'VideoEditor' do
     pod 'Alamofire', '~> 4.5'
     pod 'MBProgressHUD', '~> 1.0.0'
     pod 'GPUImage'
+    pod 'MediaWatermark'
+    
 end

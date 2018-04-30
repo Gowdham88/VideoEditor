@@ -77,20 +77,31 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     @IBOutlet weak var viewCameraContainer: UIView!
     
+    @IBOutlet weak var phototagONbutton: UIButton!
+    @IBOutlet weak var phototagOFFbutton: UIButton!
+    
     let captureSession = AVCaptureSession()
     var currentDevice: AVCaptureDevice?
     var videoFileOutput: AVCaptureMovieFileOutput?
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     var previewLayerConnection: AVCaptureConnection?
     
+    @IBOutlet weak var livesettingEqaulheight: NSLayoutConstraint!
+    @IBOutlet weak var liveSettingTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var BactBtnTopConstraint: NSLayoutConstraint!
+//    let notificationhide = Notification.Name("hideLiveBtn")
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       
+
+        self.imgRotateScreen.isHidden = false
         
         APP_DELEGATE.myOrientation = .all
         setCornerRadiusToButton(button: btnHD)
         setCornerRadiusToButton(button: btnFHD)
         setCornerRadiusToButton(button: btn4K)
-        
+       
         setCornerRadiusToButton(button: btnFrontCam)
         setCornerRadiusToButton(button: btnBackCam)
         setCornerRadiusToButton(button: btnRollRec)
@@ -105,6 +116,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         setCornerRadiusToButton(button: btnFPS60)
         setCornerRadiusToButton(button: btnH264)
         setCornerRadiusToButton(button: btnH265)
+        setCornerRadiusToButton(button: phototagONbutton)
+        setCornerRadiusToButton(button: phototagOFFbutton)
+        
         //        setCornerRadiusToButton(button: btnFBYT)
         
         //        setCornerRadiusAndShadowOnButton(button: btnZoom, backColor: COLOR_APP_THEME())
@@ -112,11 +126,14 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         setCornerRadiusAndShadowOnButton(button: btnLiveSettings, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnBackToDetails, backColor: COLOR_APP_THEME())
         
+        
+        
+
+        
         // set default to back camera
         btnFrontCam.backgroundColor = COLOR_WHITE_ALPHA_40()
         btnBackCam.backgroundColor = COLOR_APP_THEME()
         
-        self.imgRotateScreen.isHidden = false
         self.view.bringSubview(toFront: viewCameraContainer)
         self.view.bringSubview(toFront: imgRotateScreen)
         btnZoomSwitch.setImage(UIImage(named: "switch_on"), for: .normal)
@@ -133,6 +150,21 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         self.AddCameraViewAndSetConfig()
         self.captureSession.startRunning()
         self.viewCameraContainer.frame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.height, height: self.view.frame.size.width)
+        
+        if self.recordEventInfo.recADay {
+            self.btnLiveSettings.isHidden = true
+             liveSettingTopConstraint.constant = 0
+             livesettingEqaulheight.constant = 0
+        }
+        
+        if self.recordEventInfo.createEvent {
+            liveSettingTopConstraint.constant = 7
+            livesettingEqaulheight.constant = 40
+            self.btnLiveSettings.isHidden = false
+        }
+        
+        
+        
         if self.recordEventInfo.isDayEvent
         {
 //            self.lblTime.isHidden = true
@@ -167,8 +199,13 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             videoSettingDict["Codec"] = "not exist"
         }
+        
+        phototagONbutton.backgroundColor = COLOR_WHITE_ALPHA_40()
+        phototagOFFbutton.backgroundColor = COLOR_APP_THEME()
+        
         APP_DELEGATE.DeleteAllFilesInTempFolder()
        
+     
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -188,7 +225,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         //  self.AddCameraViewAndSetConfig()
         //        viewCameraContainer.frame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.height, height: self.view.frame.size.width)
-        
+      
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -221,9 +258,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = false
-        // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
+    
+       // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
+         NotificationCenter.default.removeObserver("hideLiveBtn")
     }
     
+ 
     
     func setCornerRadiusToButton(button: UIButton) {
         button.layer.cornerRadius = 3.0
@@ -469,6 +509,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     }
     //MARK:- button click events
     @IBAction func btnZoomSwitchClicked(_ sender: Any) {
+        
         if btnZoomSwitch.image(for: .normal) == UIImage(named: "switch_off")
         {
             btnZoomSwitch.setImage(UIImage(named: "switch_on"), for: .normal)
@@ -490,6 +531,40 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             self.btnMinusZoomSpeed.isEnabled = false
         }
     }
+    var isProductPurchased = Bool()
+
+    @IBAction func phototagON(_ sender: Any) {
+        
+        if UserDefaults.standard.value(forKey: Constants.kFotoTag_PurchaseKey) != nil
+        {
+            let value: String = UserDefaults.standard.value(forKey: Constants.kFotoTag_PurchaseKey) as! String
+            
+            if value == "YES"
+            {
+                phototagONbutton.backgroundColor = COLOR_APP_THEME()
+                phototagOFFbutton.backgroundColor = COLOR_WHITE_ALPHA_40()
+                
+                isProductPurchased = true
+            }
+        }
+        //        isProductPurchased = true
+        if !isProductPurchased
+        {
+            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "You have to purchase Photo Tag product to use Photo Tag feature. You can purchase it from Home Page.", withTitle: "Alert")
+            return
+        }
+        
+       
+        
+    }
+    
+    @IBAction func phototagOFF(_ sender: Any) {
+        
+        phototagONbutton.backgroundColor = COLOR_WHITE_ALPHA_40()
+        phototagOFFbutton.backgroundColor = COLOR_APP_THEME()
+        
+    }
+    
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
        
@@ -1182,8 +1257,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     {
         self.selectedVideoURL = info[UIImagePickerControllerMediaURL] as? URL
         
-        
-        
+//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+//
+//        print("Finished picking image: \(image.size)")
         self.dismiss(animated: true) {
             
             let videoSize: CGSize = APP_DELEGATE.resolutionForLocalVideo(url: self.selectedVideoURL)!
@@ -1664,3 +1740,5 @@ extension LiveCameraVC
  
  return false
  }*/
+
+
