@@ -28,6 +28,7 @@ extension RecVideoClips {
     @NSManaged public var isHighlightClip: Bool
     @NSManaged public var clipDate: NSDate?
     @NSManaged public var isPostClip: Bool
+    @NSManaged public var fbLive: Bool
 
 }
 

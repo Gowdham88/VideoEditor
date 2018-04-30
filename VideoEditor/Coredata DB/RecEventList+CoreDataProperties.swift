@@ -27,5 +27,6 @@ extension RecEventList {
     @NSManaged public var videoFolderID: String?
     @NSManaged public var videoPreset: String?
     @NSManaged public var recordingDate: NSDate?
+    @NSManaged public var fbLive: Bool
 
 }

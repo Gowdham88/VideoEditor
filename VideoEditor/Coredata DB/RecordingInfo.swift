@@ -30,5 +30,9 @@ class RecordingInfo: NSObject {
     var recADay: Bool = true
     var createEvent: Bool = true
     
+    var fbLive: Bool = false
+    
+    
+    
 }
 

@@ -20,6 +20,8 @@ class videoListCell: UITableViewCell {
     @IBOutlet weak var lblScore: UILabel!
     @IBOutlet var deviceImage: UIImageView!
     @IBOutlet var deviceModel: UILabel!
+    @IBOutlet weak var fb_live: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

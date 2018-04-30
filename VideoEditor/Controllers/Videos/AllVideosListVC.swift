@@ -267,6 +267,7 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         let recordedEvent: RecEventList = self.videoRecordingList.object(at: indexPath.row) as! RecEventList
         
         cell.lblGameName.text = "sasas"
+        cell.fb_live.isHidden = true
         
         //        if ((indexPath.row%2) == 0 && segmentioView.selectedSegmentioIndex == 0) ||  segmentioView.selectedSegmentioIndex == 1
         //        {
@@ -319,6 +320,8 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             cell.lblScore.text = ""
             cell.deviceImage.image = UIImage(named: "recorded_by_phone")
             cell.deviceModel.text = devicemodel
+            
+            
         }
         else
         {
@@ -328,6 +331,9 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             cell.lblScore.text = "\(recordedEvent.homeTeamScore)" + " - " + "\(recordedEvent.awayTeamScore)"
             cell.deviceImage.image = UIImage(named: "recorded_by_phone")
             cell.deviceModel.text = devicemodel
+            if recordedEvent.fbLive == true {
+                cell.fb_live.isHidden = false
+            }
             
         }
         

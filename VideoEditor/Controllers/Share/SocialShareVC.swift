@@ -4,6 +4,11 @@
 
 
 import UIKit
+import MobileCoreServices
+import MediaWatermark
+import AVFoundation
+
+var SharevideoURL: URL!
 
 class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -100,12 +105,27 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
         return cell
     }
 
-    
+   
+
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == arrSocialMedia.count-1 {
-            share(sharingText: "Test", sharingImage: imgThumbnail.image, sharingURL: nil)
+            
+//            let outputFileName = self.recordedEvent.videoFolderID
+//
+//            var outputFilePath = NSTemporaryDirectory() as String
+//            outputFilePath = outputFilePath + outputFileName! + "/mynew.mov"
+//            self.fullVideoPath = outputFilePath
+//            let videoURL = URL.init(fileURLWithPath: self.fullVideoPath)
+            
+            print("SharevideoURL: \(SharevideoURL!)")
+            
+            share(sharingText: "Test", sharingImage: imgThumbnail.image, sharingURL: SharevideoURL!)
         }
     }
+    
+    var processedURL:URL!
+
     
     func share(sharingText: String?, sharingImage: UIImage?, sharingURL: URL?) {
         
@@ -116,7 +136,7 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
             
             if value == "YES"
             {
-                isProductPurchased = true
+                isProductPurchased = false
             }
         }
 //        isProductPurchased = true
@@ -126,17 +146,75 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
             return
         }
         
-        let sharingItems:[AnyObject?] = [
-            sharingText as AnyObject,
-            sharingImage as AnyObject,
-            sharingURL as AnyObject
-        ]
-        let activityViewController = UIActivityViewController(activityItems: sharingItems.flatMap({$0}), applicationActivities: nil)
+        
+        if let item = MediaItem(url: sharingURL!) {
+            let logoImage = UIImage(named: "app_logo")
+            
+            let firstElement = MediaElement(image: logoImage!)
+            firstElement.frame = CGRect(x: 0, y: 0, width: logoImage!.size.width, height: logoImage!.size.height)
+            
+            item.add(element: firstElement)
+            
+            //            item.add(elements: [firstElement])
+            
+            let mediaProcessor = MediaProcessor()
+            mediaProcessor.processElements(item: item) { [weak self] (result, error) in
+                //                DispatchQueue.main.async {
+                //                    self?.playVideo(url: result.processedUrl!, view: (self?.resultImageView)!)
+                //                }
+                print("result.image: \(String(describing: result.image))")
+                print("result.processedUrl!: \(result.processedUrl!)")
+                self?.processedURL = result.processedUrl!
+                self?.addlogo(logourl: (self?.processedURL)!)
+                
+            }
+            
+        }
+        
+       
+
+    }
+    
+    func addlogo(logourl: URL) {
+        
+        let sharingItems:[AnyObject?] = [logourl as AnyObject]
+
+        print("logourl: \(logourl)")
+        
+        let activityViewController = UIActivityViewController(activityItems: sharingItems.compactMap({$0}), applicationActivities: nil)
         if UIDevice.current.userInterfaceIdiom == .pad {
             activityViewController.popoverPresentationController?.sourceView = view
         }
         present(activityViewController, animated: true, completion: nil)
+        
     }
+    
+//    func addFannerLogo(sharingURL: AnyObject) -> AnyObject {
+//
+//        var shareurl: AnyObject?
+//
+//        if let item = MediaItem(url: sharingURL as! URL) {
+//            let logoImage = UIImage(named: "app_logo.jpg")
+//
+//            let firstElement = MediaElement(image: logoImage!)
+//            firstElement.frame = CGRect(x: 0, y: 0, width: logoImage!.size.width, height: logoImage!.size.height)
+//
+//
+//            item.add(elements: [firstElement])
+//
+//            let mediaProcessor = MediaProcessor()
+//            mediaProcessor.processElements(item: item) { [weak self] (result, error) in
+//
+//                shareurl = result.processedUrl as AnyObject
+//
+//
+//            }
+//
+//        }
+//
+//        return shareurl!
+//
+//    }
 }
 //extension SocialShareVC: UICollectionViewDelegateFlowLayout {
 //

@@ -1064,12 +1064,16 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             ]
             
             self.videoClipsArray.add(dict)
-        } else if self.recordEventInfo.isMatchEvent {
+        }
+        
+        else
+        {
             
             
-//            picker.sourceType = .camera
-//            picker.delegate =  self
-//            self.present(picker, animated: true, completion: nil)
+            
+            //            picker.sourceType = .camera
+            //            picker.delegate =  self
+            //            self.present(picker, animated: true, completion: nil)
             
             highLightView.isHidden = true
             home_ScoreView.isHidden = true
@@ -1084,7 +1088,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             overlayScoreView.isHidden = true
             overlayPeriodView.isHidden = true
             overlayTimerView.isHidden = true
-
+            
             
             overlayNameScoreView.isHidden = true
             overlayHomeNameBtn.isHidden = true
@@ -1097,7 +1101,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.view.drawHierarchy(in: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), afterScreenUpdates: true)
             if let image = UIGraphicsGetImageFromCurrentImageContext() {
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-            
+                
             }
             UIGraphicsEndImageContext();
             
@@ -1110,7 +1114,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 "teamname" : "",
                 "tagsArray": self.selectedtagsArray,
                 "clipDate": Date.init(),
-                "clipImage": photoTagImage
+                "clipImage": photoTagImage,
+                "fbLive": fbAvailable
             ]
             highLightView.isHidden = false
             home_ScoreView.isHidden = false
@@ -1125,7 +1130,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             overlayScoreView.isHidden = false
             overlayPeriodView.isHidden = false
             overlayTimerView.isHidden = false
-
+            
             
             overlayNameScoreView.isHidden = false
             overlayHomeNameBtn.isHidden = false
@@ -1133,14 +1138,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             overlayScoreBtn.isHidden = false
             overlayPeriodBtn.isHidden = false
             overlayTimerBtn.isHidden = false
-       
+            
             
             self.matchEventvideoClipsArray.add(dict)
             
-        }
-        
-        else
-        {
             self.OpenHightLightView(selectedIndex: sender.tag)
         }
         
@@ -1902,6 +1903,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         recEventObj.recordingDate = Date.init()
         recEventObj.videoPreset = (self.videoSettingDict["Quality"] as! String)
         
+        recEventObj.fbLive = self.recordEventInfo.fbLive
+        
         for i in 0..<self.videoClipsArray.count
         {
             let recVideoClips: RecVideoClips = (NSEntityDescription.insertNewObject(forEntityName: "RecVideoClips", into: CoreDataHelperInstance.sharedInstance.manageObjectContext) as? RecVideoClips)!
@@ -1916,6 +1919,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             recVideoClips.clipSecond = dict["clipcapturesecond"] as! Int64
             recVideoClips.clipTagSecond = dict["cliptagsecond"] as! Int64
             recVideoClips.videoFolderID = self.recordEventInfo.videoFolderName
+            recVideoClips.fbLive = (dict["fbLive"] as? Bool)!
+            
             
             if self.selectedtagsArray.count > 0
             {
@@ -2050,6 +2055,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     
     @IBAction func btnTagsClicked(_ sender: Any) {
+        
         let button = sender as! UIButton
         
         if button.backgroundColor == COLOR_APP_THEME() {
@@ -2059,6 +2065,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             setCornerRadiusAndShadowOnButton(button: button, backColor: COLOR_APP_THEME())
             button.setTitleColor(UIColor.white, for: .normal)
         }
+        
     }
     
     @IBAction func btnSaveRecordingClicked(_ sender: Any) {
@@ -2131,7 +2138,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             "clipname" : clipName,
             "teamname" : teamName,
             "tagsArray": self.selectedtagsArray,
-            "clipDate": Date.init()
+            "clipDate": Date.init(),
+            "fbLive": fbAvailable
         ]
         
         self.videoClipsArray.add(dict)
