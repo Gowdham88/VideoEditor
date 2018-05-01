@@ -15,5 +15,7 @@ target 'VideoEditor' do
     pod 'MBProgressHUD', '~> 1.0.0'
     pod 'GPUImage'
     pod 'MediaWatermark'
+    pod 'FBSDKShareKit'
+    pod 'FBSDKLoginKit'
     
 end
