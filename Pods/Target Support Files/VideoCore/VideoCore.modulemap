@@ -1,4 +1,4 @@
-framework module videocore {
+framework module VideoCore {
   umbrella header "VideoCore-umbrella.h"
 
   export *

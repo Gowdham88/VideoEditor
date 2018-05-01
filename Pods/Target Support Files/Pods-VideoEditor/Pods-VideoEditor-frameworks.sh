@@ -115,7 +115,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UriParser-cpp/UriParser.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/VideoCore/videocore.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/VideoCore/VideoCore.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
@@ -131,7 +131,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UriParser-cpp/UriParser.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/VideoCore/videocore.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/VideoCore/VideoCore.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

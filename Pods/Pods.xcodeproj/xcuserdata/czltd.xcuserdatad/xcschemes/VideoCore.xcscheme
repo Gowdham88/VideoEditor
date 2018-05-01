@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0D9DE9FF4D144AE694FE5B92F9316BCD"
-               BuildableName = "videocore.framework"
+               BuildableName = "VideoCore.framework"
                BlueprintName = "VideoCore"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0D9DE9FF4D144AE694FE5B92F9316BCD"
-            BuildableName = "videocore.framework"
+            BuildableName = "VideoCore.framework"
             BlueprintName = "VideoCore"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
