@@ -655,6 +655,7 @@
 		B39DB2A139B65BED40B87AA1D7DEDC98 /* GPUImageNonMaximumSuppressionFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FB54D5D40A136304BD0318311887A3AE /* GPUImageNonMaximumSuppressionFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B4A58B2ECFE7BDD6EE1E8B1C66EA92EE /* FBSDKButton+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D9D6A1F928F44AE0FCDF109FCAB5F87 /* FBSDKButton+Subclass.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B4E102960D0DEAEB181805DB90AA0A63 /* GPUImageFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 371FD57318DAA823E9107DB6B8F6BA7A /* GPUImageFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B4FD86E02098C543001B389E /* VCSimpleSession.h in Headers */ = {isa = PBXBuildFile; fileRef = B4FD86DF2098C543001B389E /* VCSimpleSession.h */; };
 		B5353E1A8BEC4C9B0D0359E0AA9934CA /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD2259FAE20C377F2F66AAC1899E3ED /* SwipeAction.swift */; };
 		B58E74B42CD94AB62A0E9313A0DFD63C /* GPUImageAverageLuminanceThresholdFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C99658388182F2A20E9C776DCD183DCC /* GPUImageAverageLuminanceThresholdFilter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		B5A239E340D70F27CA47EE93F666D492 /* BFCancellationTokenSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3C014910D67F2B2D00611139938B3 /* BFCancellationTokenSource.m */; };
@@ -1888,6 +1889,7 @@
 		B43EDB7B71B08DFDEF8F30ACC3FA7073 /* FBSDKSharePhoto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKSharePhoto.h; path = FBSDKShareKit/FBSDKShareKit/FBSDKSharePhoto.h; sourceTree = "<group>"; };
 		B4B5CFFA749E362A064909E92B5A51E0 /* intrinsic_exponential.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; name = intrinsic_exponential.hpp; path = glm/core/intrinsic_exponential.hpp; sourceTree = "<group>"; };
 		B4C451944737A5DC1B13B56D337B185B /* GPUImageContrastFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageContrastFilter.h; path = framework/Source/GPUImageContrastFilter.h; sourceTree = "<group>"; };
+		B4FD86DF2098C543001B389E /* VCSimpleSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCSimpleSession.h; sourceTree = "<group>"; };
 		B51C3EAFF98B292941AC7481D0F2661D /* FBSDKGameRequestDialog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKGameRequestDialog.h; path = FBSDKShareKit/FBSDKShareKit/FBSDKGameRequestDialog.h; sourceTree = "<group>"; };
 		B55F6CC3F9F30C6A5DA778605F76430E /* GPUImageSingleComponentGaussianBlurFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageSingleComponentGaussianBlurFilter.m; path = framework/Source/GPUImageSingleComponentGaussianBlurFilter.m; sourceTree = "<group>"; };
 		B59F1012C605D6F0D83CF6AB64F7F582 /* BasicVideoFilterBGRAinYUVAout.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = BasicVideoFilterBGRAinYUVAout.cpp; path = videocore/filters/Basic/BasicVideoFilterBGRAinYUVAout.cpp; sourceTree = "<group>"; };
@@ -3388,6 +3390,7 @@
 		AAD0032BE0A0AE6C6E13C0C38F907794 /* VideoCore */ = {
 			isa = PBXGroup;
 			children = (
+				B4FD86DF2098C543001B389E /* VCSimpleSession.h */,
 				FB7E7506877E3AFA5ADD53A62422CDC1 /* Support Files */,
 				7540142D8F9CE465A914176839BF29C6 /* Swift */,
 			);
@@ -4013,6 +4016,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4FD86E02098C543001B389E /* VCSimpleSession.h in Headers */,
 				1B9EDEDC964E6B08F78920B4F4B9DB84 /* Alamofire-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
