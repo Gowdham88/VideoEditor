@@ -17,5 +17,8 @@ target 'VideoEditor' do
     pod 'MediaWatermark'
     pod 'FBSDKShareKit'
     pod 'FBSDKLoginKit'
-    
+    pod 'Bolts'
+    pod 'FBSDKCoreKit'
+    pod 'VideoCore'
+
 end
