@@ -103,19 +103,19 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         super.viewDidLoad()
         
         
-        self.liveVideo = FBSDKLiveVideo(
-            delegate: self,
-            previewSize: self.view.bounds,
-            videoSize: CGSize(width: 1280, height: 720)
-        )
-        
-        self.liveVideo.privacy = .me
-        self.liveVideo.audience = "me" // or your user-id, page-id, event-id, group-id, ...
+//        self.liveVideo = FBSDKLiveVideo(
+//            delegate: self,
+//            previewSize: self.view.bounds,
+//            videoSize: CGSize(width: 1280, height: 720)
+//        )
+//
+//        self.liveVideo.privacy = .me
+//        self.liveVideo.audience = "me" // or your user-id, page-id, event-id, group-id, ...
         
         // Comment in to show a green overlay bar (configure with your own one)
         // self.liveVideo.overlay = myOverlay
         
-        initializeUserInterface()
+       // initializeUserInterface()
         
 
         self.imgRotateScreen.isHidden = false
@@ -574,9 +574,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "You have to purchase Photo Tag product to use Photo Tag feature. You can purchase it from Home Page.", withTitle: "Alert")
             return
         }
-        
-       
-        
     }
     
     @IBAction func phototagOFF(_ sender: Any) {
@@ -589,6 +586,11 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
        
+        if fbAvailable == true {
+            
+            
+            
+        }
         if selectedCameraSource == 3
         {
             self.OpenAlertForSelectVideo(sender: sender)
@@ -1584,10 +1586,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         self.view.addSubview(self.loginButton)
         
         if FBSDKAccessToken.current() == nil {
-            self.view.insertSubview(self.blurOverlay, at: 1)
+            
+//            self.view.insertSubview(self.blurOverlay, at: 1)
+            
         } else {
             
-            self.recordButton.isHidden = false
+//            self.recordButton.isHidden = false
         }
     }
     
@@ -1596,7 +1600,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         self.loader.startAnimating()
 //        self.recordButton.addSubview(self.loader)
-        self.recordButton.isEnabled = false
+//        self.recordButton.isEnabled = false
     }
     
     func stopStreaming() {
@@ -1716,7 +1720,7 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
         self.loader.stopAnimating()
         self.loader.removeFromSuperview()
-        self.recordButton.isEnabled = true
+//        self.recordButton.isEnabled = true
         
 //        self.recordButton.imageView?.image = UIImage(named: "stop-button")
     }
@@ -1737,7 +1741,7 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
 extension LiveCameraVC : FBSDKLoginButtonDelegate {
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        self.recordButton.isHidden = true
+//        self.recordButton.isHidden = true
         self.view.insertSubview(self.blurOverlay, at: 1)
     }
     
@@ -1747,7 +1751,7 @@ extension LiveCameraVC : FBSDKLoginButtonDelegate {
             return
         }
         
-        self.recordButton.isHidden = false
+//        self.recordButton.isHidden = false
         self.blurOverlay.removeFromSuperview()
     }
 }

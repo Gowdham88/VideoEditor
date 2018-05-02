@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/LiveCameraVC.swift"
-            timestampString = "546425947.232599"
+            timestampString = "546967936.5528359"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1192"
-            endingLineNumber = "1192"
-            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
+            startingLineNumber = "1189"
+            endingLineNumber = "1189"
+            landmarkName = "CheckForCameraSupportsWith(presetValue:cameraPosition:FPSValue:forselection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
