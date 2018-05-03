@@ -8,6 +8,8 @@ import AVFoundation
 import MobileCoreServices
 import MBProgressHUD
 import Alamofire
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 
 class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate, URLSessionDownloadDelegate
@@ -33,6 +35,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     var loader: UIActivityIndicatorView!
     var loginButton: FBSDKLoginButton!
     var liveVideo: FBSDKLiveVideo!
+    
     
     
     var videoSettingDict: Dictionary<String, Any> = Dictionary.init()
@@ -102,12 +105,23 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       
+        self.liveVideo = FBSDKLiveVideo(
+            delegate: self,
+            previewSize: self.view.bounds,
+            videoSize: CGSize(width: 1280, height: 720)
+        )
         
-//        self.liveVideo = FBSDKLiveVideo(
-//            delegate: self,
-//            previewSize: self.view.bounds,
-//            videoSize: CGSize(width: 1280, height: 720)
-//        )
+        let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
+//        myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+        
+        self.liveVideo.privacy = .me
+        self.liveVideo.audience = "me"
+        
+        self.liveVideo.overlay = myOverlay
+
+        
+//        myOverlay.addSubview(liveVideo.preview)
 //
 //        self.liveVideo.privacy = .me
 //        self.liveVideo.audience = "me" // or your user-id, page-id, event-id, group-id, ...
@@ -115,9 +129,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         // Comment in to show a green overlay bar (configure with your own one)
         // self.liveVideo.overlay = myOverlay
         
-       // initializeUserInterface()
-        
-
+        initializeUserInterface()
         self.imgRotateScreen.isHidden = false
         
         APP_DELEGATE.myOrientation = .all
@@ -585,26 +597,31 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
+        if !self.liveVideo.isStreaming {
+            startStreaming()
+        } else {
+            stopStreaming()
+        }
        
-        if fbAvailable == true {
-            
-            
-            
-        }
-        if selectedCameraSource == 3
-        {
-            self.OpenAlertForSelectVideo(sender: sender)
-        }
-        else if selectedCameraSource == 2
-        {
-//            self.OpenAlertToEnterURL()
-            
-            self.OpenURLTypeOptionSheet()
-        }
-        else
-        {
-            self.OpenRecordingView()
-        }
+//        if fbAvailable == true {
+//
+//
+//
+//        }
+//        if selectedCameraSource == 3
+//        {
+//            self.OpenAlertForSelectVideo(sender: sender)
+//        }
+//        else if selectedCameraSource == 2
+//        {
+////            self.OpenAlertToEnterURL()
+//
+//            self.OpenURLTypeOptionSheet()
+//        }
+//        else
+//        {
+//            self.OpenRecordingView()
+//        }
         
     }
     func OpenRecordingView()
@@ -1462,6 +1479,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             }
         })
     }
+    
+    
     func GetURLForFacebook(videoURL: String)
     {
         
@@ -1573,11 +1592,10 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         self.present(actionSheet, animated: true, completion: nil)
     }
     
+    
+    
     func initializeUserInterface() {
-       
-        
-    self.view.insertSubview(self.liveVideo.preview, at: 0)
-        
+        self.view.insertSubview(self.liveVideo.preview, at: 0)
         self.loginButton = FBSDKLoginButton()
         self.loginButton.publishPermissions = ["publish_actions"]
         self.loginButton.loginBehavior = .native
@@ -1586,21 +1604,21 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         self.view.addSubview(self.loginButton)
         
         if FBSDKAccessToken.current() == nil {
-            
-//            self.view.insertSubview(self.blurOverlay, at: 1)
+//      self.view.insertSubview(self.blurOverlay, at: 1)
             
         } else {
             
-//            self.recordButton.isHidden = false
+            self.btnStartRecoding.isHidden = false
         }
     }
+    
     
     func startStreaming() {
         self.liveVideo.start()
         
         self.loader.startAnimating()
-//        self.recordButton.addSubview(self.loader)
-//        self.recordButton.isEnabled = false
+        self.btnStartRecoding.addSubview(self.loader)
+        self.btnStartRecoding.isEnabled = false
     }
     
     func stopStreaming() {
@@ -1609,18 +1627,17 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
 }
 
-extension LiveCameraVC
-{
-    
+extension LiveCameraVC {
+
     func activate() -> URLSession {
 //        let config =  URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
-        
+
 //        let config =  URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
         let config =   URLSessionConfiguration.default
         // Warning: If an URLSession still exists from a previous download, it doesn't create a new URLSession object but returns the existing one with the old delegate object attached!
         return URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
     }
-    
+
     private func calculateProgress(session : URLSession, completionHandler : @escaping (Float) -> ()) {
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
             let progress = downloads.map({ (task) -> Float in
@@ -1633,9 +1650,9 @@ extension LiveCameraVC
             completionHandler(progress.reduce(0.0, +))
         }
     }
-    
+
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        
+
         if totalBytesExpectedToWrite > 0 {
             if let onProgress = onProgress {
                 calculateProgress(session: session, completionHandler: onProgress)
@@ -1645,15 +1662,15 @@ extension LiveCameraVC
                 {
                 self.progressHUD.label.text = "Downloading (\(Int(progress * 100))%)..."
             }
-            
+
 //            debugPrint("Progress \(downloadTask) \(progress)")
-            
+
         }
     }
-    
+
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 //        debugPrint("Download finished: \(location)")
-        
+
         var tempFolderPath: String = APP_DELEGATE.FetchTempVideoFolderPath()
         tempFolderPath = tempFolderPath + "/downloadVideo.mp4"
         if FileManager.default.fileExists(atPath: tempFolderPath as String)
@@ -1666,7 +1683,7 @@ extension LiveCameraVC
             {
                 return
             }
-            
+
         }
 //        let pathextension = location.pathExtension
 //
@@ -1674,33 +1691,33 @@ extension LiveCameraVC
 //            kUTTagClassFilenameExtension,
 //            pathextension as CFString,
 //        nil)
-        
+
 //        if UTTypeConformsTo((uti?.takeRetainedValue())!, kUTTypeMovie) {
 //            print("This is not movie file")
-//            
-//            
+//
+//
 //        }
 //        else
 //        {
 //            DispatchQueue.main.async {
-//                
+//
 //                self.HideProgress()
 //                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Downloaded file is not video file, please check video URL entered by you.", withTitle: "Alert")
 //            }
 //            return
 //        }
-        
+
         try? FileManager.default.moveItem(atPath: location.path, toPath: tempFolderPath)
 //        try? FileManager.default.removeItem(at: location)
-        
+
         self.selectedVideoURL = URL.init(fileURLWithPath: tempFolderPath)
         DispatchQueue.main.async {
             self.HideProgress()
             self.OpenRecordingView()
         }
-        
+
     }
-    
+
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
 //        debugPrint("Task completed: \(task), error: \(error)")
         if error != nil
@@ -1709,7 +1726,7 @@ extension LiveCameraVC
                 self.HideProgress()
                 APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
             }
-            
+
 
         }
     }
@@ -1720,7 +1737,7 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
         self.loader.stopAnimating()
         self.loader.removeFromSuperview()
-//        self.recordButton.isEnabled = true
+        self.btnStartRecoding.isEnabled = true
         
 //        self.recordButton.imageView?.image = UIImage(named: "stop-button")
     }
@@ -1730,30 +1747,35 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
-//        self.recordButton.imageView?.image = UIImage(named: "record-button")
+//        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
-//        self.recordButton.imageView?.image = UIImage(named: "record-button")
+//        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }
 }
 
 extension LiveCameraVC : FBSDKLoginButtonDelegate {
     
-    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-//        self.recordButton.isHidden = true
-        self.view.insertSubview(self.blurOverlay, at: 1)
-    }
-    
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        
         if error != nil {
             print("Error logging in: \(error.localizedDescription)")
             return
+        } else {
+            print("Not loggedIn")
         }
         
-//        self.recordButton.isHidden = false
-        self.blurOverlay.removeFromSuperview()
+        self.btnStartRecoding.isHidden = false
+//        self.blurOverlay.removeFromSuperview()
     }
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        
+        self.btnStartRecoding.isHidden = true
+        //        self.view.insertSubview(self.blurOverlay, at: 1)
+    }
+    
+
 }
 
 

@@ -9,6 +9,10 @@ import IQKeyboardManagerSwift
 import MBProgressHUD
 import CoreData
 import Alamofire
+import FBSDKCoreKit
+import FBSDKLoginKit
+import FBSDKShareKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -59,7 +63,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set("YES", forKey: Constants.kRecordingsource_PurchaseKey)
         UserDefaults.standard.synchronize()
         
+         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         return true
+    }
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

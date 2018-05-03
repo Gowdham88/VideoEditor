@@ -128,6 +128,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F028CD9209AC27E00E23353 /* VideoEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VideoEditor.entitlements; sourceTree = "<group>"; };
 		3B20146A2036839D003F93E2 /* VideoEditor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VideoEditor.xcdatamodel; sourceTree = "<group>"; };
 		3B20147420368416003F93E2 /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		3B20F0622033C41F00E1ACAA /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -610,6 +611,7 @@
 		89FFA97F2021BFCD004FFC0B /* VideoEditor */ = {
 			isa = PBXGroup;
 			children = (
+				0F028CD9209AC27E00E23353 /* VideoEditor.entitlements */,
 				B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */,
 				F83D3115207CDE53001B90E7 /* YoutubeURL */,
 				3B2493202045AF7A00746D81 /* VideoOverlay */,
@@ -714,6 +716,9 @@
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
 							};
 						};
 					};
@@ -1006,6 +1011,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = Enable;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1065,6 +1072,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1089,6 +1097,7 @@
 			baseConfigurationReference = C10F533DFC2D27392403F4A9 /* Pods-VideoEditor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = VideoEditor/VideoEditor.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XSJRRDKMW9;
@@ -1111,6 +1120,7 @@
 			baseConfigurationReference = F7517FC39C0B8FA6AE4245C1 /* Pods-VideoEditor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = VideoEditor/VideoEditor.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XSJRRDKMW9;
