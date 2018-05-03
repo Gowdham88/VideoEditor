@@ -9,6 +9,7 @@ import MobileCoreServices
 import MBProgressHUD
 import Alamofire
 
+
 class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate, URLSessionDownloadDelegate
 {
     var progressHUD: MBProgressHUD!
@@ -25,6 +26,14 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     var selectedCameraSource: Int = 1
     let picker = UIImagePickerController()
     var recordEventInfo: RecordingInfo!
+    
+    var blurOverlay: UIVisualEffectView!
+    
+    var sessionURL: NSURL!
+    var loader: UIActivityIndicatorView!
+    var loginButton: FBSDKLoginButton!
+    var liveVideo: FBSDKLiveVideo!
+    
     
     var videoSettingDict: Dictionary<String, Any> = Dictionary.init()
     
@@ -93,7 +102,21 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        
+//        self.liveVideo = FBSDKLiveVideo(
+//            delegate: self,
+//            previewSize: self.view.bounds,
+//            videoSize: CGSize(width: 1280, height: 720)
+//        )
+//
+//        self.liveVideo.privacy = .me
+//        self.liveVideo.audience = "me" // or your user-id, page-id, event-id, group-id, ...
+        
+        // Comment in to show a green overlay bar (configure with your own one)
+        // self.liveVideo.overlay = myOverlay
+        
+       // initializeUserInterface()
+        
 
         self.imgRotateScreen.isHidden = false
         
@@ -162,8 +185,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             livesettingEqaulheight.constant = 40
             self.btnLiveSettings.isHidden = false
         }
-        
-        
         
         if self.recordEventInfo.isDayEvent
         {
@@ -553,9 +574,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "You have to purchase Photo Tag product to use Photo Tag feature. You can purchase it from Home Page.", withTitle: "Alert")
             return
         }
-        
-       
-        
     }
     
     @IBAction func phototagOFF(_ sender: Any) {
@@ -568,6 +586,11 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
        
+        if fbAvailable == true {
+            
+            
+            
+        }
         if selectedCameraSource == 3
         {
             self.OpenAlertForSelectVideo(sender: sender)
@@ -1549,6 +1572,41 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
 
         self.present(actionSheet, animated: true, completion: nil)
     }
+    
+    func initializeUserInterface() {
+       
+        
+    self.view.insertSubview(self.liveVideo.preview, at: 0)
+        
+        self.loginButton = FBSDKLoginButton()
+        self.loginButton.publishPermissions = ["publish_actions"]
+        self.loginButton.loginBehavior = .native
+        self.loginButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: 60)
+        self.loginButton.delegate = self
+        self.view.addSubview(self.loginButton)
+        
+        if FBSDKAccessToken.current() == nil {
+            
+//            self.view.insertSubview(self.blurOverlay, at: 1)
+            
+        } else {
+            
+//            self.recordButton.isHidden = false
+        }
+    }
+    
+    func startStreaming() {
+        self.liveVideo.start()
+        
+        self.loader.startAnimating()
+//        self.recordButton.addSubview(self.loader)
+//        self.recordButton.isEnabled = false
+    }
+    
+    func stopStreaming() {
+        self.liveVideo.stop()
+    }
+    
 }
 
 extension LiveCameraVC
@@ -1654,6 +1712,47 @@ extension LiveCameraVC
             
 
         }
+    }
+}
+
+extension LiveCameraVC : FBSDKLiveVideoDelegate {
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
+        self.loader.stopAnimating()
+        self.loader.removeFromSuperview()
+//        self.recordButton.isEnabled = true
+        
+//        self.recordButton.imageView?.image = UIImage(named: "stop-button")
+    }
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {
+        print("Session state changed to: \(sessionState)")
+    }
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
+//        self.recordButton.imageView?.image = UIImage(named: "record-button")
+    }
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
+//        self.recordButton.imageView?.image = UIImage(named: "record-button")
+    }
+}
+
+extension LiveCameraVC : FBSDKLoginButtonDelegate {
+    
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+//        self.recordButton.isHidden = true
+        self.view.insertSubview(self.blurOverlay, at: 1)
+    }
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        if error != nil {
+            print("Error logging in: \(error.localizedDescription)")
+            return
+        }
+        
+//        self.recordButton.isHidden = false
+        self.blurOverlay.removeFromSuperview()
     }
 }
 

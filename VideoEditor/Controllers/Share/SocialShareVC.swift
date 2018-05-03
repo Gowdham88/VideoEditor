@@ -136,7 +136,7 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
             
             if value == "YES"
             {
-                isProductPurchased = false
+                isProductPurchased = true
             }
         }
 //        isProductPurchased = true

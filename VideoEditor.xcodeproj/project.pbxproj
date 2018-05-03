@@ -120,6 +120,7 @@
 		89FFA9982021D7D0004FFC0B /* AudioAdjustCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */; };
 		89FFA9992021D7D0004FFC0B /* AudioAdjustCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */; };
 		995A99A0AA3F169715FC210B /* Pods_VideoEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFE8E7AA3F199F15C2B6E761 /* Pods_VideoEditor.framework */; };
+		B4FD86DE2098C1B5001B389E /* FBSDKLiveVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */; };
 		F83D3118207CDE5F001B90E7 /* HCYoutubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */; };
 		F841924A205AB0DA006E3727 /* DrageImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8419249205AB0DA006E3727 /* DrageImageView.swift */; };
 		F85384B5207F3FDD00B08202 /* VerticalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85384B4207F3FDD00B08202 /* VerticalSlider.swift */; };
@@ -249,6 +250,7 @@
 		89FFA98C2021BFCE004FFC0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAdjustCell.swift; sourceTree = "<group>"; };
 		89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioAdjustCell.xib; sourceTree = "<group>"; };
+		B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBSDKLiveVideo.swift; sourceTree = "<group>"; };
 		C10F533DFC2D27392403F4A9 /* Pods-VideoEditor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor.debug.xcconfig"; sourceTree = "<group>"; };
 		F7517FC39C0B8FA6AE4245C1 /* Pods-VideoEditor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditor.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor.release.xcconfig"; sourceTree = "<group>"; };
 		F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCYoutubeParser.m; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 		89FFA97F2021BFCD004FFC0B /* VideoEditor */ = {
 			isa = PBXGroup;
 			children = (
+				B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */,
 				F83D3115207CDE53001B90E7 /* YoutubeURL */,
 				3B2493202045AF7A00746D81 /* VideoOverlay */,
 				3B26ECB220373C94007145BC /* DropDown */,
@@ -684,7 +687,7 @@
 				89FFA97A2021BFCD004FFC0B /* Frameworks */,
 				89FFA97B2021BFCD004FFC0B /* Resources */,
 				415084146BEBD56AF080EFA6 /* [CP] Embed Pods Frameworks */,
-				551080C2D3CE5F289A677B9A /* [CP] Copy Pods Resources */,
+				CD29EF404E732BE9837FE5B9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -798,6 +801,10 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MARKRangeSlider/MARKRangeSlider.framework",
@@ -805,10 +812,16 @@
 				"${BUILT_PRODUCTS_DIR}/MediaWatermark/MediaWatermark.framework",
 				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+				"${BUILT_PRODUCTS_DIR}/UriParser-cpp/UriParser.framework",
+				"${BUILT_PRODUCTS_DIR}/VideoCore/VideoCore.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MARKRangeSlider.framework",
@@ -816,13 +829,15 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediaWatermark.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UriParser.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoCore.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		551080C2D3CE5F289A677B9A /* [CP] Copy Pods Resources */ = {
+		CD29EF404E732BE9837FE5B9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -906,6 +921,7 @@
 				3B20F0652033C59900E1ACAA /* Reachability.swift in Sources */,
 				3B26ECCA203765C6007145BC /* UIColor.swift in Sources */,
 				89E00D7D2021F1CC0047FFE5 /* ColorPalette.swift in Sources */,
+				B4FD86DE2098C1B5001B389E /* FBSDKLiveVideo.swift in Sources */,
 				89FFA9982021D7D0004FFC0B /* AudioAdjustCell.swift in Sources */,
 				89F7DC142028146C00B9E51F /* RecordEventCell.swift in Sources */,
 				3BB83C2B20384FB800C433D5 /* WebviewVC.swift in Sources */,

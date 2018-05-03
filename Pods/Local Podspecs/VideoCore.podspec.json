@@ -1,0 +1,109 @@
+{
+  "name": "VideoCore",
+  "module_name": "VideoCore",
+  "version": "0.3.2",
+  "summary": "An audio and video manipulation and streaming pipeline with support for RTMP.",
+  "description": "This is a work-in-progress library with the\nintention of being an audio and video manipulation\nand streaming pipeline for iOS.",
+  "homepage": "https://github.com/jgh-/VideoCore",
+  "license": "MIT",
+  "authors": {
+    "James Hurley": "jamesghurley@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/jgh-/VideoCore.git",
+    "tag": "0.3.2",
+    "submodules": true
+  },
+  "requires_arc": false,
+  "header_dir": "videocore",
+  "header_mappings_dir": "videocore",
+  "source_files": [
+    "mixers/**/*.h*",
+    "mixers/**/*.cpp",
+    "mixers/**/*.m*",
+    "rtmp/**/*.h*",
+    "rtmp/**/*.cpp",
+    "rtmp/**/*.m*",
+    "sources/**/*.h*",
+    "sources/**/*.cpp",
+    "sources/**/*.m*",
+    "stream/**/*.h*",
+    "stream/**/*.cpp",
+    "stream/**/*.m*",
+    "system/**/*.h*",
+    "system/**/*.cpp",
+    "system/**/*.m*",
+    "transforms/**/*.h*",
+    "transforms/**/*.cpp",
+    "transforms/**/*.m*",
+    "api/**/*.h*",
+    "api/**/*.m*",
+    "filters/**/*.cpp",
+    "filters/**/*.h*"
+  ],
+  "frameworks": [
+    "VideoToolbox",
+    "AudioToolbox",
+    "AVFoundation",
+    "CFNetwork",
+    "CoreMedia",
+    "CoreVideo",
+    "OpenGLES",
+    "Foundation",
+    "CoreGraphics"
+  ],
+  "libraries": "c++",
+  "dependencies": {
+    "boost": [
+      "~> 1.51.0"
+    ],
+    "glm": [
+
+    ],
+    "UriParser-cpp": [
+      "~> 0.1.3"
+    ]
+  },
+  "xcconfig": {
+    "HEADER_SEARCH_PATHS": "${PODS_ROOT}/boost"
+  },
+  "platforms": {
+    "ios": "5.0"
+  },
+  "subspecs": [
+    {
+      "name": "Swift",
+      "public_header_files": "videocore/api/**/*.h",
+      "source_files": [
+        "videocore/mixers/**/*.h*",
+        "videocore/mixers/**/*.cpp",
+        "videocore/mixers/**/*.m*",
+        "videocore/rtmp/**/*.h*",
+        "videocore/rtmp/**/*.cpp",
+        "videocore/rtmp/**/*.m*",
+        "videocore/sources/**/*.h*",
+        "videocore/sources/**/*.cpp",
+        "videocore/sources/**/*.m*",
+        "videocore/stream/**/*.h*",
+        "videocore/stream/**/*.cpp",
+        "videocore/stream/**/*.m*",
+        "videocore/system/**/*.h*",
+        "videocore/system/**/*.cpp",
+        "videocore/system/**/*.m*",
+        "videocore/transforms/**/*.h*",
+        "videocore/transforms/**/*.cpp",
+        "videocore/transforms/**/*.m*",
+        "videocore/api/**/*.h*",
+        "videocore/api/**/*.m*",
+        "videocore/filters/**/*.cpp",
+        "videocore/filters/**/*.h*"
+      ],
+      "xcconfig": {
+        "HEADER_SEARCH_PATHS": "${PODS_ROOT}/VideoCore"
+      },
+      "platforms": {
+        "ios": "8.0"
+      }
+    }
+  ]
+}

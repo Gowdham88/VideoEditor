@@ -15,5 +15,10 @@ target 'VideoEditor' do
     pod 'MBProgressHUD', '~> 1.0.0'
     pod 'GPUImage'
     pod 'MediaWatermark'
-    
+    pod 'FBSDKShareKit'
+    pod 'FBSDKLoginKit'
+    pod 'Bolts'
+    pod 'FBSDKCoreKit'
+    pod 'VideoCore/Swift', :git => 'https://github.com/maxcampolo/VideoCore.git'
+
 end
