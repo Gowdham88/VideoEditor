@@ -410,7 +410,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
 //        overlayImageView.AddGestureForOverlayImage()
 //        self.configureVideoSession()
         self.AddGestureForOverlayImage()
+        
+        print("0: TimerBtn set Title")
         self.overlayTimerBtn.setTitle("00:00", for: .normal)
+        
         self.FetchTagInfoFromDB()
         
 //        let outputFileName = APP_DELEGATE.FetchTempVideoFolderPath()
@@ -677,6 +680,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         avPlayer.seek(to: CMTimeMakeWithSeconds(elapsedTime, preferedScale))
 
     }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
@@ -2869,6 +2874,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.GetScoreBoardImage()
         self.lblTime.text = ""
         
+        print("1.setTitle = ")
+        
         self.overlayTimerBtn.setTitle("", for: .normal)
         
         var lblTimeFrame = imageAndScoreBoardView.convert(self.overlayTimerBtn.frame, from: self.overlayTimerBtn.superview)
@@ -2886,11 +2893,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             NSAttributedStringKey.backgroundColor : UIColor.clear,
             NSAttributedStringKey.paragraphStyle : textStyle
             ] as [NSAttributedStringKey : Any]
+        
+        print("2: before 00:00 and next to attrs")
+        
         self.overlayTimerBtn.setTitle("00:00", for: .normal)
+        
+        print("3: next to 00:00")
         
         frameDrawer.contextUpdateBlock = { context, size, time in
             if self.trimStart == nil
             {
+                print("4: inside framedrawer")
                 self.trimStart = time
             }
 //            self.currentTime = time
@@ -2898,16 +2911,28 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             if !secondsf.isNaN
             {
+                print("5: !secondsf.isNaN")
+                
                 secondsf = self.lastRecordedSecond + secondsf
                 self.totalRecordedSecond = secondsf
             }
+            
+            print("6: next to !secondsf.isNaN")
+            
             if !self.recordEventInfo.isDayEvent
             {
+                
+                print("7: inside recordEventInfo.isDayEvent")
+                
                 if !secondsf.isNaN
                 {
+                    
+                    print("8: recordEventInfo.isDayEvent -> !secondsf.isNaN")
+                    
                     let seconds: Int = Int(roundf(Float(secondsf)))
                     let watch = StopWatch(totalSeconds: seconds)
                     self.lblTimeString = String(format: "%02i:%02i", watch.minutes, watch.seconds)
+                    
                 }
                 
                 if  self.overlayScoreBoardImage != nil
@@ -2925,8 +2950,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 }
                 
                 if  self.lblTimeString != nil {
+                    print("8: lblTimestring!=nil")
                 if  self.isTimeLabelHide == false
                 {
+                    
+                    print("9: isTimeLabelhide==false")
                     context?.translateBy(x: 0, y: (self.videoSize?.height)!);
                     context?.scaleBy(x: widthRatio, y: -heightRatio)
                     //                    context?.clear(lblTimeFrame)
@@ -2948,7 +2976,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     //                    context?.showTextAtPoint(x: 0, y: 0, string: self.lblTimeString!, length: (self.lblTimeString?.count)!)
                     
                     DispatchQueue.main.async {
-                        self.overlayTimerBtn.setTitle(self.lblTimeString!, for: .normal)
+                        print("10: Dispatch qeue")
+ self.overlayTimerBtn.setTitle(self.lblTimeString!, for: .normal)
                     }
                     
                     }

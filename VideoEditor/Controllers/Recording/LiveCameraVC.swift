@@ -105,22 +105,22 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
-        self.liveVideo = FBSDKLiveVideo(
-            delegate: self,
-            previewSize: self.view.bounds,
-            videoSize: CGSize(width: 1280, height: 720)
-        )
-        
-        let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
-//        myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-        
-        self.liveVideo.privacy = .me
-        self.liveVideo.audience = "me"
-        
-        self.liveVideo.overlay = myOverlay
-
-        
+//
+//        self.liveVideo = FBSDKLiveVideo(
+//            delegate: self,
+//            previewSize: self.view.bounds,
+//            videoSize: CGSize(width: 1280, height: 720)
+//        )
+//
+//        let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
+////        myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+//
+//        self.liveVideo.privacy = .me
+//        self.liveVideo.audience = "me"
+//
+//        self.liveVideo.overlay = myOverlay
+//
+//
 //        myOverlay.addSubview(liveVideo.preview)
 //
 //        self.liveVideo.privacy = .me
@@ -129,7 +129,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         // Comment in to show a green overlay bar (configure with your own one)
         // self.liveVideo.overlay = myOverlay
         
-        initializeUserInterface()
+//        initializeUserInterface()
         self.imgRotateScreen.isHidden = false
         
         APP_DELEGATE.myOrientation = .all
@@ -597,31 +597,31 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
-        if !self.liveVideo.isStreaming {
-            startStreaming()
-        } else {
-            stopStreaming()
-        }
+//        if !self.liveVideo.isStreaming {
+//            startStreaming()
+//        } else {
+//            stopStreaming()
+//        }
        
 //        if fbAvailable == true {
 //
 //
 //
 //        }
-//        if selectedCameraSource == 3
-//        {
-//            self.OpenAlertForSelectVideo(sender: sender)
-//        }
-//        else if selectedCameraSource == 2
-//        {
-////            self.OpenAlertToEnterURL()
-//
-//            self.OpenURLTypeOptionSheet()
-//        }
-//        else
-//        {
-//            self.OpenRecordingView()
-//        }
+        if selectedCameraSource == 3
+        {
+            self.OpenAlertForSelectVideo(sender: sender)
+        }
+        else if selectedCameraSource == 2
+        {
+//            self.OpenAlertToEnterURL()
+
+            self.OpenURLTypeOptionSheet()
+        }
+        else
+        {
+            self.OpenRecordingView()
+        }
         
     }
     func OpenRecordingView()
