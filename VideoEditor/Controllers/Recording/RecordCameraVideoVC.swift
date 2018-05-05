@@ -216,17 +216,29 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     //MARK:- View cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("View did Load Record Camera Video VC")
+
         self.isVideoPlay = true
+        
+        print("1.isVideoPlay: \(isVideoPlay)")
+        
         sliderVideo.tag = 0
+        
+        print("selectedCameraSource: \(selectedCameraSource)")
         
         if selectedCameraSource == 2 || selectedCameraSource == 3
         {
             self.isVideoPlay = true
+            
         }
         else
         {
             self.isVideoPlay = false
         }
+        
+        print("2.isVideoPlay: \(isVideoPlay)")
+
         self.isRecordingInProgress = true
         self.recordedVideoIndex = 0
         self.topImageView.image = nil
@@ -359,20 +371,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         else
         {
             self.playerVideoView.isHidden = true
-            if !IsScoreboardPurchase()
-            {
-                self.viewVideoRecordingOptionContainer.isHidden = false
-                self.viewScorecardContainer.isHidden = true
-            }
-            else
-            {
-                self.viewVideoRecordingOptionContainer.isHidden = true
-                self.viewScorecardContainer.isHidden = false
-            }
             self.isScorebaordOn = true
             self.isTimerOn = true
             self.isPeriodOn = true
-//            self.highLightView.isHidden = true
+            //            self.highLightView.isHidden = true
             self.lblHomeTeam.text = self.recordEventInfo.homeTeamName
             self.lblAwayTeam.text = self.recordEventInfo.awayTeamName
             
@@ -398,6 +400,18 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.home_ScoreView.isHidden = false
             self.away_ScoreView.isHidden = false
             self.txtPeriod.text = "1T"
+            
+            if !IsScoreboardPurchase()
+            {
+                self.viewVideoRecordingOptionContainer.isHidden = false
+                self.viewScorecardContainer.isHidden = true
+            }
+            else
+            {
+                self.viewVideoRecordingOptionContainer.isHidden = true
+                self.viewScorecardContainer.isHidden = false
+            }
+            
 
         }
         self.recordEventInfo.homeTeamScore = 0
@@ -454,6 +468,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.InitCameraCapture()
             self.StartCameraCapture()
         }
+     recording()
         
     }
     
@@ -474,6 +489,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     @IBAction func BtnPlayVideoStart(_ sender: UIButton)
     {
+        
         let playerIsPlaying = avPlayer.rate > 0
         if playerIsPlaying
         {
@@ -685,6 +701,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
+        
         self.imageUploadButton.isHidden = false
         
         self.MakeProgressiveZoomOnOff()
@@ -1797,38 +1814,53 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     @IBAction func btnBackToRecordingClicked(_ sender: Any) {
 
+        recording()
+        
+    }
+    
+    func recording() {
+        
+        print("btnBackToRecordingClicked")
         
         viewActionButtonsContainer.isHidden = true
         viewZoomOptionsContainer.isHidden = true
         viewBlackPlaceHolder.isHidden = true
+        
+        print("1.isVideoPlay: \(isVideoPlay)")
+        
         if isVideoPlay
         {
             viewProgressiveZoomContainer.isHidden = true
         }
         else
         {
+            
             viewProgressiveZoomContainer.isHidden = false
         }
         btnPause.isHidden = false
         
-//        if self.recordEventInfo.isDayEvent
-//        {
-//            viewAwayContainer.isHidden = true
-//        }
-//        else
-//        {
-//            viewAwayContainer.isHidden = false
-//        }
+        //        if self.recordEventInfo.isDayEvent
+        //        {
+        //            viewAwayContainer.isHidden = true
+        //        }
+        //        else
+        //        {
+        //            viewAwayContainer.isHidden = false
+        //        }
         self.highLightView.isHidden = false
         self.MakeProgressiveZoomOnOff()
         if self.isVideoPlay
         {
+            print("2.StartPlaying Recording")
             self.StartPlayingRecording()
         }
         else
         {
+            print("3.Start Camera capture")
+            
             self.StartCameraCapture()
         }
+        
         if !self.recordEventInfo.isDayEvent
         {
             self.home_ScoreView.isUserInteractionEnabled = true
@@ -1836,6 +1868,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.away_ScoreView.isUserInteractionEnabled = true
         }
         self.isRecordingInProgress = true
+        
+        
     }
     
     @IBAction func btnFinishRecordingClicked(_ sender: Any) {
@@ -2677,7 +2711,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func runTimer()
     {
-        return
+        print("runtTimer")
+//        return
+        
         if self.recordEventInfo.isDayEvent
         {
             return
@@ -2687,10 +2723,14 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             timer.invalidate()
             timer = nil
         }
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(RecordCameraVideoVC.updateTimer)), userInfo: nil, repeats: true)
+
+            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(RecordCameraVideoVC.updateTimer)), userInfo: nil, repeats: true)
+        
     }
     @objc func updateTimer()
     {
+        print("updateTimer")
+        
         if !painter.writer.isRecording
         {
             return
@@ -2707,6 +2747,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     func createCameraPreview()
     {
+        
         let screenRect: CGRect =  self.topView.bounds// self.view.bounds
         
         let screenSize: CGSize = screenRect.size
@@ -2931,8 +2972,14 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     
                     let seconds: Int = Int(roundf(Float(secondsf)))
                     let watch = StopWatch(totalSeconds: seconds)
+                    
+                    print("isTimerOn0: \(self.isTimerOn)")
+                    
+                    print("lblTimeString0 watch: \(watch.minutes, watch.seconds)")
+                    
                     self.lblTimeString = String(format: "%02i:%02i", watch.minutes, watch.seconds)
                     
+                
                 }
                 
                 if  self.overlayScoreBoardImage != nil
@@ -2950,11 +2997,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 }
                 
                 if  self.lblTimeString != nil {
-                    print("8: lblTimestring!=nil")
+                    print("9: lblTimestring!=nil")
                 if  self.isTimeLabelHide == false
                 {
                     
-                    print("9: isTimeLabelhide==false")
+                    print("10: isTimeLabelhide==false")
                     context?.translateBy(x: 0, y: (self.videoSize?.height)!);
                     context?.scaleBy(x: widthRatio, y: -heightRatio)
                     //                    context?.clear(lblTimeFrame)
@@ -2975,10 +3022,18 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     context?.translateBy(x: 0, y: -(self.videoSize?.height)!)
                     //                    context?.showTextAtPoint(x: 0, y: 0, string: self.lblTimeString!, length: (self.lblTimeString?.count)!)
                     
+                    print("lblTimeString1: \(String(describing: self.lblTimeString))")
+                    print("isTimerOn2: \(self.isTimerOn)")
+
                     DispatchQueue.main.async {
-                        print("10: Dispatch qeue")
+                        print("11: Dispatch queue")
  self.overlayTimerBtn.setTitle(self.lblTimeString!, for: .normal)
+                        print("lblTimeString2: \(String(describing: self.lblTimeString))")
                     }
+                    
+                    print("isTimerOn3: \(self.isTimerOn)")
+
+                    print("lblTimeString3: \(String(describing: self.lblTimeString))")
                     
                     }
                 }

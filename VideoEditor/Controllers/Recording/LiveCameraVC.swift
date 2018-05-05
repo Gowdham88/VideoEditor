@@ -634,6 +634,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             redirectTo.selectedVideoURL = selectedVideoURL
         }
+       
+        print("OpenRecordingView selectedVideoURL: \(selectedVideoURL)")
         self.navigationController?.pushViewController(redirectTo, animated: true)
     }
     @IBAction func btnBackToDetailsClicked(_ sender: Any) {
