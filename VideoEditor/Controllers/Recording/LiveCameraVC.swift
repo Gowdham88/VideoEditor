@@ -10,6 +10,7 @@ import MBProgressHUD
 import Alamofire
 import FBSDKCoreKit
 import FBSDKLoginKit
+import Photos
 
 
 class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate, URLSessionDownloadDelegate
@@ -102,6 +103,61 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBOutlet weak var liveSettingTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var BactBtnTopConstraint: NSLayoutConstraint!
 //    let notificationhide = Notification.Name("hideLiveBtn")
+    
+    func downloadVideoLinkAndCreateAsset(_ videoLink: String) {
+        
+        // use guard to make sure you have a valid url
+        guard let videoURL = URL(string: videoLink) else { return }
+        
+        guard let documentsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        // check if the file already exist at the destination folder if you don't want to download it twice
+        if !FileManager.default.fileExists(atPath: documentsDirectoryURL.appendingPathComponent(videoURL.lastPathComponent).path) {
+            
+            // set up your download task
+            URLSession.shared.downloadTask(with: videoURL) { (location, response, error) -> Void in
+                
+                // use guard to unwrap your optional url
+                guard let location = location else { return }
+                
+                // create a deatination url with the server response suggested file name
+                let destinationURL = documentsDirectoryURL.appendingPathComponent(response?.suggestedFilename ?? videoURL.lastPathComponent)
+                
+                print("destinationURL: \(destinationURL)")
+
+                do {
+                    
+                    try FileManager.default.moveItem(at: location, to: destinationURL)
+                    
+                    PHPhotoLibrary.requestAuthorization({ (authorizationStatus: PHAuthorizationStatus) -> Void in
+                        
+                        // check if user authorized access photos for your app
+                        if authorizationStatus == .authorized {
+                            PHPhotoLibrary.shared().performChanges({
+                                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: destinationURL)}) { completed, error in
+                                    if completed {
+                                        print("Video asset created")
+                                    } else {
+                                        print(error)
+                                    }
+                            }
+                        }
+                    })
+                    
+                } catch { print(error) }
+                
+                }.resume()
+            
+        } else {
+            print("File already exists at destination url")
+        }
+        
+    }
+    
+   
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -669,7 +725,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         self.navigationController?.pushViewController(redirectTo, animated: true)
     }
     @IBAction func btnFrontCamClicked(_ sender: Any) {
-        
         
         let fpsValue: String = self.videoSettingDict["FPS"] as! String
 
@@ -1359,11 +1414,16 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     func StartDownloadEnteredURL(videoURL: String)
     {
 
+        print("StartDownloadEnteredURL")
+        
         let task = self.activate().downloadTask(with: URL(string: videoURL)!)
+        
         task.resume()
+        
     }
     func StartProgress()
     {
+        print("Start Loading Progress")
         progressHUD = MBProgressHUD.showAdded(to: (self.view)!, animated: true)
         
         progressHUD.label.text = "Downloading (0%)..."
@@ -1373,6 +1433,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     }
     func HideProgress()
     {
+        print("End Loading Progress")
         progressHUD.hide(animated: true)
     }
     func EnableOtherSettings()
@@ -1405,13 +1466,18 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     }
     func CheckForValidationAndStartDownload(videoURL: String)
     {
+        
         if !APP_DELEGATE.CheckForInternetConnection()
         {
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: NoInternetMessage, withTitle: "Alert")
             
             return
         }
+        
         let liveURL: String = videoURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        print("CheckForValidationAndStartDownload liveURL: \(liveURL)")
+        
         if liveURL.isEmpty
         {
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Please enter video url.", withTitle: "Alert")
@@ -1422,6 +1488,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Please enter valid video URL.", withTitle: "Alert")
             return
         }
+        
         self.StartProgress()
         
         if videoURLType == "facebook"
@@ -1439,26 +1506,45 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     }
     func GetURLForYoutuber(videoURL: String)
     {
+        print("GetURLForYoutuber: \(videoURL)")
         
         HCYoutubeParser.h264videos(withYoutubeURL: URL(string: videoURL)!, complete: {(_ videoDictionary: [AnyHashable: Any]?, _ error: Error?) -> Void in
             
+            
             DispatchQueue.main.async {
+                
+                print("Dispatch Queue GetURLForYoutuber")
+
                 
                 if error == nil // Found Valid URL
                 {
+                    print("Error Nil GetURLForYoutuber")
+
+                    
                     var qualities = videoDictionary as! Dictionary<NSNumber, Any>
                     
                     var URLString: String? = nil
+                    
                     if qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.HD720.rawValue)) ] != nil
                     {
+                        
+                        print("RMYouTubeExtractorVideoQuality HD720")
+
+                        
                         URLString = qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.HD720.rawValue)) ] as? String
+                        
+                        
                     }
                     else if qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.medium360.rawValue)) ] != nil
                     {
+                        print("RMYouTubeExtractorVideoQuality medium360")
+
                         URLString = qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.medium360.rawValue)) ] as? String
                     }
                     else if qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.small240.rawValue)) ] != nil
                     {
+                        print("RMYouTubeExtractorVideoQuality small240")
+
                         URLString = qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.small240.rawValue)) ] as? String
                     }
                         //                    else if qualities["live"] != nil
@@ -1476,93 +1562,112 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                 }
                 else
                 {
+                    
+                    print("YouTubeExtractor: URL ERROR")
+                    
                     self.StartDownloadEnteredURL(videoURL: videoURL)
                 }
             }
         })
     }
     
-    
     func GetURLForFacebook(videoURL: String)
     {
+        
+        downloadVideoLinkAndCreateAsset(videoURL)
+
         
         let params: Parameters = [
             "url": videoURL
             ]
+        
+        print("params: \(params)")
+        
         let requestURL: String = "http://www.simpsip.com/main.php"
-        Alamofire.request(requestURL, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil)
-            .responseJSON { response in
-                
-                switch response.result
-                {
-                case .success(_):
-                    if response.result.value != nil
-                    {
-                        let dict = response.result.value as! NSDictionary
-                        if dict.value(forKey: "type") != nil
-                        {
-                            var finalURLStr: String = ""
-                            var isVideoAvailable: Bool = false
-                            let type: String = dict.value(forKey: "type") as! String
-                            if type == "success"
-                            {
-                                
-                                if dict.value(forKey: "hd_download_url") != nil
-                                {
-                                    isVideoAvailable = true
-                                    finalURLStr = dict.value(forKey: "hd_download_url") as! String
-                                }
-                                else if dict.value(forKey: "sd_download_url") != nil
-                                {
-                                    isVideoAvailable = true
-                                    finalURLStr = dict.value(forKey: "sd_download_url") as! String
-                                }
-                            }
-                            if isVideoAvailable && !finalURLStr.isEmpty
-                            {
-                                DispatchQueue.main.async {
-                                    self.StartDownloadEnteredURL(videoURL: finalURLStr)
-                                }
-                            }
-                            else
-                            {
-                                DispatchQueue.main.async {
-                                    APP_DELEGATE.hideHUD()
-                                    APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-                                }
-                            }
-                        }
-                        else
-                        {
-                            DispatchQueue.main.async {
-                                APP_DELEGATE.hideHUD()
-                                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        DispatchQueue.main.async {
-                            APP_DELEGATE.hideHUD()
-                            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-                        }
-                    }
-                    break
-                    
-                case .failure(_):
-                    print(response.result.error!)
-                    DispatchQueue.main.async {
-                        APP_DELEGATE.hideHUD()
-                        APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-                    }
-                    
-                    break
-                    
-                }
-                
-                
-        }
+        
+//        Alamofire.request(requestURL, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil)
+//            .responseJSON { response in
+//
+//                switch response.result
+//                {
+//                case .success(_):
+//
+//                    print("Success")
+//
+//                    if response.result.value != nil
+//                    {
+//                        let dict = response.result.value as! NSDictionary
+//                        if dict.value(forKey: "type") != nil
+//                        {
+//                            var finalURLStr: String = ""
+//                            var isVideoAvailable: Bool = false
+//                            let type: String = dict.value(forKey: "type") as! String
+//                            if type == "success"
+//                            {
+//
+//                                print("Success GetURLForFacebook:")
+//
+//                                if dict.value(forKey: "hd_download_url") != nil
+//                                {
+//                                    isVideoAvailable = true
+//                                    finalURLStr = dict.value(forKey: "hd_download_url") as! String
+//                                }
+//                                else if dict.value(forKey: "sd_download_url") != nil
+//                                {
+//                                    isVideoAvailable = true
+//                                    finalURLStr = dict.value(forKey: "sd_download_url") as! String
+//                                }
+//                            }
+//                            if isVideoAvailable && !finalURLStr.isEmpty
+//                            {
+//
+//                                print("Facebook : isVideoAvailable && !finalURLStr.isEmpty ")
+//                                DispatchQueue.main.async {
+//                                    self.StartDownloadEnteredURL(videoURL: finalURLStr)
+//                                }
+//                            }
+//                            else
+//                            {
+//                                print("Facebook : Else")
+//
+//                                DispatchQueue.main.async {
+//                                    APP_DELEGATE.hideHUD()
+//                                    APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+//                                }
+//                            }
+//                        }
+//                        else
+//                        {
+//                            DispatchQueue.main.async {
+//                                APP_DELEGATE.hideHUD()
+//                                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+//                            }
+//                        }
+//
+//                    }
+//                    else
+//                    {
+//                        DispatchQueue.main.async {
+//                            APP_DELEGATE.hideHUD()
+//                            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+//                        }
+//                    }
+//                    break
+//
+//                case .failure(_):
+//
+//                    print("Failure")
+//
+//                    print(response.result.error!)
+//                    DispatchQueue.main.async {
+//                        APP_DELEGATE.hideHUD()
+//                        APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+//                    }
+//
+//                    break
+//
+//                }
+//        }
     }
     func OpenURLTypeOptionSheet()
     {

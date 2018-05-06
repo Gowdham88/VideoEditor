@@ -431,7 +431,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RrS-6G-hEl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="730" y="93.75"/>
+            <point key="canvasLocation" x="828" y="90"/>
         </scene>
         <!--Live CameraVC-->
         <scene sceneID="DtU-qF-BR1">
@@ -1424,7 +1424,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9L-UX-FHK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2179" y="-563"/>
+            <point key="canvasLocation" x="2193" y="-647"/>
         </scene>
         <!--Record Camera VideoVC-->
         <scene sceneID="eoU-5l-ExB">
@@ -2760,7 +2760,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3Q-K7-QGZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2211" y="167"/>
+            <point key="canvasLocation" x="2193" y="89"/>
         </scene>
     </scenes>
     <resources>

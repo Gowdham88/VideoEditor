@@ -33,10 +33,14 @@ class MainTabbarVC: UITabBarController {
         let tabBarItem5 = (self.tabBar.items?[4])! as UITabBarItem
         tabBarItem5.image = UIImage(named: "thunder_gray")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         
+        print("isIpad: \(isIpad())")
+        
+        print("UIDevice.current.modelName: \(UIDevice.current.modelName)")
+        
         if ((isIpad() && UIDevice.current.modelName == "iPad Pro 9.7 Inch") ||
             (isIpad() && UIDevice.current.modelName == "iPad Pro 12.9 Inch") ||
             (isIpad() && UIDevice.current.modelName == "iPad Pro 12.9 Inch 2. Generation") ||
-            (isIpad() && UIDevice.current.modelName == "iPad Pro 10.5 Inch")) {
+            (isIpad() && UIDevice.current.modelName == "iPad Pro 10.5 Inch") || isIpad()) {
 
             titleInsets = UIOffsetMake(0, 0)
             imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -45,24 +49,54 @@ class MainTabbarVC: UITabBarController {
             tabBarItem3.imageInsets = UIEdgeInsets(top: 2, left: 0, bottom: -2, right: 0)
 //            tabBarItem3.titlePositionAdjustment = titleInsets
 //            tabBarItem3.imageInsets = imageInsetsForRecord
+            
+            tabBarItem1.titlePositionAdjustment = titleInsets
+            tabBarItem1.imageInsets = imageInsets
+            
+            tabBarItem2.titlePositionAdjustment = titleInsets
+            tabBarItem2.imageInsets = imageInsets
+            
+            
+            
+            tabBarItem4.titlePositionAdjustment = titleInsets
+            tabBarItem4.imageInsets = imageInsets
+            
+            tabBarItem5.titlePositionAdjustment = titleInsets
+            tabBarItem5.imageInsets = imageInsets
+            
         } else {
+            
             tabBarItem3.titlePositionAdjustment = titleInsets
             tabBarItem3.imageInsets = imageInsetsForRecord
+            
+            tabBarItem1.titlePositionAdjustment = titleInsets
+            tabBarItem1.imageInsets = imageInsets
+            
+            tabBarItem2.titlePositionAdjustment = titleInsets
+            tabBarItem2.imageInsets = imageInsets
+            
+            
+            
+            tabBarItem4.titlePositionAdjustment = titleInsets
+            tabBarItem4.imageInsets = imageInsets
+            
+            tabBarItem5.titlePositionAdjustment = titleInsets
+            tabBarItem5.imageInsets = imageInsets
         }
         
-        tabBarItem1.titlePositionAdjustment = titleInsets
-        tabBarItem1.imageInsets = imageInsets
-        
-        tabBarItem2.titlePositionAdjustment = titleInsets
-        tabBarItem2.imageInsets = imageInsets
-        
-        
-        
-        tabBarItem4.titlePositionAdjustment = titleInsets
-        tabBarItem4.imageInsets = imageInsets
-        
-        tabBarItem5.titlePositionAdjustment = titleInsets
-        tabBarItem5.imageInsets = imageInsets
+//        tabBarItem1.titlePositionAdjustment = titleInsets
+//        tabBarItem1.imageInsets = imageInsets
+//
+//        tabBarItem2.titlePositionAdjustment = titleInsets
+//        tabBarItem2.imageInsets = imageInsets
+//
+//
+//
+//        tabBarItem4.titlePositionAdjustment = titleInsets
+//        tabBarItem4.imageInsets = imageInsets
+//
+//        tabBarItem5.titlePositionAdjustment = titleInsets
+//        tabBarItem5.imageInsets = imageInsets
         
         tabBarItem1.selectedImage = UIImage(named: "home_blue")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         tabBarItem2.selectedImage = UIImage(named: "video_blue")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)

@@ -14,11 +14,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
 
     var lastPanY: CGFloat = 0
     var latestDirection: Int = 0
-    @IBOutlet weak var playPauseButton: UIButton!
     var preferedScale: Int32 = 1000
-    @IBOutlet weak var sliderView: UIView!
-    @IBOutlet weak var sliderVideo: UISlider!
-    @IBOutlet weak var lblEndTime: UILabel!
     var focusSquare: CameraFocusSquare!
     var selectedVideoURL: URL!
     var selectedCameraSource: Int = 1
@@ -27,7 +23,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var avPlayer: AVPlayer!
     typealias TrimCompletion = (Error?) -> ()
     typealias TrimPoints = [(CMTime, CMTime)]
-
+    var lblTimeString: String?
+    
     var isVideoPlay: Bool = false
     var trimPositionArray: NSMutableArray = NSMutableArray.init()
     var trimStart: CMTime!
@@ -38,28 +35,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var player: AVPlayer!
     var movieFile: GPUImageMovie!
     var filter: GPUImageFilter!
-    
-    @IBOutlet weak var topView: UIView!
-    
-    @IBOutlet weak var topSpace: NSLayoutConstraint!
-    @IBOutlet weak var bottomSpace: NSLayoutConstraint!
-    @IBOutlet weak var rightSpace: NSLayoutConstraint!
-    @IBOutlet weak var leftSpace: NSLayoutConstraint!
-    
-    @IBOutlet weak var topImageView: UIImageView!
-    @IBOutlet weak var home_ScoreButton1: UIButton!
-    @IBOutlet weak var home_ScoreButton2: UIButton!
-    @IBOutlet weak var home_ScoreButton3: UIButton!
-    
-    @IBOutlet weak var home_ScoreView: UIView!
-
-    @IBOutlet weak var away_ScoreView: UIView!
-    @IBOutlet weak var away_ScoreButton1: UIButton!
-    @IBOutlet weak var away_ScoreButton2: UIButton!
-    @IBOutlet weak var away_ScoreButton3: UIButton!
-    
     var isTimeLabelHide: Bool = false
-    
     var lastSliderValue: Float = 0.0
     
     var lastRecordedSecond: Float = 0.0
@@ -77,52 +53,82 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var isScorebaordOn: Bool = true
     var isPeriodOn: Bool = true
     var isTimerOn: Bool = true
-
+    
     var isTimerPeriodOn: Bool = true
     var tagsRecordingList: NSMutableArray = NSMutableArray.init()
     var isRecordingInProgress: Bool = false
     var recordEventInfo: RecordingInfo!
     var videoSettingDict: Dictionary<String, Any>!
     var photoTagImage = Data()
-    
     var overlayScoreBoardImage:UIImage?
-    
-//    @IBOutlet weak var overlayRecordingImageView: UIImageView!
-
-    @IBOutlet weak var imageAndScoreBoardView: UIView!
     
     var recordedVideoIndex: Int = 0
     fileprivate let sessionQueue                 = DispatchQueue(label: "session queue", attributes: [])
     fileprivate var backgroundRecordingID        : UIBackgroundTaskIdentifier? = nil
+    
+    let captureSession = AVCaptureSession()
+    var currentDevice: AVCaptureDevice?
+    var videoFileOutput: AVCaptureMovieFileOutput?
+    var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    
+    var swipeRightOnScorecard = UISwipeGestureRecognizer()
+    var swipeLeftOnVideoRecording = UISwipeGestureRecognizer()
+    var swipeRightOnVideoRecording = UISwipeGestureRecognizer()
+    var swipeLeftOnOverlay = UISwipeGestureRecognizer()
+    var videoClipsArray: NSMutableArray = NSMutableArray.init()
+    var matchEventvideoClipsArray: NSMutableArray = NSMutableArray.init()
+    var selectedtagsArray: NSMutableArray = NSMutableArray.init()
+    var totalNumberOfButtons = 11
+    let arrButtonTitles = ["1","2","3","4","5","6","7","8","9","0","-","+"]
+    
+    fileprivate var zoomScale                    = CGFloat(1.0)
+    /// Variable for storing initial zoom scale before Pinch to Zoom begins
+    fileprivate var beginZoomScale               = CGFloat(1.0)
+    public var maxZoomScale                         = CGFloat.greatestFiniteMagnitude
+    
+    var screenStatusBarHeight: CGFloat {
+        return UIApplication.shared.statusBarFrame.height
+    }
 
+    
+    @IBOutlet weak var playPauseButton: UIButton!
+    @IBOutlet weak var sliderView: UIView!
+    @IBOutlet weak var sliderVideo: UISlider!
+    @IBOutlet weak var lblEndTime: UILabel!
+    @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var topSpace: NSLayoutConstraint!
+    @IBOutlet weak var bottomSpace: NSLayoutConstraint!
+    @IBOutlet weak var rightSpace: NSLayoutConstraint!
+    @IBOutlet weak var leftSpace: NSLayoutConstraint!
+    @IBOutlet weak var topImageView: UIImageView!
+    @IBOutlet weak var home_ScoreButton1: UIButton!
+    @IBOutlet weak var home_ScoreButton2: UIButton!
+    @IBOutlet weak var home_ScoreButton3: UIButton!
+    @IBOutlet weak var home_ScoreView: UIView!
+    @IBOutlet weak var away_ScoreView: UIView!
+    @IBOutlet weak var away_ScoreButton1: UIButton!
+    @IBOutlet weak var away_ScoreButton2: UIButton!
+    @IBOutlet weak var away_ScoreButton3: UIButton!
+    @IBOutlet weak var imageAndScoreBoardView: UIView!
     @IBOutlet weak var viewCameraContainer: UIView!
-    
     @IBOutlet weak var tagCollectionView: UICollectionView!
-
     @IBOutlet weak var highLightView: UIView!
-    
     @IBOutlet weak var imageUploadButton: UIButton!
-
     @IBOutlet weak var overlayImageView: UIImageView!
-    
     @IBOutlet weak var overlayAllView: UIView!
     @IBOutlet weak var recordingOverlayView: UIView!
-
     @IBOutlet weak var overlayNameScoreView: UIView!
     @IBOutlet weak var overlayHomeTeamView: UIView!
     @IBOutlet weak var overlayAwayTeamView: UIView!
     @IBOutlet weak var overlayScoreView: UIView!
     @IBOutlet weak var overlayPeriodView: UIView!
     @IBOutlet weak var overlayTimerView: UIView!
-
     @IBOutlet weak var overlayHomeNameBtn: UIButton!
     @IBOutlet weak var overlayAwayNameBtn: UIButton!
     @IBOutlet weak var overlayScoreBtn: UIButton!
     @IBOutlet weak var overlayPeriodBtn: UIButton!
     @IBOutlet weak var overlayTimerBtn: UIButton!
-
     @IBOutlet weak var playerVideoView1: UIView!
-    
     @IBOutlet weak var playerVideoView: UIView!
     @IBOutlet weak var viewVideoRecordingOptionContainer: UIView!
     @IBOutlet weak var viewHomeContainer: UIView!
@@ -133,29 +139,22 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @IBOutlet weak var viewZoomOptionsContainer: UIView!
     @IBOutlet weak var viewBottomRightContainer: UIView!
     @IBOutlet weak var viewBlackPlaceHolder: UIView!
-    
     @IBOutlet weak var imgHomeLogo: UIImageView!
     @IBOutlet weak var imgAwayLogo: UIImageView!
-    
     @IBOutlet weak var settingHomeLogo: UIImageView!
     @IBOutlet weak var settingAwayLogo: UIImageView!
-    
     @IBOutlet weak var btnMinusZoom: UIButton!
     @IBOutlet weak var btnPlusZoom: UIButton!
     @IBOutlet weak var btnMinusZoomSpeed: UIButton!
     @IBOutlet weak var btnPlusZoomSpeed: UIButton!
-    
     @IBOutlet weak var highLightButton: CustomHighLightButton!
     @IBOutlet weak var btnMinutesSwitch: UIButton!
     @IBOutlet weak var btnPeriodSwitch: UIButton!
     @IBOutlet weak var btnTeamScoreSwitch: UIButton!
-
     @IBOutlet weak var viewBottomButtonsContainer: UIView!
-    
     @IBOutlet weak var lblZoomSpeed: UILabel!
     @IBOutlet weak var lblScoreField: UITextField!
     @IBOutlet weak var lblTime: UILabel!
-    var lblTimeString: String?
     @IBOutlet weak var lblPeriod: UILabel!
     @IBOutlet weak var txtPeriod: UITextField!
     @IBOutlet weak var txtMinutes: UITextField!
@@ -188,44 +187,18 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @IBOutlet weak var lblHomeTeam: UILabel!
     @IBOutlet weak var lblAwayTeam: UILabel!
     
-    let captureSession = AVCaptureSession()
-    var currentDevice: AVCaptureDevice?
-    var videoFileOutput: AVCaptureMovieFileOutput?
-    var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
-    
-    var swipeRightOnScorecard = UISwipeGestureRecognizer()
-    var swipeLeftOnVideoRecording = UISwipeGestureRecognizer()
-    var swipeRightOnVideoRecording = UISwipeGestureRecognizer()
-    var swipeLeftOnOverlay = UISwipeGestureRecognizer()
-    var videoClipsArray: NSMutableArray = NSMutableArray.init()
-    var matchEventvideoClipsArray: NSMutableArray = NSMutableArray.init()
-    var selectedtagsArray: NSMutableArray = NSMutableArray.init()
-    var totalNumberOfButtons = 11
-    let arrButtonTitles = ["1","2","3","4","5","6","7","8","9","0","-","+"]
-    
-    fileprivate var zoomScale                    = CGFloat(1.0)
-    /// Variable for storing initial zoom scale before Pinch to Zoom begins
-    fileprivate var beginZoomScale               = CGFloat(1.0)
-    public var maxZoomScale                         = CGFloat.greatestFiniteMagnitude
-
-    var screenStatusBarHeight: CGFloat {
-        return UIApplication.shared.statusBarFrame.height
-    }
-
     
     //MARK:- View cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("View did Load Record Camera Video VC")
+        print("Record Camera Video VC View did Load")
 
         self.isVideoPlay = true
-        
-        print("1.isVideoPlay: \(isVideoPlay)")
-        
         sliderVideo.tag = 0
         
-        print("selectedCameraSource: \(selectedCameraSource)")
+        print("1.RCVC isVideoPlay: \(isVideoPlay)")
+        print(" RCVC selectedCameraSource: \(selectedCameraSource)")
         
         if selectedCameraSource == 2 || selectedCameraSource == 3
         {
@@ -237,11 +210,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.isVideoPlay = false
         }
         
-        print("2.isVideoPlay: \(isVideoPlay)")
+        print("2.RCVC isVideoPlay: \(isVideoPlay)")
+        print("2.isRecordingInProgress: \(isRecordingInProgress)")
+        print("2.recordedVideoIndex: \(recordedVideoIndex)")
 
         self.isRecordingInProgress = true
         self.recordedVideoIndex = 0
         self.topImageView.image = nil
+        
+        print("2.1. isRecordingInProgress: \(isRecordingInProgress)")
+        print("2.1. recordedVideoIndex: \(recordedVideoIndex)")
+        
 //        self.tagCollectionView.collectionViewLayout = CustomFlowLayout() as UICollectionViewLayout
         
 //        NSLog("screenStatusBarHeight: %f", screenStatusBarHeight)
@@ -249,8 +228,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.tagCollectionView.register(nib, forCellWithReuseIdentifier: "TagCollectionCell")
 //        self.tagCollectionView.register(UINib(nibName: "TagCollectionCell", bundle: nil), forCellReuseIdentifier: "TagCollectionCell")
         self.navigationController?.navigationBar.isHidden = true
-        
         self.view.layoutIfNeeded()
+        
         btnFinishRecording.layer.cornerRadius = btnFinishRecording.frame.size.height/2
         btnFinishRecording.layer.masksToBounds = true
         
@@ -332,6 +311,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         setCornerRadiusAndShadowOnButton(button: self.highLightButton, backColor: COLOR_APP_THEME())
         self.highLightButton.setTitleColor(UIColor.white, for: .normal)
         
+        print("1.isTimerOn: \(isTimerOn)")
+        print("1.isPeriodOn: \(isPeriodOn)")
+        print("1.isScorebaordOn: \(isScorebaordOn)")
+
+
+        
         if self.isVideoPlay
         {
 //            self.playerVideoView.backgroundColor = UIColor.black
@@ -401,6 +386,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.away_ScoreView.isHidden = false
             self.txtPeriod.text = "1T"
             
+            print("IsScoreboardPurchase: \(IsScoreboardPurchase)")
+            
             if !IsScoreboardPurchase()
             {
                 self.viewVideoRecordingOptionContainer.isHidden = false
@@ -412,8 +399,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 self.viewScorecardContainer.isHidden = false
             }
             
-
         }
+        
+        print("2.isTimerOn: \(isTimerOn)")
+        print("2.isPeriodOn: \(isPeriodOn)")
+        print("2.isScorebaordOn: \(isScorebaordOn)")
+
         self.recordEventInfo.homeTeamScore = 0
         self.recordEventInfo.awayTeamScore = 0
         
@@ -458,6 +449,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.viewAwayContainer.isHidden = true
         self.viewScoreAndMinuteContainer.isHidden = true
         
+        print("1. isVideoPlay: \(isVideoPlay)")
         if self.isVideoPlay
         {
             self.PlayVideoFromURL()
@@ -468,9 +460,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.InitCameraCapture()
             self.StartCameraCapture()
         }
-     recording()
+        
+        print("2. isVideoPlay: \(isVideoPlay)")
         
     }
+    
     
     public enum ImageFormat {
         case png
@@ -538,7 +532,15 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.sliderVideo.maximumValue = Float(seconds)
         self.sliderVideo.value = Float(0.0)
         
+        if (lround(seconds) / 60) % 60 > 99 {
+            
+            self.lblEndTime.text = String(format: "%03d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
+            
+        } else {
+            
         self.lblEndTime.text = String(format: "%02d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
+            
+        }
         
         if (timeObserver != nil)
         {
@@ -582,7 +584,16 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             let timeRemaining: Float64 = totalVideoDuration - elapsedSecond
             
-            self.lblEndTime.text = String(format: "%02d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
+            if (lround(timeRemaining) / 60) % 60 > 99 {
+                
+                self.lblEndTime.text = String(format: "%03d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
+                
+            } else {
+                
+                self.lblEndTime.text = String(format: "%02d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
+                
+            }
+            
             if elapsedSecond >= Float64(totalVideoDuration)
             {
                 self.avPlayer.pause()
@@ -602,6 +613,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
  
     }
     @objc func onSliderValChanged(slider: UISlider, event: UIEvent) {
+        
         if let touchEvent = event.allTouches?.first {
             switch touchEvent.phase {
             case .began:
@@ -620,6 +632,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func sliderBeganTracking(slider: UISlider)
     {
+        
         if isVideoPlay
         {
             let playerIsPlaying = avPlayer.rate > 0
@@ -646,6 +659,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func sliderEndedTracking(slider: UISlider)
     {
+        
         if !isVideoPlay
         {
             self.focusSquare.isSliderEnded()
@@ -663,6 +677,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func sliderValueChanged(slider: UISlider)
     {
+        
         if !isVideoPlay
         {
             do {
@@ -691,7 +706,16 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             elapsedTime = Float64(self.totalVideoSecond)
         }
         
-        self.lblEndTime.text = String(format: "%02d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
+        if (lround(elapsedTime) / 60) % 60 > 99 {
+            
+            self.lblEndTime.text = String(format: "%03d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
+            
+        } else {
+            
+        self.lblEndTime.text = String(format: "%03d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
+            
+        }
+        
         self.lastSliderValue = Float(elapsedTime)
         avPlayer.seek(to: CMTimeMakeWithSeconds(elapsedTime, preferedScale))
 
@@ -700,7 +724,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
+        
+        print("Record camera videoVC viewWillAppear")
         
         self.imageUploadButton.isHidden = false
         
@@ -722,6 +747,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     @objc func appMovedToBackground()
     {
+        
 //        print("App moved to background!")
         
         if self.isVideoPlay
@@ -747,6 +773,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     @objc func appBecomeActive()
     {
+        
 //        print("App Become Active")
 //        NSLog("self.painter: %@", self.painter)
         
@@ -763,7 +790,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear")
+        
+        print("RCVVC viewWillDisappear")
+        
         self.navigationController?.navigationBar.isHidden = false
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = false
         // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
@@ -774,6 +803,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func changesInViewWhenStopRecording()
     {
+        
         if painter.isRecording
         {
             self.lastRecordedSecond = self.totalRecordedSecond
@@ -800,6 +830,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func MakeProgressiveZoomOnOff()
     {
+        
         let zoomSpeed: Int = self.videoSettingDict["ZoomSpeed"] as! Int
 
         self.lblZoomSpeed.text = "\(zoomSpeed)%"
@@ -821,6 +852,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func StartVideoRecording()
     {
+        
         self.isRecordingInProgress = true
         return
         
@@ -1058,6 +1090,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @objc func respondToTapGesture(gesture: UIGestureRecognizer) {
         
         self.OpenHightLightView(selectedIndex: (gesture.view?.tag)!)
+        
     }
     
     @IBAction func TeamButtonCliicked(_ sender: UIButton)
@@ -1091,8 +1124,6 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         else
         {
             
-            
-            
             //            picker.sourceType = .camera
             //            picker.delegate =  self
             //            self.present(picker, animated: true, completion: nil)
@@ -1110,7 +1141,6 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             overlayScoreView.isHidden = true
             overlayPeriodView.isHidden = true
             overlayTimerView.isHidden = true
-            
             
             overlayNameScoreView.isHidden = true
             overlayHomeNameBtn.isHidden = true
@@ -1235,7 +1265,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     //MARK:- Gesture
     func addPanGesture()
     {
-        return
+//        return
         if !self.isVideoPlay
         {
             return
@@ -1287,7 +1317,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     @objc func respondToPanGesture(gesture: UIPanGestureRecognizer)
     {
-        return
+//        return
         if self.focusSquare == nil
         {
             return
@@ -1296,7 +1326,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             return
         }
-        var location: CGPoint = gesture.location(in: self.viewVideoRecordingOptionContainer)
+        let location: CGPoint = gesture.location(in: self.viewVideoRecordingOptionContainer)
 
         if gesture.state == .began
         {
@@ -1540,7 +1570,15 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             }
             
             let watch = StopWatch(totalSeconds: Int(self.totalRecordedSecond))
-            self.txtMinutes.text = String(format: "%02i", watch.minutes)
+            
+            if watch.minutes < 99 {
+                
+                self.txtMinutes.text = String(format: "%02i", watch.minutes)
+                
+            } else  {
+            self.txtMinutes.text = String(format: "%03i", watch.minutes)
+                
+            }
         }
     }
     //MARK:- Config video
@@ -2711,7 +2749,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func runTimer()
     {
-        print("runtTimer")
+        print("run Timer")
 //        return
         
         if self.recordEventInfo.isDayEvent
@@ -2725,6 +2763,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
 
             self.timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(RecordCameraVideoVC.updateTimer)), userInfo: nil, repeats: true)
+        
         
     }
     @objc func updateTimer()
@@ -2942,13 +2981,20 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         print("3: next to 00:00")
         
         frameDrawer.contextUpdateBlock = { context, size, time in
+            
             if self.trimStart == nil
             {
-                print("4: inside framedrawer")
+                print("4: inside trimStart == nil framedrawer: \(time)")
+                
                 self.trimStart = time
+                
             }
 //            self.currentTime = time
             var secondsf: Float = Float(time.value) / Float(time.timescale)
+            
+            print("time: \(time)")
+            print("secondsf: \(secondsf)")
+
             
             if !secondsf.isNaN
             {
@@ -2973,12 +3019,19 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     let seconds: Int = Int(roundf(Float(secondsf)))
                     let watch = StopWatch(totalSeconds: seconds)
                     
-                    print("isTimerOn0: \(self.isTimerOn)")
+                    print("isDayEvent isTimerOn0: \(self.isTimerOn)")
                     
-                    print("lblTimeString0 watch: \(watch.minutes, watch.seconds)")
+                    print("isDayEvent lblTimeString0 watch: \(watch.minutes, watch.seconds)")
                     
-                    self.lblTimeString = String(format: "%02i:%02i", watch.minutes, watch.seconds)
+                    if watch.minutes < 99 {
+                        
+                        self.lblTimeString = String(format: "%02i:%02i", watch.minutes, watch.seconds)
+                        
+                    } else {
                     
+                        self.lblTimeString = String(format: "%03i:%02i", watch.minutes, watch.seconds)
+                    
+                    }
                 
                 }
                 
@@ -2997,11 +3050,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 }
                 
                 if  self.lblTimeString != nil {
-                    print("9: lblTimestring!=nil")
+                    print("9: isDayEvent lblTimestring!=nil")
                 if  self.isTimeLabelHide == false
                 {
                     
-                    print("10: isTimeLabelhide==false")
+                    print("isDayEvent 10: isTimeLabelhide==false")
                     context?.translateBy(x: 0, y: (self.videoSize?.height)!);
                     context?.scaleBy(x: widthRatio, y: -heightRatio)
                     //                    context?.clear(lblTimeFrame)
@@ -3022,16 +3075,16 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     context?.translateBy(x: 0, y: -(self.videoSize?.height)!)
                     //                    context?.showTextAtPoint(x: 0, y: 0, string: self.lblTimeString!, length: (self.lblTimeString?.count)!)
                     
-                    print("lblTimeString1: \(String(describing: self.lblTimeString))")
-                    print("isTimerOn2: \(self.isTimerOn)")
+                    print("isDayEvent lblTimeString1: \(String(describing: self.lblTimeString))")
+                    print("isDayEvent isTimerOn2: \(self.isTimerOn)")
 
                     DispatchQueue.main.async {
-                        print("11: Dispatch queue")
+                        print("isDayEvent 11: Dispatch queue")
  self.overlayTimerBtn.setTitle(self.lblTimeString!, for: .normal)
                         print("lblTimeString2: \(String(describing: self.lblTimeString))")
                     }
                     
-                    print("isTimerOn3: \(self.isTimerOn)")
+                    print("isDayEvent isTimerOn3: \(self.isTimerOn)")
 
                     print("lblTimeString3: \(String(describing: self.lblTimeString))")
                     
@@ -3040,6 +3093,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             }
             return true
         }
+        
         painter.composer.addTarget(self.cameraPreview)
         painter.setOverlay(frameDrawer)
         
@@ -3061,6 +3115,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         let outputFileName = self.recordEventInfo.videoFolderName
         var outputFilePath = NSTemporaryDirectory() as String
         outputFilePath = outputFilePath + "\(outputFileName)"
+        
 //        if self.recordedVideoIndex == 0
 //        {
 //            if !FileManager.default.fileExists(atPath: outputFilePath as String)
