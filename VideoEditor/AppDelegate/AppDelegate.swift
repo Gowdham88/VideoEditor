@@ -16,7 +16,7 @@ import FBSDKShareKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var currentRecordingEvent: String = ""
     var lastActiveDate: Date = Date.init()
     var window: UIWindow?
@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         isCheckedForServiceStatus = false
         IQKeyboardManager.sharedManager().enable = true
         APP_DELEGATE.landscaperSide = UIInterfaceOrientation.portrait
-    // var outputFilePath = NSTemporaryDirectory() as String
+        // var outputFilePath = NSTemporaryDirectory() as String
         var isUserLogin: Bool = false
         if UserDefaults.standard.value(forKey: Constants.ISUSERLOGIN) != nil
         {
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             APP_DELEGATE.makeTabbarRootController()
         }
         
-      //  APP_DELEGATE.makeTabbarRootController()
+        //  APP_DELEGATE.makeTabbarRootController()
         _ = CoreDataHelperInstance.sharedInstance.manageObjectContext1()
         
         self.InsertTagInfoToDB()
@@ -63,30 +63,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set("YES", forKey: Constants.kRecordingsource_PurchaseKey)
         UserDefaults.standard.synchronize()
         
-         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        if FBSDKAccessToken.current() == nil {
+            
+            FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+            
+        } else {
+            
+            FBSDKLoginManager().logOut()
+            
+        }
         
         return true
     }
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        
+        
+        
+        let fbhandled: Bool = FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+        
+        
+        return  fbhandled
     }
-
+    
+    func application(_ application: UIApplication,
+                     open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
+        
+        let facebookDidHandle =  FBSDKApplicationDelegate.sharedInstance().application(application,
+                                                                                       open: url,
+                                                                                       sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
+                                                                                       annotation: options [UIApplicationOpenURLOptionsKey.annotation])
+        
+        
+        
+        
+        return facebookDidHandle
+        
+    }
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
-
+    
     func applicationDidEnterBackground(_ application: UIApplication) {
         
         self.lastActiveDate = Date.init()
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
-
+    
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
-
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
@@ -102,11 +133,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     }
-
+    
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return myOrientation
     }
@@ -127,7 +158,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func displayMessageAlertWithMessage(alertMessage: String, withTitle alertTitle: String)
     {
         let topViewController = UIApplication.topViewController()
-//        UIApplication.shared.keyWindow!.rootViewController!.topMostViewController()
+        //        UIApplication.shared.keyWindow!.rootViewController!.topMostViewController()
         
         if Thread.isMainThread
         {
@@ -217,7 +248,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         // In this method we will check if tag static data inserted first time or not
         // When app open fisrt time then we will insert static tag info to DB
-    
+        
         var isNeedToInsertData: Bool = true
         if UserDefaults.standard.value(forKey: Constants.InsertDataFirstTime) != nil
         {
@@ -232,10 +263,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             let tagRecordingNames = ["Action", "End Period", "Favourite", "Foul", "Interview" , "MVP" ,"Pre match", "Start/End game"]
             
-//            let tagNotRecordingNames = ["Start/End game", "Yellow card"]
+            //            let tagNotRecordingNames = ["Start/End game", "Yellow card"]
             let tagRecordingImages = ["actiontag","end-periodtag","favouritetag","foultag","interviewtag","MVPtag","pre-matchtag","start-end-gametag"]
             
-//            let tagNotRecordingImages = ["start-end-gametag","yellow-cardtag"]
+            //            let tagNotRecordingImages = ["start-end-gametag","yellow-cardtag"]
             
             for i in 0..<tagRecordingNames.count
             {
@@ -249,15 +280,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 tagObj.isRecordingPageTag = false
             }
             
-//            for i in 0..<tagNotRecordingNames.count
-//            {
-//                let tagObj: TagInfo = (NSEntityDescription.insertNewObject(forEntityName: "TagInfo", into: CoreDataHelperInstance.sharedInstance.manageObjectContext) as? TagInfo)!
-//                tagObj.tagName = tagNotRecordingNames[i]
-//                tagObj.tagImageName = tagNotRecordingImages[i]
-//                tagObj.tagIndex = Int64(i)
-//                tagObj.isPersonalTag = false
-//                tagObj.isRecordingPageTag = false
-//            }
+            //            for i in 0..<tagNotRecordingNames.count
+            //            {
+            //                let tagObj: TagInfo = (NSEntityDescription.insertNewObject(forEntityName: "TagInfo", into: CoreDataHelperInstance.sharedInstance.manageObjectContext) as? TagInfo)!
+            //                tagObj.tagName = tagNotRecordingNames[i]
+            //                tagObj.tagImageName = tagNotRecordingImages[i]
+            //                tagObj.tagIndex = Int64(i)
+            //                tagObj.isPersonalTag = false
+            //                tagObj.isRecordingPageTag = false
+            //            }
             CoreDataHelperInstance.sharedInstance.saveContext()
             UserDefaults.standard.set("YES", forKey: Constants.InsertDataFirstTime)
             UserDefaults.standard.synchronize()
@@ -290,7 +321,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         let expiryDate = dateFormatter.date(from: authExpiryDateStr)
-     //   self.RedirectToLoginScreen()
+        //   self.RedirectToLoginScreen()
         if expiryDate! < currentDate
         {
             self.RedirectToLoginScreen()
@@ -300,7 +331,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func RedirectToLoginScreen()
     {
-//        return
+        //        return
         UserDefaults.standard.removeObject(forKey: Constants.USER_PROFILE_INFO)
         UserDefaults.standard.removeObject(forKey: Constants.ISUSERLOGIN)
         UserDefaults.standard.synchronize()
@@ -318,7 +349,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !APP_DELEGATE.CheckForInternetConnection()
         {
             let topViewController = UIApplication.topViewController()
-
+            
             let alert = UIAlertController(title: "Alert", message: NoInternetMessageWithRetry, preferredStyle: UIAlertControllerStyle.alert)
             
             let cancelAction = UIAlertAction(title: "Retry", style: .cancel) { (action:UIAlertAction!) in
@@ -347,7 +378,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         let statusCode: String = dict.value(forKey: "code") as! String
                         
-                       // let message: String = dict.value(forKey: "message") as! String
+                        // let message: String = dict.value(forKey: "message") as! String
                         DispatchQueue.main.async {
                             APP_DELEGATE.hideHUD()
                             if statusCode == Constants.SUCCESS_CODE
@@ -364,13 +395,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         if (serviceDict.value(forKey: "current_api_server")) != nil
                                         {
                                             let current_api_server = (serviceDict.value(forKey: "current_api_server") as! NSDictionary)
-
+                                            
                                             isURLFound = true
                                             
                                             Constants.API_BASE_URL = current_api_server.value(forKey: "full_path") as! String
                                         }
                                     }
-                                
+                                    
                                 }
                                 if isURLFound
                                 {

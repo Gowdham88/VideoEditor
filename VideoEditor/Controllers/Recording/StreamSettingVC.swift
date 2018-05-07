@@ -6,7 +6,7 @@ import UIKit
 import AVFoundation
 
 class StreamSettingVC: UIViewController {
-
+    
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var btnSave: UIButton!
     @IBOutlet weak var lblScreenText: UILabel!
@@ -20,33 +20,35 @@ class StreamSettingVC: UIViewController {
     var currentDevice: AVCaptureDevice?
     var videoFileOutput: AVCaptureMovieFileOutput?
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    var loginButton: FBSDKLoginButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        btnProfile.isHidden = true
-//        btnPages.isHidden = true
+        //        btnProfile.isHidden = true
+        //        btnPages.isHidden = true
         txtPassword.isHidden = true
         txtEventName.isHidden = true
         
         setCornerRadiusAndShadowOnButton(button: btnPages, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnProfile, backColor: UIColor.white)
         
-//        APP_DELEGATE.myOrientation = .landscape
+        //        APP_DELEGATE.myOrientation = .landscape
         UIDevice.current.setValue(APP_DELEGATE.landscaperSide.rawValue, forKey: "orientation")
         self.navigationController?.navigationBar.isHidden = true
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = true
         //APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = -1
-
+        
         // Do any additional setup after loading the view.
         configureVideoSession()
         
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        APP_DELEGATE.myOrientation = .landscape
+        //        APP_DELEGATE.myOrientation = .landscape
         self.navigationController?.navigationBar.isHidden = true
         UIDevice.current.setValue(APP_DELEGATE.landscaperSide.rawValue, forKey: "orientation")
     }
@@ -55,7 +57,7 @@ class StreamSettingVC: UIViewController {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = false
-       // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
+        // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
     }
     
     //MARK:- Config video
@@ -148,10 +150,10 @@ class StreamSettingVC: UIViewController {
     
     @IBAction func btnSaveClicked(_ sender: Any) {
         
-//        btnPages.isHidden = false
-//        btnProfile.isHidden = false
-//        let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idStreamRecordingVC) as! StreamRecordingVC
-//        self.navigationController?.pushViewController(redirectTo, animated: true)
+        //        btnPages.isHidden = false
+        //        btnProfile.isHidden = false
+        //        let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idStreamRecordingVC) as! StreamRecordingVC
+        //        self.navigationController?.pushViewController(redirectTo, animated: true)
         
         //============== CHECK FB linked and set fbavailable to true/false
         
@@ -188,17 +190,63 @@ class StreamSettingVC: UIViewController {
             txtPassword.isHidden = false
         }
         
+        self.loginButton = FBSDKLoginButton()
+        self.loginButton.publishPermissions = ["publish_actions"]
+        self.loginButton.loginBehavior = .native
+        self.loginButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: 60)
+        self.loginButton.delegate = self
+        self.view.addSubview(self.loginButton)
+        
+        if FBSDKAccessToken.current() == nil {
+            //            self.view.insertSubview(self.blurOverlay, at: 1)
+            
+            fbAvailable = false
+            
+        } else {
+            
+            //            self.recordButton.isHidden = false
+            
+            fbAvailable = true
+        }
+        
+        
     }
     
     
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+extension StreamSettingVC : FBSDKLoginButtonDelegate {
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        
+        if error != nil {
+            print("Error logging in: \(error.localizedDescription)")
+            return
+        } else {
+            print("Not loggedIn")
+        }
+        
+        fbAvailable = false
+        
+        //        self.blurOverlay.removeFromSuperview()
     }
-    */
-
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        
+        //        self.btnStartRecoding.isHidden = true
+        
+        fbAvailable = false
+        //        self.view.insertSubview(self.blurOverlay, at: 1)
+    }
+    
+    
 }

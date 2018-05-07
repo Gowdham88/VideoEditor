@@ -76,6 +76,9 @@ struct Constants {
     static let CodecH264 = "CodecH264"
     static let CodecH265 = "CodecH265"
     
+    static var fbLive = false
+    
+    
     static let RecordDayEvent = "RecordDayEvent"
     static let RecordMatchEvent = "RecordMatchEvent"
 }
@@ -125,7 +128,7 @@ public func DegreesToRadians(degrees: Float) -> Float {
 public let isSimulator: Bool = {
     var isSim = false
     #if arch(i386) || arch(x86_64)
-        isSim = true
+    isSim = true
     #endif
     return isSim
 }()
@@ -173,7 +176,7 @@ func randomString() -> String
 //MARK:- Helper
 public func TableEmptyMessage(message:String, tbl:UITableView)
 {
-     let messageLabel = UILabel(frame: Frame_XYWH(0, 0, tbl.frame.size.width, 100))
+    let messageLabel = UILabel(frame: Frame_XYWH(0, 0, tbl.frame.size.width, 100))
     messageLabel.text = message
     let bubbleColor = Color_RGBA(54, 81, 104, 1)
     messageLabel.textColor = bubbleColor
@@ -272,15 +275,15 @@ func setCornerRadiusWithBGImage(button : UIButton, backColor: UIColor) {
     let img = UIImage.from(color: backColor)
     
     let img1 = UIImage.from(color: UIColor.white)
-
+    
     button.setBackgroundImage(img, for: .normal)
     button.setImage(img1, for: .normal)
     button.layer.cornerRadius = button.frame.size.height/2
     button.layer.masksToBounds = true
-//    button.layer.shadowRadius = 1
-//    button.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-//    button.layer.shadowOpacity = 0.4
-//    button.backgroundColor = backColor
+    //    button.layer.shadowRadius = 1
+    //    button.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+    //    button.layer.shadowOpacity = 0.4
+    //    button.backgroundColor = backColor
 }
 
 
@@ -306,7 +309,7 @@ public func ShowNetworkIndicator(xx :Bool)
 }
 
 //MARK : Length validation
-public func TRIM(string: Any) -> String 
+public func TRIM(string: Any) -> String
 {
     return (string as AnyObject).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 }
@@ -353,7 +356,7 @@ func addLeftImageViewInTextField(textfield:UITextField, strImageName:String)
 {
     textfield.leftView = UIImageView(image: UIImage(named: strImageName))
     textfield.leftViewMode = .always
-//    textfield.attributedPlaceholder = NSAttributedString(string:strPlaceHolderText, attributes: [NSAttributedStringKey.font:UIFont(name: FONT_MONTSERRAT_Regular, size: 20.0)!])
+    //    textfield.attributedPlaceholder = NSAttributedString(string:strPlaceHolderText, attributes: [NSAttributedStringKey.font:UIFont(name: FONT_MONTSERRAT_Regular, size: 20.0)!])
 }
 
 
@@ -375,8 +378,8 @@ public func addLeftViewInTextField(_ textField: UITextField, imageName: String) 
     let btnRight = UIButton(type: .custom)
     btnRight.setImage(UIImage(named: imageName), for: .normal)
     btnRight.frame = CGRect(x: 5, y: 0, width: 25, height: textField.frame.size.height)
-//    btnRight.contentMode = .scaleAspectFill
-//    btnRight.imageView?.contentMode = .scaleAspectFit
+    //    btnRight.contentMode = .scaleAspectFill
+    //    btnRight.imageView?.contentMode = .scaleAspectFit
     btnRight.tintColor = COLOR_APP_THEME()
     btnRight.isUserInteractionEnabled = false
     view.addSubview(btnRight)
@@ -403,7 +406,7 @@ extension UIFont {
 
 
 //MARK:- COLOR RGB
-public func Color_RGBA(_ R: Int,_ G: Int,_ B: Int,_ A: Int) -> UIColor 
+public func Color_RGBA(_ R: Int,_ G: Int,_ B: Int,_ A: Int) -> UIColor
 {
     return UIColor(red: CGFloat(R)/255.0, green: CGFloat(G)/255.0, blue: CGFloat(B)/255.0, alpha :CGFloat(A))
 }
@@ -461,7 +464,7 @@ public func COLOR_WHITE_OR_BLACK() -> UIColor {
 }
 
 //MARK:- SET FRAME
-public func Frame_XYWH(_ originx: CGFloat,_ originy: CGFloat,_ fwidth: CGFloat,_ fheight: CGFloat) -> CGRect 
+public func Frame_XYWH(_ originx: CGFloat,_ originy: CGFloat,_ fwidth: CGFloat,_ fheight: CGFloat) -> CGRect
 {
     return CGRect(x: originx, y:originy, width: fwidth, height: fheight)
 }
@@ -474,12 +477,12 @@ public func randomColor() -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1.0)
 }
 
-struct Platform 
+struct Platform
 {
     static let isSimulator: Bool = {
         var isSim = false
         #if arch(i386) || arch(x86_64)
-            isSim = true
+        isSim = true
         #endif
         return isSim
     }()
@@ -491,24 +494,24 @@ struct Platform
 
 public func DLog<T>(message:T,  file: String = #file, function: String = #function, lineNumber: Int = #line ) {
     #if DEBUG
-        if let text = message as? String {
-            
-            print("\((file as NSString).lastPathComponent) -> \(function) line: \(lineNumber): \(text)")
-        }
+    if let text = message as? String {
+        
+        print("\((file as NSString).lastPathComponent) -> \(function) line: \(lineNumber): \(text)")
+    }
     #endif
 }
 
 //Mark : string to dictionary
 public func convertStringToDictionary(str:String) -> [String: Any]? {
-        if let data = str.data(using: .utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch {
-                print(error.localizedDescription)
-            }
+    if let data = str.data(using: .utf8) {
+        do {
+            return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        } catch {
+            print(error.localizedDescription)
         }
-        return nil
     }
+    return nil
+}
 
 //MARK:- - Check string is available or not
 
@@ -520,7 +523,7 @@ public func isLike(source: String , compare: String) ->Bool
 }
 
 //MARK:- - Calculate heght of label
-public func calculatedHeight(string :String,withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat 
+public func calculatedHeight(string :String,withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat
 {
     let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
     let boundingBox = string.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
@@ -564,34 +567,34 @@ public func NULL_TO_NIL(value : AnyObject?) -> AnyObject? {
 
 
 //public func calculateDisatnceBetweenTwoLocations(sourceLat:Double, sourceLong:Double) -> Double{
-//    
+//
 //    let sourceLocation:CLLocation?
-//    
+//
 //    if iskeyAlreadyExist(KEY_DEVICE_LOCATION) {
-//        
+//
 //        sourceLocation =  getCustomObjFromUserDefaults_ForKey(KEY_DEVICE_LOCATION) as? CLLocation
 //    }else{
 //        sourceLocation = CLLocation(latitude: 0.0000, longitude: 0.0000)
 //    }
 //
 //    let destinationLocation =  CLLocation(latitude: sourceLat, longitude: sourceLong)
-//    
+//
 //    let distanceMeters = sourceLocation!.distanceFromLocation(destinationLocation)
 //    let distanceKM = distanceMeters / 1000
 //    let distanceMile = KilometerToMile(distanceKM)
 //    let roundedTwoDigit = distanceMile.roundedTwoDigit
 //    return roundedTwoDigit
-//    
+//
 //}
 //MARK:- Rounded two digit
 //Rounded two digit value
 
 //extension Double{
-//    
+//
 //    var roundedTwoDigit:Double{
-//        
+//
 //        return Double(round(100*self)/100)
-//        
+//
 //    }
 //}
 
@@ -600,7 +603,7 @@ public func NULL_TO_NIL(value : AnyObject?) -> AnyObject? {
 
 
 //func randomString(length: Int, justLowerCase: Bool = false) -> String {
-//    
+//
 //    var text = ""
 //    for _ in 1...length {
 //        var decValue = 0  // ascii decimal value of a character
@@ -625,12 +628,12 @@ public func NULL_TO_NIL(value : AnyObject?) -> AnyObject? {
 //        // remove double spaces
 //        text = text.stringByReplacingOccurrencesOfString("  ", withString: "")
 //        text = text.stringByReplacingOccurrencesOfString(" ", withString: "")
-//        
+//
 //    }
 //    text = text.stringByAppendingString(CurrentTimeStamp)
 //    text = text.stringByReplacingOccurrencesOfString(".", withString: "")
 //   // text = text.stringByReplacingOccurrencesOfString("-", withString: "")
-//    
+//
 //    return text
 //}
 
@@ -683,7 +686,7 @@ func timeAgoSinceDate(date:Date, numericDates:Bool) -> String {
         } else {
             return "An hour ago"
         }
-    } else if (components.minute! >= 2) 
+    } else if (components.minute! >= 2)
     {
         return "\(components.minute!)" + "m ago"
     } else if (components.minute! >= 1){
@@ -706,7 +709,7 @@ let ENTITY_PHRASES = "CDPhrases"
 let ENTITY_QUESTION = "CDQuestions"
 
 
-//func showAlertMessage(_ message: String, okButtonTitle: String = "Ok") -> Void 
+//func showAlertMessage(_ message: String, okButtonTitle: String = "Ok") -> Void
 //{
 //    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 //    let okAction = UIAlertAction(title: okButtonTitle, style: .default, handler: nil)
@@ -738,20 +741,20 @@ func animateview(vw1 : UIView,vw2:UIView)
 }
 
 //MARK:- Country code
-func setDefaultCountryCode() -> String 
+func setDefaultCountryCode() -> String
 {
-   let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
+    let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
     return "+" + getCountryPhonceCode(countryCode!)
 }
 
-func fixOrientationOfImage(image: UIImage) -> UIImage? 
+func fixOrientationOfImage(image: UIImage) -> UIImage?
 {
     if image.imageOrientation == .up
     {
         return image
     }
     var transform = CGAffineTransform.identity
-    switch image.imageOrientation 
+    switch image.imageOrientation
     {
     case .down, .downMirrored:
         transform = transform.translatedBy(x: image.size.width, y: image.size.height)
@@ -765,7 +768,7 @@ func fixOrientationOfImage(image: UIImage) -> UIImage?
     default:
         break
     }
-    switch image.imageOrientation 
+    switch image.imageOrientation
     {
     case .upMirrored, .downMirrored:
         transform = transform.translatedBy(x: image.size.width, y: 0)
@@ -1034,11 +1037,11 @@ func getCountryPhonceCode (_ country : String) -> String
                               "VG":"284",
                               "VI":"340"]
     let cname = country.uppercased()
-    if countryDictionary[cname] != nil 
+    if countryDictionary[cname] != nil
     {
         return countryDictionary[cname]!
     }
-    else 
+    else
     {
         return cname
     }

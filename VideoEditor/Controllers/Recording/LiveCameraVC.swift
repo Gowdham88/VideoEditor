@@ -12,7 +12,6 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import Photos
 
-
 class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate, URLSessionDownloadDelegate
 {
     var progressHUD: MBProgressHUD!
@@ -31,13 +30,10 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     var recordEventInfo: RecordingInfo!
     
     var blurOverlay: UIVisualEffectView!
-    
     var sessionURL: NSURL!
     var loader: UIActivityIndicatorView!
     var loginButton: FBSDKLoginButton!
     var liveVideo: FBSDKLiveVideo!
-    
-    
     
     var videoSettingDict: Dictionary<String, Any> = Dictionary.init()
     
@@ -102,7 +98,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBOutlet weak var livesettingEqaulheight: NSLayoutConstraint!
     @IBOutlet weak var liveSettingTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var BactBtnTopConstraint: NSLayoutConstraint!
-//    let notificationhide = Notification.Name("hideLiveBtn")
+    //    let notificationhide = Notification.Name("hideLiveBtn")
     
     func downloadVideoLinkAndCreateAsset(_ videoLink: String) {
         
@@ -129,11 +125,11 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                 
                 print("httpResponse: \(httpResponse)")
                 print("destinationURL: \(destinationURL)")
-
+                
                 do {
                     
                     try FileManager.default.moveItem(at: location, to: destinationURL)
-
+                    
                     PHPhotoLibrary.requestAuthorization({ (authorizationStatus: PHAuthorizationStatus) -> Void in
                         
                         // check if user authorized access photos for your app
@@ -159,45 +155,45 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
     }
     
-   
-
+    
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//
-//        self.liveVideo = FBSDKLiveVideo(
-//            delegate: self,
-//            previewSize: self.view.bounds,
-//            videoSize: CGSize(width: 1280, height: 720)
-//        )
-//
-//        let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
-////        myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-//
-//        self.liveVideo.privacy = .me
-//        self.liveVideo.audience = "me"
-//
-//        self.liveVideo.overlay = myOverlay
-//
-//
-//        myOverlay.addSubview(liveVideo.preview)
-//
-//        self.liveVideo.privacy = .me
-//        self.liveVideo.audience = "me" // or your user-id, page-id, event-id, group-id, ...
+        //
+        //        self.liveVideo = FBSDKLiveVideo(
+        //            delegate: self,
+        //            previewSize: self.view.bounds,
+        //            videoSize: CGSize(width: 1280, height: 720)
+        //        )
+        //
+        //        let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
+        ////        myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+        //
+        //        self.liveVideo.privacy = .me
+        //        self.liveVideo.audience = "me"
+        //
+        //        self.liveVideo.overlay = myOverlay
+        //
+        //
+        //        myOverlay.addSubview(liveVideo.preview)
+        //
+        //        self.liveVideo.privacy = .me
+        //        self.liveVideo.audience = "me" // or your user-id, page-id, event-id, group-id, ...
         
         // Comment in to show a green overlay bar (configure with your own one)
         // self.liveVideo.overlay = myOverlay
         
-//        initializeUserInterface()
+        //        initializeUserInterface()
         self.imgRotateScreen.isHidden = false
         
         APP_DELEGATE.myOrientation = .all
         setCornerRadiusToButton(button: btnHD)
         setCornerRadiusToButton(button: btnFHD)
         setCornerRadiusToButton(button: btn4K)
-       
+        
         setCornerRadiusToButton(button: btnFrontCam)
         setCornerRadiusToButton(button: btnBackCam)
         setCornerRadiusToButton(button: btnRollRec)
@@ -236,6 +232,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         videoSettingDict["ZoomSpeed"] = 20
         videoSettingDict["IsZoomOn"] = true
+        videoSettingDict["fbLive"] = false
         
         self.addGestureRecognizers()
         //        self.configureVideoSession()
@@ -246,8 +243,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         if self.recordEventInfo.recADay {
             self.btnLiveSettings.isHidden = true
-             liveSettingTopConstraint.constant = 0
-             livesettingEqaulheight.constant = 0
+            liveSettingTopConstraint.constant = 0
+            livesettingEqaulheight.constant = 0
         }
         
         if self.recordEventInfo.createEvent {
@@ -258,11 +255,11 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         if self.recordEventInfo.isDayEvent
         {
-//            self.lblTime.isHidden = true
-//            self.lblHalf.isHidden = true
-//            self.txtScore.isHidden = true
-//            self.lblHomeTeam.isHidden = true
-//            self.lblAwayTeam.isHidden = true
+            //            self.lblTime.isHidden = true
+            //            self.lblHalf.isHidden = true
+            //            self.txtScore.isHidden = true
+            //            self.lblHomeTeam.isHidden = true
+            //            self.lblAwayTeam.isHidden = true
             
             self.scoreView.isHidden = true
         }
@@ -271,8 +268,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             self.scoreView.isHidden = false
             self.btnHomeName.setTitle(self.recordEventInfo.homeTeamName, for: .normal)
             self.btnAwayName.setTitle(self.recordEventInfo.awayTeamName, for: .normal)
-//            self.lblHomeTeam.text = self.recordEventInfo.homeTeamName
-//            self.lblAwayTeam.text = self.recordEventInfo.awayTeamName
+            //            self.lblHomeTeam.text = self.recordEventInfo.homeTeamName
+            //            self.lblAwayTeam.text = self.recordEventInfo.awayTeamName
         }
         if self.CheckForCodecSupports(codecvalue: Constants.CodecH264) == true
         {
@@ -295,8 +292,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         phototagOFFbutton.backgroundColor = COLOR_APP_THEME()
         
         APP_DELEGATE.DeleteAllFilesInTempFolder()
-       
-     
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -316,7 +313,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         //  self.AddCameraViewAndSetConfig()
         //        viewCameraContainer.frame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.height, height: self.view.frame.size.width)
-      
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -324,7 +321,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         if UIDevice.current.orientation.isLandscape
         {
-//            print("Landscape")
+            //            print("Landscape")
             previewLayerConnection?.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.current.orientation.rawValue)!
             self.imgRotateScreen.isHidden = true
             self.view.sendSubview(toBack: viewCameraContainer)
@@ -349,12 +346,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = false
-    
-       // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
-         NotificationCenter.default.removeObserver("hideLiveBtn")
+        
+        // APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = 0
+        NotificationCenter.default.removeObserver("hideLiveBtn")
     }
     
- 
+    
     
     func setCornerRadiusToButton(button: UIButton) {
         button.layer.cornerRadius = 3.0
@@ -532,7 +529,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         self.videoFileOutput = AVCaptureMovieFileOutput()
         self.captureSession.addOutput(self.videoFileOutput!)
-//        self.videoFileOutput?.availableVideoCodecTypes
+        //        self.videoFileOutput?.availableVideoCodecTypes
         
         //        self.cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         //        self.viewCameraContainer.layer.addSublayer(self.cameraPreviewLayer!)
@@ -623,7 +620,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         }
     }
     var isProductPurchased = Bool()
-
+    
     @IBAction func phototagON(_ sender: Any) {
         
         if UserDefaults.standard.value(forKey: Constants.kFotoTag_PurchaseKey) != nil
@@ -655,25 +652,25 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
-//        if !self.liveVideo.isStreaming {
-//            startStreaming()
-//        } else {
-//            stopStreaming()
-//        }
-       
-//        if fbAvailable == true {
-//
-//
-//
-//        }
+        //        if !self.liveVideo.isStreaming {
+        //            startStreaming()
+        //        } else {
+        //            stopStreaming()
+        //        }
+        
+        //        if fbAvailable == true {
+        //
+        //
+        //
+        //        }
         if selectedCameraSource == 3
         {
             self.OpenAlertForSelectVideo(sender: sender)
         }
         else if selectedCameraSource == 2
         {
-//            self.OpenAlertToEnterURL()
-
+            //            self.OpenAlertToEnterURL()
+            
             self.OpenURLTypeOptionSheet()
         }
         else
@@ -692,7 +689,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             redirectTo.selectedVideoURL = selectedVideoURL
         }
-       
+        
         print("OpenRecordingView selectedVideoURL: \(selectedVideoURL)")
         self.navigationController?.pushViewController(redirectTo, animated: true)
     }
@@ -729,7 +726,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBAction func btnFrontCamClicked(_ sender: Any) {
         
         let fpsValue: String = self.videoSettingDict["FPS"] as! String
-
+        
         let sessionPreset: String = self.GetPresetValue()
         let isSupports: Bool = self.CheckForCameraSupportsWith(presetValue: sessionPreset, cameraPosition: Constants.FrontCamera, FPSValue: fpsValue, forselection: 2)
         if (!isSupports)
@@ -777,7 +774,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBAction func btnBackCamClicked(_ sender: Any) {
         
         let fpsValue: String = self.videoSettingDict["FPS"] as! String
-
+        
         let sessionPreset: String = self.GetPresetValue()
         let isSupports: Bool = self.CheckForCameraSupportsWith(presetValue: sessionPreset, cameraPosition: Constants.BackCamera, FPSValue: fpsValue, forselection: 2)
         if (!isSupports)
@@ -914,7 +911,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBAction func btnHDClicked(_ sender: Any) {
         
         let fpsValue: String = self.videoSettingDict["FPS"] as! String
-
+        
         let sessionPreset: String = AVCaptureSession.Preset.hd1280x720.rawValue
         let recordingSource: String = self.videoSettingDict["RecordingSource"] as! String
         
@@ -957,7 +954,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBAction func btn4KClicked(_ sender: Any) {
         
         let fpsValue: String = self.videoSettingDict["FPS"] as! String
-
+        
         let sessionPreset: String = AVCaptureSession.Preset.hd4K3840x2160.rawValue
         let recordingSource: String = self.videoSettingDict["RecordingSource"] as! String
         
@@ -967,18 +964,18 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             NSLog("Not supports: ", sessionPreset)
             return
         }
-//        let videoCodec: String = self.videoSettingDict["Codec"] as! String
-//
-//        if videoCodec == Constants.CodecH264 || videoCodec == Constants.CodecH265
-//        {
-//            if self.CheckForCodecSupports(codecvalue: videoCodec) == false
-//            {
-//                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "H264 codec does not supported by this capture quality.", withTitle: "Alert")
-//                return
-//            }
-//        }
-//        
-
+        //        let videoCodec: String = self.videoSettingDict["Codec"] as! String
+        //
+        //        if videoCodec == Constants.CodecH264 || videoCodec == Constants.CodecH265
+        //        {
+        //            if self.CheckForCodecSupports(codecvalue: videoCodec) == false
+        //            {
+        //                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "H264 codec does not supported by this capture quality.", withTitle: "Alert")
+        //                return
+        //            }
+        //        }
+        //
+        
         var isProductPurchased: Bool = false
         if UserDefaults.standard.value(forKey: Constants.kRecording_PurchaseKey) != nil
         {
@@ -1073,9 +1070,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             for ranges in vFormat.videoSupportedFrameRateRanges
             {
-//                CMFormatDescriptionRef desc = format.formatDescription;
-//                CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(desc);
-//                int32_t width = dimensions.width;
+                //                CMFormatDescriptionRef desc = format.formatDescription;
+                //                CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(desc);
+                //                int32_t width = dimensions.width;
                 let desc:CMFormatDescription = vFormat.formatDescription
                 let dimensions: CMVideoDimensions = CMVideoFormatDescriptionGetDimensions(desc)
                 let width: Int32 = dimensions.width
@@ -1091,13 +1088,13 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             
             do {
-//                self.captureSession.beginConfiguration()
+                //                self.captureSession.beginConfiguration()
                 try forDevice.lockForConfiguration()
                 forDevice.activeFormat = selectedFormat as AVCaptureDevice.Format
                 forDevice.activeVideoMinFrameDuration = CMTimeMake(1, Int32(frameRate))
                 forDevice.activeVideoMaxFrameDuration = CMTimeMake(1, Int32(frameRate))
                 forDevice.unlockForConfiguration()
-//                self.captureSession.commitConfiguration()
+                //                self.captureSession.commitConfiguration()
             }
             catch {
                 print("Error locking configuration")
@@ -1147,12 +1144,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         {
             return false
         }
-//        if #available(iOS 10.0, *) {
+        //        if #available(iOS 10.0, *) {
         let supportedCodec: NSArray = self.videoFileOutput?.availableVideoCodecTypes as! NSArray
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//
+        //        } else {
+        //            // Fallback on earlier versions
+        //        }
+        //
         if codecvalue == Constants.CodecH264
         {
             if !supportedCodec.contains(AVVideoCodecH264)
@@ -1278,8 +1275,8 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             }
             
             isSupport = false
-//            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: alertMessage, withTitle: "Alert")
-//            return false
+            //            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: alertMessage, withTitle: "Alert")
+            //            return false
         }
         
         var fpsInt: Int = 30
@@ -1296,9 +1293,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         if !self.FPSValueChanged(frameRate: fpsInt, forDevice: captureDevice!)
         {
             isSupport = false
-//            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Selected frame rate not supported by selected Camera.", withTitle: "Alert")
-//
-//            return false
+            //            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Selected frame rate not supported by selected Camera.", withTitle: "Alert")
+            //
+            //            return false
         }
         if !isSupport
         {
@@ -1341,7 +1338,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             
         }
         actionSheet.addAction(cancelAction)
-       
+        
         actionSheet.addAction(fromgalary)
         
         actionSheet.popoverPresentationController?.sourceView = sender // works for both iPhone & iPad
@@ -1356,9 +1353,9 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     {
         self.selectedVideoURL = info[UIImagePickerControllerMediaURL] as? URL
         
-//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-//
-//        print("Finished picking image: \(image.size)")
+        //        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        //
+        //        print("Finished picking image: \(image.size)")
         self.dismiss(animated: true) {
             
             let videoSize: CGSize = APP_DELEGATE.resolutionForLocalVideo(url: self.selectedVideoURL)!
@@ -1394,7 +1391,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             
             self.CheckForValidationAndStartDownload(videoURL: (textField?.text)!)
-//            self.StartDownloadEnteredURL(videoURL: (textField?.text)!)
+            //            self.StartDownloadEnteredURL(videoURL: (textField?.text)!)
             
         }))
         
@@ -1414,7 +1411,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     func StartDownloadEnteredURL(videoURL: String)
     {
-
+        
         print("StartDownloadEnteredURL")
         
         let task = self.activate().downloadTask(with: URL(string: videoURL)!)
@@ -1515,12 +1512,12 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             DispatchQueue.main.async {
                 
                 print("Dispatch Queue GetURLForYoutuber")
-
+                
                 
                 if error == nil // Found Valid URL
                 {
                     print("Error Nil GetURLForYoutuber")
-
+                    
                     
                     var qualities = videoDictionary as! Dictionary<NSNumber, Any>
                     
@@ -1530,7 +1527,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                     {
                         
                         print("RMYouTubeExtractorVideoQuality HD720")
-
+                        
                         
                         URLString = qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.HD720.rawValue)) ] as? String
                         
@@ -1539,13 +1536,13 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                     else if qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.medium360.rawValue)) ] != nil
                     {
                         print("RMYouTubeExtractorVideoQuality medium360")
-
+                        
                         URLString = qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.medium360.rawValue)) ] as? String
                     }
                     else if qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.small240.rawValue)) ] != nil
                     {
                         print("RMYouTubeExtractorVideoQuality small240")
-
+                        
                         URLString = qualities[NSNumber.init(value: Int8(RMYouTubeExtractorVideoQuality.small240.rawValue)) ] as? String
                     }
                         //                    else if qualities["live"] != nil
@@ -1575,19 +1572,22 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     func GetURLForFacebook(videoURL: String)
     {
         print("Get url for facebook")
-//        downloadVideoLinkAndCreateAsset(videoURL)
+        //        downloadVideoLinkAndCreateAsset(videoURL)
         
-//        let params: Parameters = [
-//            "url": videoURL
-//            ]
+        //        let params: Parameters = [
+        //            "url": videoURL
+        //            ]
         
-//        print("params: \(params)")
+        //        print("params: \(params)")
         
-        let requestURL = URL(string: "https://www.facebook.com/nasdaily/videos/869248556560631/")
+        let requestURL = URL(string: "https://www.facebook.com/nasdaily/videos/869248556560631")
         
-/** let videoLink1 = "https://www.facebook.com/nasdaily/videos/869248556560631/"
- //"https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=8d788078431aaef7d3083a14b82ce208&oe=5AF004C5"*/
-
+        /** let videoLink1 = "https://www.facebook.com/nasdaily/videos/869248556560631/"
+         //"https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=8d788078431aaef7d3083a14b82ce208&oe=5AF004C5"
+         
+         https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=d920f43e03b793955d7673369cfa5f69&oe=5AF02EF5
+         */
+        
         
         let task = URLSession.shared.dataTask(with: requestURL!){
             (data, response, error) in
@@ -1600,32 +1600,27 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                 
                 var contentArray = decodedData!.components(separatedBy: separator)
                 
-                print("contentArray: \(contentArray[0])")
-                print("contentArray: \(contentArray[1])")
-                print("contentArray: \(contentArray[2])")
-                print("contentArray: \(contentArray[3])")
-                print("contentArray: \(contentArray[4])")
-                print("contentArray: \(contentArray[5])")
-                print("contentArray: \(contentArray[6])")
-                print("contentArray: \(contentArray[7])")
+                print("contentArray6: \(contentArray[6])")
+                print("contentArray7: \(contentArray[7])")
                 
-                //                var separator2 = "</span>"
-//
-//                var newContentArray = contentArray[1].componentsSeparatedByString(separator2)
-//
-//                var weatherForecast = (newContentArray[0] as String).stringByReplacingOccurrencesOfString("&deg;", withString: "º")
-//                print(weatherForecast)
-//
-//                dispatch_async(dispatch_get_main_queue()){
-//
-//
-//                }
+                var separator2 = " /"
+                
+                var newContentArray = contentArray[6].components(separatedBy: separator2)
+                
+                var videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
+                
+                print("videoLink: \(videoLink)")
+                
+                //                dispatch_async(dispatch_get_main_queue()){
+                //
+                //
+                //                }
                 
             } else {
                 
-//                dispatch_get_main_queue().async(){
-//
-//                }//end dispatch_async
+                //                dispatch_get_main_queue().async(){
+                //
+                //                }//end dispatch_async
             } //end else
             
         }
@@ -1633,97 +1628,97 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         task.resume()
         
         
-//        Alamofire.request(requestURL, method: .get).response { data in
-//
-//            let str = NSString(data: data, encoding: String.Encoding.utf8)
-//
-//            print(str)
-//        }
+        //        Alamofire.request(requestURL, method: .get).response { data in
+        //
+        //            let str = NSString(data: data, encoding: String.Encoding.utf8)
+        //
+        //            print(str)
+        //        }
         
-//        Alamofire.request(requestURL, method: .post, parameters: nil, encoding: URLEncoding.default, headers: nil)
-//            .responseJSON { response in
-//
-//                switch response.result
-//                {
-//                case .success(_):
-//
-//                    print("Success")
-//
-//                    if response.result.value != nil
-//                    {
-//                        let dict = response.result.value as! NSDictionary
-//
-//                        if dict.value(forKey: "type") != nil
-//                        {
-//                            var finalURLStr: String = ""
-//                            var isVideoAvailable: Bool = false
-//                            let type: String = dict.value(forKey: "type") as! String
-//                            if type == "success"
-//                            {
-//
-//                                print("Success GetURLForFacebook:")
-//
-//                                if dict.value(forKey: "hd_download_url") != nil
-//                                {
-//                                    isVideoAvailable = true
-//                                    finalURLStr = dict.value(forKey: "hd_download_url") as! String
-//                                }
-//                                else if dict.value(forKey: "sd_download_url") != nil
-//                                {
-//                                    isVideoAvailable = true
-//                                    finalURLStr = dict.value(forKey: "sd_download_url") as! String
-//                                }
-//                            }
-//                            if isVideoAvailable && !finalURLStr.isEmpty
-//                            {
-//
-//                                print("Facebook : isVideoAvailable && !finalURLStr.isEmpty ")
-//                                DispatchQueue.main.async {
-//                                    self.StartDownloadEnteredURL(videoURL: finalURLStr)
-//                                }
-//                            }
-//                            else
-//                            {
-//                                print("Facebook : Else")
-//
-//                                DispatchQueue.main.async {
-//                                    APP_DELEGATE.hideHUD()
-//                                    APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-//                                }
-//                            }
-//                        }
-//                        else
-//                        {
-//                            DispatchQueue.main.async {
-//                                APP_DELEGATE.hideHUD()
-//                                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-//                            }
-//                        }
-//
-//                    }
-//                    else
-//                    {
-//                        DispatchQueue.main.async {
-//                            APP_DELEGATE.hideHUD()
-//                            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-//                        }
-//                    }
-//                    break
-//
-//                case .failure(_):
-//
-//                    print("Failure")
-//
-//                    print(response.result.error!)
-//                    DispatchQueue.main.async {
-//                        APP_DELEGATE.hideHUD()
-//                        APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-//                    }
-//
-//                    break
-//
-//                }
-//        }
+        //        Alamofire.request(requestURL, method: .post, parameters: nil, encoding: URLEncoding.default, headers: nil)
+        //            .responseJSON { response in
+        //
+        //                switch response.result
+        //                {
+        //                case .success(_):
+        //
+        //                    print("Success")
+        //
+        //                    if response.result.value != nil
+        //                    {
+        //                        let dict = response.result.value as! NSDictionary
+        //
+        //                        if dict.value(forKey: "type") != nil
+        //                        {
+        //                            var finalURLStr: String = ""
+        //                            var isVideoAvailable: Bool = false
+        //                            let type: String = dict.value(forKey: "type") as! String
+        //                            if type == "success"
+        //                            {
+        //
+        //                                print("Success GetURLForFacebook:")
+        //
+        //                                if dict.value(forKey: "hd_download_url") != nil
+        //                                {
+        //                                    isVideoAvailable = true
+        //                                    finalURLStr = dict.value(forKey: "hd_download_url") as! String
+        //                                }
+        //                                else if dict.value(forKey: "sd_download_url") != nil
+        //                                {
+        //                                    isVideoAvailable = true
+        //                                    finalURLStr = dict.value(forKey: "sd_download_url") as! String
+        //                                }
+        //                            }
+        //                            if isVideoAvailable && !finalURLStr.isEmpty
+        //                            {
+        //
+        //                                print("Facebook : isVideoAvailable && !finalURLStr.isEmpty ")
+        //                                DispatchQueue.main.async {
+        //                                    self.StartDownloadEnteredURL(videoURL: finalURLStr)
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                print("Facebook : Else")
+        //
+        //                                DispatchQueue.main.async {
+        //                                    APP_DELEGATE.hideHUD()
+        //                                    APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+        //                                }
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            DispatchQueue.main.async {
+        //                                APP_DELEGATE.hideHUD()
+        //                                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+        //                            }
+        //                        }
+        //
+        //                    }
+        //                    else
+        //                    {
+        //                        DispatchQueue.main.async {
+        //                            APP_DELEGATE.hideHUD()
+        //                            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+        //                        }
+        //                    }
+        //                    break
+        //
+        //                case .failure(_):
+        //
+        //                    print("Failure")
+        //
+        //                    print(response.result.error!)
+        //                    DispatchQueue.main.async {
+        //                        APP_DELEGATE.hideHUD()
+        //                        APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
+        //                    }
+        //
+        //                    break
+        //
+        //                }
+        //        }
     }
     func OpenURLTypeOptionSheet()
     {
@@ -1748,26 +1743,28 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         }))
         
         actionSheet.addAction(UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
-                        
+            
         }))
         actionSheet.popoverPresentationController?.sourceView = self.btnStartRecoding // works for both iPhone & iPad
-
+        
         self.present(actionSheet, animated: true, completion: nil)
     }
     
     
     
     func initializeUserInterface() {
+        
         self.view.insertSubview(self.liveVideo.preview, at: 0)
         self.loginButton = FBSDKLoginButton()
         self.loginButton.publishPermissions = ["publish_actions"]
         self.loginButton.loginBehavior = .native
         self.loginButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: 60)
-        self.loginButton.delegate = self
+        self.loginButton.delegate = self as! FBSDKLoginButtonDelegate
         self.view.addSubview(self.loginButton)
         
         if FBSDKAccessToken.current() == nil {
-//      self.view.insertSubview(self.blurOverlay, at: 1)
+            
+            //      self.view.insertSubview(self.blurOverlay, at: 1)
             
         } else {
             
@@ -1791,16 +1788,16 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
 }
 
 extension LiveCameraVC {
-
+    
     func activate() -> URLSession {
-//        let config =  URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
-
-//        let config =  URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
+        //        let config =  URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
+        
+        //        let config =  URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
         let config =   URLSessionConfiguration.default
         // Warning: If an URLSession still exists from a previous download, it doesn't create a new URLSession object but returns the existing one with the old delegate object attached!
         return URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
     }
-
+    
     private func calculateProgress(session : URLSession, completionHandler : @escaping (Float) -> ()) {
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
             let progress = downloads.map({ (task) -> Float in
@@ -1813,9 +1810,9 @@ extension LiveCameraVC {
             completionHandler(progress.reduce(0.0, +))
         }
     }
-
+    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-
+        
         if totalBytesExpectedToWrite > 0 {
             if let onProgress = onProgress {
                 calculateProgress(session: session, completionHandler: onProgress)
@@ -1823,17 +1820,17 @@ extension LiveCameraVC {
             let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
             DispatchQueue.main.async
                 {
-                self.progressHUD.label.text = "Downloading (\(Int(progress * 100))%)..."
+                    self.progressHUD.label.text = "Downloading (\(Int(progress * 100))%)..."
             }
-
-//            debugPrint("Progress \(downloadTask) \(progress)")
-
+            
+            //            debugPrint("Progress \(downloadTask) \(progress)")
+            
         }
     }
-
+    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-//        debugPrint("Download finished: \(location)")
-
+        //        debugPrint("Download finished: \(location)")
+        
         var tempFolderPath: String = APP_DELEGATE.FetchTempVideoFolderPath()
         tempFolderPath = tempFolderPath + "/downloadVideo.mp4"
         if FileManager.default.fileExists(atPath: tempFolderPath as String)
@@ -1846,51 +1843,51 @@ extension LiveCameraVC {
             {
                 return
             }
-
+            
         }
-//        let pathextension = location.pathExtension
-//
-//        let uti = UTTypeCreatePreferredIdentifierForTag(
-//            kUTTagClassFilenameExtension,
-//            pathextension as CFString,
-//        nil)
-
-//        if UTTypeConformsTo((uti?.takeRetainedValue())!, kUTTypeMovie) {
-//            print("This is not movie file")
-//
-//
-//        }
-//        else
-//        {
-//            DispatchQueue.main.async {
-//
-//                self.HideProgress()
-//                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Downloaded file is not video file, please check video URL entered by you.", withTitle: "Alert")
-//            }
-//            return
-//        }
-
+        //        let pathextension = location.pathExtension
+        //
+        //        let uti = UTTypeCreatePreferredIdentifierForTag(
+        //            kUTTagClassFilenameExtension,
+        //            pathextension as CFString,
+        //        nil)
+        
+        //        if UTTypeConformsTo((uti?.takeRetainedValue())!, kUTTypeMovie) {
+        //            print("This is not movie file")
+        //
+        //
+        //        }
+        //        else
+        //        {
+        //            DispatchQueue.main.async {
+        //
+        //                self.HideProgress()
+        //                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Downloaded file is not video file, please check video URL entered by you.", withTitle: "Alert")
+        //            }
+        //            return
+        //        }
+        
         try? FileManager.default.moveItem(atPath: location.path, toPath: tempFolderPath)
-//        try? FileManager.default.removeItem(at: location)
-
+        //        try? FileManager.default.removeItem(at: location)
+        
         self.selectedVideoURL = URL.init(fileURLWithPath: tempFolderPath)
         DispatchQueue.main.async {
             self.HideProgress()
             self.OpenRecordingView()
         }
-
+        
     }
-
+    
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-//        debugPrint("Task completed: \(task), error: \(error)")
+        //        debugPrint("Task completed: \(task), error: \(error)")
         if error != nil
         {
             DispatchQueue.main.async {
                 self.HideProgress()
                 APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
             }
-
-
+            
+            
         }
     }
 }
@@ -1902,7 +1899,7 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
         self.loader.removeFromSuperview()
         self.btnStartRecoding.isEnabled = true
         
-//        self.recordButton.imageView?.image = UIImage(named: "stop-button")
+        //        self.recordButton.imageView?.image = UIImage(named: "stop-button")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {
@@ -1910,36 +1907,15 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
-//        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
+        //        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
-//        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
+        //        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }
 }
 
-extension LiveCameraVC : FBSDKLoginButtonDelegate {
-    
-    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        
-        if error != nil {
-            print("Error logging in: \(error.localizedDescription)")
-            return
-        } else {
-            print("Not loggedIn")
-        }
-        
-        self.btnStartRecoding.isHidden = false
-//        self.blurOverlay.removeFromSuperview()
-    }
-    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        
-        self.btnStartRecoding.isHidden = true
-        //        self.view.insertSubview(self.blurOverlay, at: 1)
-    }
-    
 
-}
 
 
 /*

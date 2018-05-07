@@ -9,9 +9,12 @@ import CoreData
 import MobileCoreServices
 import Photos
 import GPUImage
+import FBSDKCoreKit
+import FBSDKLoginKit
+import FBSDKShareKit
 
 class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerDelegate {
-
+    
     var lastPanY: CGFloat = 0
     var latestDirection: Int = 0
     var preferedScale: Int32 = 1000
@@ -81,6 +84,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var totalNumberOfButtons = 11
     let arrButtonTitles = ["1","2","3","4","5","6","7","8","9","0","-","+"]
     
+    var blurOverlay: UIVisualEffectView!
+    var sessionURL: NSURL!
+    var loader: UIActivityIndicatorView!
+    var loginButton: FBSDKLoginButton!
+    var liveVideo: FBSDKLiveVideo!
+    
     fileprivate var zoomScale                    = CGFloat(1.0)
     /// Variable for storing initial zoom scale before Pinch to Zoom begins
     fileprivate var beginZoomScale               = CGFloat(1.0)
@@ -89,7 +98,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var screenStatusBarHeight: CGFloat {
         return UIApplication.shared.statusBarFrame.height
     }
-
+    
     
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var sliderView: UIView!
@@ -193,12 +202,13 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         super.viewDidLoad()
         
         print("Record Camera Video VC View did Load")
-
+        
         self.isVideoPlay = true
         sliderVideo.tag = 0
         
         print("1.RCVC isVideoPlay: \(isVideoPlay)")
         print(" RCVC selectedCameraSource: \(selectedCameraSource)")
+        
         
         if selectedCameraSource == 2 || selectedCameraSource == 3
         {
@@ -213,7 +223,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         print("2.RCVC isVideoPlay: \(isVideoPlay)")
         print("2.isRecordingInProgress: \(isRecordingInProgress)")
         print("2.recordedVideoIndex: \(recordedVideoIndex)")
-
+        
         self.isRecordingInProgress = true
         self.recordedVideoIndex = 0
         self.topImageView.image = nil
@@ -221,12 +231,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         print("2.1. isRecordingInProgress: \(isRecordingInProgress)")
         print("2.1. recordedVideoIndex: \(recordedVideoIndex)")
         
-//        self.tagCollectionView.collectionViewLayout = CustomFlowLayout() as UICollectionViewLayout
+        //        self.tagCollectionView.collectionViewLayout = CustomFlowLayout() as UICollectionViewLayout
         
-//        NSLog("screenStatusBarHeight: %f", screenStatusBarHeight)
+        //        NSLog("screenStatusBarHeight: %f", screenStatusBarHeight)
         let nib = UINib(nibName: "TagCollectionCell", bundle: nil)
         self.tagCollectionView.register(nib, forCellWithReuseIdentifier: "TagCollectionCell")
-//        self.tagCollectionView.register(UINib(nibName: "TagCollectionCell", bundle: nil), forCellReuseIdentifier: "TagCollectionCell")
+        //        self.tagCollectionView.register(UINib(nibName: "TagCollectionCell", bundle: nil), forCellReuseIdentifier: "TagCollectionCell")
         self.navigationController?.navigationBar.isHidden = true
         self.view.layoutIfNeeded()
         
@@ -248,17 +258,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         sliderVideo.setMinimumTrackImage(UIImage(named: "slider_minimum"), for: .normal)
         sliderVideo.setMaximumTrackImage(UIImage(named: "slider_maximum"), for: .normal)
         
-//        for view in self.viewTagsParent.subviews as [UIView]
-//        {
-//            if let btn = view as? UIButton
-//            {
-//                setCornerRadiusAndShadowOnButton(button: btn, backColor: UIColor.white)
-//                btn.setTitleColor(COLOR_FONT_GRAY(), for: .normal)
-//            }
-//        }
+        //        for view in self.viewTagsParent.subviews as [UIView]
+        //        {
+        //            if let btn = view as? UIButton
+        //            {
+        //                setCornerRadiusAndShadowOnButton(button: btn, backColor: UIColor.white)
+        //                btn.setTitleColor(COLOR_FONT_GRAY(), for: .normal)
+        //            }
+        //        }
         
         self.view.layoutIfNeeded()
-//        self.highLightButton.setBackgroundColor(UIColor.black, forState: UIControlState.Highlighted)
+        //        self.highLightButton.setBackgroundColor(UIColor.black, forState: UIControlState.Highlighted)
         self.home_ScoreButton1.setTitle("1", for: .normal)
         self.home_ScoreButton2.setTitle("2", for: .normal)
         self.home_ScoreButton3.setTitle("3", for: .normal)
@@ -300,13 +310,13 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         addSwipeGestureOnScrollview()
         
         self.addPanGesture()
-//        addTapGesture(view: imgHomeLogo)
-//        addTapGesture(view: imgAwayLogo)
-//        addTapGesture(view: lblTime)
-//        addTapGesture(view: lblPeriod)
-//        addTapGesture(view: lblHomeTeam)
-//        addTapGesture(view: lblAwayTeam)
-//        addButtonInBottomBar()
+        //        addTapGesture(view: imgHomeLogo)
+        //        addTapGesture(view: imgAwayLogo)
+        //        addTapGesture(view: lblTime)
+        //        addTapGesture(view: lblPeriod)
+        //        addTapGesture(view: lblHomeTeam)
+        //        addTapGesture(view: lblAwayTeam)
+        //        addButtonInBottomBar()
         self.addTapGestureForFocus()
         setCornerRadiusAndShadowOnButton(button: self.highLightButton, backColor: COLOR_APP_THEME())
         self.highLightButton.setTitleColor(UIColor.white, for: .normal)
@@ -314,12 +324,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         print("1.isTimerOn: \(isTimerOn)")
         print("1.isPeriodOn: \(isPeriodOn)")
         print("1.isScorebaordOn: \(isScorebaordOn)")
-
-
+        
+        
         
         if self.isVideoPlay
         {
-//            self.playerVideoView.backgroundColor = UIColor.black
+            //            self.playerVideoView.backgroundColor = UIColor.black
             self.playerVideoView.isHidden = false
             self.isScorebaordOn = false
             self.isTimerOn = false
@@ -346,7 +356,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.viewVideoRecordingOptionContainer.isHidden = false
             self.viewScorecardContainer.isHidden = true
             
-//            self.viewHomeContainer.isHidden = true
+            //            self.viewHomeContainer.isHidden = true
             self.viewAwayContainer.isHidden = true
             self.viewScoreAndMinuteContainer.isHidden = true
             self.imageAndScoreBoardView.isHidden = true
@@ -404,7 +414,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         print("2.isTimerOn: \(isTimerOn)")
         print("2.isPeriodOn: \(isPeriodOn)")
         print("2.isScorebaordOn: \(isScorebaordOn)")
-
+        
         self.recordEventInfo.homeTeamScore = 0
         self.recordEventInfo.awayTeamScore = 0
         
@@ -412,8 +422,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.txtAwayTeamScore.text = "\(self.recordEventInfo.awayTeamScore)"
         
         addGestureRecognizers()
-//        overlayImageView.AddGestureForOverlayImage()
-//        self.configureVideoSession()
+        //        overlayImageView.AddGestureForOverlayImage()
+        //        self.configureVideoSession()
         self.AddGestureForOverlayImage()
         
         print("0: TimerBtn set Title")
@@ -421,33 +431,70 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         self.FetchTagInfoFromDB()
         
-//        let outputFileName = APP_DELEGATE.FetchTempVideoFolderPath()
-//        if self.recordEventInfo.videoFolderName.isEmpty
-//        {
-//            self.recordEventInfo.videoFolderName = outputFileName
-//        }
+        //        let outputFileName = APP_DELEGATE.FetchTempVideoFolderPath()
+        //        if self.recordEventInfo.videoFolderName.isEmpty
+        //        {
+        //            self.recordEventInfo.videoFolderName = outputFileName
+        //        }
         self.recordEventInfo.videoFolderName = "MyTemp"
-//        outputFileName = self.recordEventInfo.videoFolderName
-//
-//        var outputFilePath = NSTemporaryDirectory() as String
-//
-//        outputFilePath = outputFilePath + "\(outputFileName)"
-//
-//        if !FileManager.default.fileExists(atPath: outputFilePath as String)
-//        {
-//            do
-//            {
-//                try FileManager.default.createDirectory(atPath: outputFilePath, withIntermediateDirectories: true, attributes: nil)
-//            }
-//            catch
-//            {
-//
-//            }
-//        }
+        //        outputFileName = self.recordEventInfo.videoFolderName
+        //
+        //        var outputFilePath = NSTemporaryDirectory() as String
+        //
+        //        outputFilePath = outputFilePath + "\(outputFileName)"
+        //
+        //        if !FileManager.default.fileExists(atPath: outputFilePath as String)
+        //        {
+        //            do
+        //            {
+        //                try FileManager.default.createDirectory(atPath: outputFilePath, withIntermediateDirectories: true, attributes: nil)
+        //            }
+        //            catch
+        //            {
+        //
+        //            }
+        //        }
         
         self.viewHomeContainer.isHidden = true
         self.viewAwayContainer.isHidden = true
         self.viewScoreAndMinuteContainer.isHidden = true
+        if fbAvailable == true {
+            
+            recordEventInfo.fbLive = true
+            
+            self.liveVideo = FBSDKLiveVideo(
+                delegate: self,
+                previewSize: self.view.bounds,
+                videoSize: CGSize(width: 1280, height: 720)
+            )
+            
+            let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
+            
+            //myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+            
+            myOverlay.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+            
+            self.liveVideo.privacy = .me
+            self.liveVideo.audience = "me"
+            
+            self.loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            self.loader.frame = CGRect(x: 15, y: 15, width: 40, height: 40)
+            
+            self.blurOverlay = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+            self.blurOverlay.frame = self.view.bounds
+            
+            
+            if !self.liveVideo.isStreaming {
+                
+                startStreaming()
+                
+            } else {
+                
+                stopStreaming()
+                recordEventInfo.fbLive = false
+            }
+            
+        }
         
         print("1. isVideoPlay: \(isVideoPlay)")
         if self.isVideoPlay
@@ -465,6 +512,19 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
     }
     
+    func startStreaming() {
+        
+        self.liveVideo.start()
+        
+        self.loader.startAnimating()
+        self.btnPause.addSubview(self.loader)
+        self.btnPause.isEnabled = false
+        
+    }
+    
+    func stopStreaming() {
+        self.liveVideo.stop()
+    }
     
     public enum ImageFormat {
         case png
@@ -479,7 +539,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
         return imageData?.base64EncodedString()
     }
-
+    
     
     @IBAction func BtnPlayVideoStart(_ sender: UIButton)
     {
@@ -513,7 +573,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         avPlayerLayer.frame = CGRect.init(x: 0, y: 0, width: self.viewCameraContainer.bounds.size.width, height: self.viewCameraContainer.bounds.size.height - 60)
-//        avPlayerLayer.backgroundColor = UIColor.black.cgColor
+        //        avPlayerLayer.backgroundColor = UIColor.black.cgColor
         self.viewCameraContainer.layer.addSublayer(avPlayerLayer)
         self.viewCameraContainer.backgroundColor = UIColor.black
         let videoURL = self.selectedVideoURL
@@ -538,7 +598,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
         } else {
             
-        self.lblEndTime.text = String(format: "%02d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
+            self.lblEndTime.text = String(format: "%02d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
             
         }
         
@@ -598,7 +658,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             {
                 self.avPlayer.pause()
                 self.playPauseButton.setBackgroundImage(UIImage.init(named: "play_gray"), for: .normal)
-
+                
                 self.trimEnd = self.playerItem.duration
                 let trimDict: NSMutableDictionary = NSMutableDictionary.init()
                 trimDict.setValue(self.trimStart, forKey: "trimstart")
@@ -610,7 +670,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             
         }
- 
+        
     }
     @objc func onSliderValChanged(slider: UISlider, event: UIEvent) {
         
@@ -665,15 +725,15 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.focusSquare.isSliderEnded()
             return
         }
-//        let elapsedTime: Float64 = Float64(self.sliderVideo.value)
-//
-//        avPlayer.seek(to: CMTimeMakeWithSeconds(elapsedTime, preferedScale), toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { (completed: Bool) in
-//
-//            self.avPlayer.play()
-//
-//        })
-//        self.lblEndTime.text = String(format: "%02d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
-
+        //        let elapsedTime: Float64 = Float64(self.sliderVideo.value)
+        //
+        //        avPlayer.seek(to: CMTimeMakeWithSeconds(elapsedTime, preferedScale), toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { (completed: Bool) in
+        //
+        //            self.avPlayer.play()
+        //
+        //        })
+        //        self.lblEndTime.text = String(format: "%02d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
+        
     }
     func sliderValueChanged(slider: UISlider)
     {
@@ -694,11 +754,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         if self.isRecordingInProgress
         {
-//            if elapsedTime < Float64(self.lastSliderValue)
-//            {
-//                elapsedTime = Float64(self.lastSliderValue)
-//                self.sliderVideo.value = Float(elapsedTime)
-//            }
+            //            if elapsedTime < Float64(self.lastSliderValue)
+            //            {
+            //                elapsedTime = Float64(self.lastSliderValue)
+            //                self.sliderVideo.value = Float(elapsedTime)
+            //            }
         }
         
         if elapsedTime >= Float64(self.totalVideoSecond)
@@ -712,13 +772,13 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
         } else {
             
-        self.lblEndTime.text = String(format: "%03d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
+            self.lblEndTime.text = String(format: "%03d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
             
         }
         
         self.lastSliderValue = Float(elapsedTime)
         avPlayer.seek(to: CMTimeMakeWithSeconds(elapsedTime, preferedScale))
-
+        
     }
     
     
@@ -730,25 +790,25 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.imageUploadButton.isHidden = false
         
         self.MakeProgressiveZoomOnOff()
-//        APP_DELEGATE.myOrientation = .landscape
+        //        APP_DELEGATE.myOrientation = .landscape
         self.navigationController?.navigationBar.isHidden = true
         UIDevice.current.setValue(APP_DELEGATE.landscaperSide.rawValue, forKey: "orientation")
         //APP_DELEGATE.tabbarController?.tabBar.isHidden = true
         //APP_DELEGATE.tabbarController?.tabBar.layer.zPosition = -1
         
-//        setCornerRadiusAndShadowOnButton(button: btnZoom, backColor: COLOR_APP_THEME())
+        //        setCornerRadiusAndShadowOnButton(button: btnZoom, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnBackToRecording, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnSaveRecording, backColor: COLOR_APP_THEME())
         
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationWillResignActive, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(appBecomeActive), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
-
+        
     }
     @objc func appMovedToBackground()
     {
         
-//        print("App moved to background!")
+        //        print("App moved to background!")
         
         if self.isVideoPlay
         {
@@ -774,12 +834,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @objc func appBecomeActive()
     {
         
-//        print("App Become Active")
-//        NSLog("self.painter: %@", self.painter)
+        //        print("App Become Active")
+        //        NSLog("self.painter: %@", self.painter)
         
         if self.isVideoPlay
         {
-//            self.player.play()
+            //            self.player.play()
         }
         else
         {
@@ -799,7 +859,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationWillResignActive, object: nil)
         
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
-
+        
     }
     func changesInViewWhenStopRecording()
     {
@@ -832,9 +892,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     {
         
         let zoomSpeed: Int = self.videoSettingDict["ZoomSpeed"] as! Int
-
+        
         self.lblZoomSpeed.text = "\(zoomSpeed)%"
-
+        
         let isZoomON = self.videoSettingDict["IsZoomOn"] as! Bool
         
         if isZoomON
@@ -868,11 +928,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 let movieFileOutputConnection = self.videoFileOutput?.connection(with: AVMediaType.video)
                 
                 //flip video output if front facing camera is selected
-//                if self.currentCamera == .front {
-//                    movieFileOutputConnection?.isVideoMirrored = true
-//                }
+                //                if self.currentCamera == .front {
+                //                    movieFileOutputConnection?.isVideoMirrored = true
+                //                }
                 movieFileOutputConnection?.isVideoMirrored = false
-//                movieFileOutputConnection?.videoOrientation = self.getVideoOrientation()
+                //                movieFileOutputConnection?.videoOrientation = self.getVideoOrientation()
                 
                 // Start recording to a temporary file.
                 var outputFileName = UUID().uuidString
@@ -902,9 +962,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 self.recordedVideoIndex = self.recordedVideoIndex + 1
                 let videoIndex: String = "\(self.recordedVideoIndex)"
                 let outputFilePath1 = (outputFilePath as NSString).appendingPathComponent((videoIndex as NSString).appendingPathExtension("mov")!)
-
+                
                 movieFileOutput.startRecording(to: URL(fileURLWithPath: outputFilePath1), recordingDelegate: self)
-//                self.isVideoRecording = true
+                //                self.isVideoRecording = true
             }
             else {
                 movieFileOutput.stopRecording()
@@ -912,6 +972,16 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
     }
     @IBAction func btnPauseClicked(_ sender: Any) {
+        
+        if fbAvailable == true {
+            
+            if !self.liveVideo.isStreaming {
+                startStreaming()
+            } else {
+                stopStreaming()
+            }
+            
+        }
         
         if (timer != nil)
         {
@@ -956,8 +1026,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         viewActionButtonsContainer.isHidden = false
         viewBlackPlaceHolder.isHidden = false
         btnPause.isHidden = true
-//        viewHomeContainer.isHidden = true
-//        viewAwayContainer.isHidden = true
+        //        viewHomeContainer.isHidden = true
+        //        viewAwayContainer.isHidden = true
         
         self.highLightView.isHidden = true
         
@@ -967,6 +1037,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.overlayNameScoreView.isUserInteractionEnabled = false
             self.away_ScoreView.isUserInteractionEnabled = false
         }
+        
+        
     }
     func addTapGesture(view:UIView)
     {
@@ -983,7 +1055,6 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     func addTapGestureForFocus() {
         
-        
         if isVideoPlay
         {
             return
@@ -995,25 +1066,25 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.viewVideoRecordingOptionContainer.addGestureRecognizer(tapGesture)
     }
     @objc func cameraViewTapAction(gesture: UIGestureRecognizer) {
-
+        
         if !self.isRecordingInProgress
         {
             return
         }
         
         var location: CGPoint = gesture.location(in: self.viewVideoRecordingOptionContainer)
-
+        
         let squareWidth: CGFloat = 100
         let focusFrame: CGRect = CGRect(x: location.x - squareWidth / 2, y: location.y - squareWidth / 2, width: squareWidth, height: squareWidth)
-
-//        let excludeTopFrame: CGRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 100)
-//
-//        let excludeLeftFrame: CGRect = CGRect(x: 0, y: 0, width: 200, height: self.view.frame.size.height)
-//
-//        let excludBottomeFrame: CGRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 70)
-//
-//        let excludeRightFrame: CGRect = CGRect(x: 0, y: self.view.frame.size.height - 50, width: self.view.frame.size.width, height: 70)
-
+        
+        //        let excludeTopFrame: CGRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 100)
+        //
+        //        let excludeLeftFrame: CGRect = CGRect(x: 0, y: 0, width: 200, height: self.view.frame.size.height)
+        //
+        //        let excludBottomeFrame: CGRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 70)
+        //
+        //        let excludeRightFrame: CGRect = CGRect(x: 0, y: self.view.frame.size.height - 50, width: self.view.frame.size.width, height: 70)
+        
         let focusAllowedFrame: CGRect = CGRect(x: 150, y: 60, width: self.view.frame.size.width - 215, height: self.view.frame.size.height - 100)
         
         if !focusAllowedFrame.contains(focusFrame)
@@ -1021,70 +1092,70 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             return
         }
         
-//        if gesture.state = UIGestureRecognizer
-//        {
-//        gesture.location(ofTouch: 0, in: <#T##UIView?#>)
+        //        if gesture.state = UIGestureRecognizer
+        //        {
+        //        gesture.location(ofTouch: 0, in: <#T##UIView?#>)
         
-//            let device: AVCaptureDevice = self.painter.camera.inputCamera
-            var pointOfInterest: CGPoint = CGPoint.init(x: 0.5, y: 0.5)
-            let frameSize: CGSize = self.viewVideoRecordingOptionContainer.frame.size
+        //            let device: AVCaptureDevice = self.painter.camera.inputCamera
+        var pointOfInterest: CGPoint = CGPoint.init(x: 0.5, y: 0.5)
+        let frameSize: CGSize = self.viewVideoRecordingOptionContainer.frame.size
         
-            if let fsquare = self.focusSquare
-            {
-                fsquare.updatePoint(location)
-            }
-            else
-            {
-                self.focusSquare = CameraFocusSquare(touchPoint: location)
-                self.viewVideoRecordingOptionContainer.addSubview(self.focusSquare!)
+        if let fsquare = self.focusSquare
+        {
+            fsquare.updatePoint(location)
+        }
+        else
+        {
+            self.focusSquare = CameraFocusSquare(touchPoint: location)
+            self.viewVideoRecordingOptionContainer.addSubview(self.focusSquare!)
+            
+            //                self.focusSquare.exposureSlider.minimumValue = self.painter.camera.inputCamera.activeFormat.minISO
+            //                self.focusSquare.exposureSlider.maximumValue = self.painter.camera.inputCamera.activeFormat.maxISO
+            //
+            //                self.focusSquare.exposureSlider.tag = 1
+            //                self.focusSquare.exposureSlider.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
+            
+            self.focusSquare?.setNeedsDisplay()
+        }
+        
+        self.focusSquare?.animateFocusingAction()
+        if self.painter.camera.cameraPosition() == AVCaptureDevice.Position.front
+        {
+            location.x = frameSize.width - location.x
+        }
+        let x = location.y / frameSize.height
+        let y = 1.0 - location.x / frameSize.width
+        pointOfInterest = CGPoint(x: x, y: y)
+        
+        //            pointOfInterest = CGPoint.init(x: location.x / frameSize.width, y: location.y / frameSize.height)
+        
+        if self.painter.camera.inputCamera.isFocusPointOfInterestSupported &&  self.painter.camera.inputCamera.isFocusModeSupported(.autoFocus)
+        {
+            //                var error: NSError!
+            
+            do {
+                try self.painter.camera.inputCamera.lockForConfiguration()
                 
-//                self.focusSquare.exposureSlider.minimumValue = self.painter.camera.inputCamera.activeFormat.minISO
-//                self.focusSquare.exposureSlider.maximumValue = self.painter.camera.inputCamera.activeFormat.maxISO
-//
-//                self.focusSquare.exposureSlider.tag = 1
-//                self.focusSquare.exposureSlider.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
-
-                self.focusSquare?.setNeedsDisplay()
-            }
-        
-            self.focusSquare?.animateFocusingAction()
-            if self.painter.camera.cameraPosition() == AVCaptureDevice.Position.front
-            {
-                location.x = frameSize.width - location.x
-            }
-            let x = location.y / frameSize.height
-            let y = 1.0 - location.x / frameSize.width
-            pointOfInterest = CGPoint(x: x, y: y)
-
-//            pointOfInterest = CGPoint.init(x: location.x / frameSize.width, y: location.y / frameSize.height)
-        
-            if self.painter.camera.inputCamera.isFocusPointOfInterestSupported &&  self.painter.camera.inputCamera.isFocusModeSupported(.autoFocus)
-            {
-//                var error: NSError!
+                self.painter.camera.inputCamera.focusPointOfInterest = pointOfInterest
+                self.painter.camera.inputCamera.focusMode = .autoFocus
                 
-                do {
-                        try self.painter.camera.inputCamera.lockForConfiguration()
-                    
-                        self.painter.camera.inputCamera.focusPointOfInterest = pointOfInterest
-                        self.painter.camera.inputCamera.focusMode = .autoFocus
-                    
-                        if self.painter.camera.inputCamera.isExposurePointOfInterestSupported && self.painter.camera.inputCamera.isExposureModeSupported(.autoExpose)
-                        {
-                            self.painter.camera.inputCamera.exposurePointOfInterest = pointOfInterest
-                            self.painter.camera.inputCamera.exposureMode = .autoExpose
-                        }
-                    
-                        self.painter.camera.inputCamera.unlockForConfiguration()
-                        NSLog("FOCUS OK", "");
+                if self.painter.camera.inputCamera.isExposurePointOfInterestSupported && self.painter.camera.inputCamera.isExposureModeSupported(.autoExpose)
+                {
+                    self.painter.camera.inputCamera.exposurePointOfInterest = pointOfInterest
+                    self.painter.camera.inputCamera.exposureMode = .autoExpose
                 }
-                catch {
-                    print("Error locking configuration")
-                }
+                
+                self.painter.camera.inputCamera.unlockForConfiguration()
+                NSLog("FOCUS OK", "");
             }
-//            NSLog("iso value: %f", self.painter.camera.inputCamera.iso)
-//            self.focusSquare.exposureSlider.value = self.painter.camera.inputCamera.iso
-
-//        }
+            catch {
+                print("Error locking configuration")
+            }
+        }
+        //            NSLog("iso value: %f", self.painter.camera.inputCamera.iso)
+        //            self.focusSquare.exposureSlider.value = self.painter.camera.inputCamera.iso
+        
+        //        }
     }
     // click on team logo
     @objc func respondToTapGesture(gesture: UIGestureRecognizer) {
@@ -1096,15 +1167,15 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @IBAction func TeamButtonCliicked(_ sender: UIButton)
     {
         self.OpenScroreBaordSettingView()
-//        self.OpenHightLightView(selectedIndex: sender.tag)
+        //        self.OpenHightLightView(selectedIndex: sender.tag)
     }
     
     @IBAction func HightLightButtonClicked(_ sender: UIButton)
     {
-//        return
+        //        return
         
         self.selectedtagsArray = NSMutableArray.init()
-
+        
         if self.recordEventInfo.isDayEvent
         {
             let clipSecond: Int64 = 30
@@ -1120,7 +1191,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             self.videoClipsArray.add(dict)
         }
-        
+            
         else
         {
             
@@ -1183,21 +1254,18 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             overlayPeriodView.isHidden = false
             overlayTimerView.isHidden = false
             
-            
             overlayNameScoreView.isHidden = false
             overlayHomeNameBtn.isHidden = false
             overlayAwayNameBtn.isHidden = false
             overlayScoreBtn.isHidden = false
             overlayPeriodBtn.isHidden = false
             overlayTimerBtn.isHidden = false
-            
-            
             self.matchEventvideoClipsArray.add(dict)
-            
             self.OpenHightLightView(selectedIndex: sender.tag)
         }
         
     }
+    
     func OpenHightLightView(selectedIndex: Int)
     {
         
@@ -1219,20 +1287,20 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.btnAwayTeam.setTitle(self.recordEventInfo.awayTeamName, for: .normal)
         }
         self.selectedTeamIndex = 0
-//        if selectedIndex == 0
-//        {
-//            setCornerRadiusAndShadowOnButton(button: btnHomeTeam, backColor: COLOR_APP_THEME())
-//            btnHomeTeam.setTitleColor(UIColor.white, for: .normal)
-//            setCornerRadiusAndShadowOnButton(button: btnAwayTeam, backColor: UIColor.white)
-//            btnAwayTeam.setTitleColor(COLOR_APP_THEME(), for: .normal)
-//        }
-//        else
-//        {
-//            setCornerRadiusAndShadowOnButton(button: btnHomeTeam, backColor: UIColor.white)
-//            btnHomeTeam.setTitleColor(COLOR_APP_THEME(), for: .normal)
-//            setCornerRadiusAndShadowOnButton(button: btnAwayTeam, backColor: COLOR_APP_THEME())
-//            btnAwayTeam.setTitleColor(UIColor.white, for: .normal)
-//        }
+        //        if selectedIndex == 0
+        //        {
+        //            setCornerRadiusAndShadowOnButton(button: btnHomeTeam, backColor: COLOR_APP_THEME())
+        //            btnHomeTeam.setTitleColor(UIColor.white, for: .normal)
+        //            setCornerRadiusAndShadowOnButton(button: btnAwayTeam, backColor: UIColor.white)
+        //            btnAwayTeam.setTitleColor(COLOR_APP_THEME(), for: .normal)
+        //        }
+        //        else
+        //        {
+        //            setCornerRadiusAndShadowOnButton(button: btnHomeTeam, backColor: UIColor.white)
+        //            btnHomeTeam.setTitleColor(COLOR_APP_THEME(), for: .normal)
+        //            setCornerRadiusAndShadowOnButton(button: btnAwayTeam, backColor: COLOR_APP_THEME())
+        //            btnAwayTeam.setTitleColor(UIColor.white, for: .normal)
+        //        }
         
         setCornerRadiusAndShadowOnButton(button: btnHomeTeam, backColor: UIColor.white)
         btnHomeTeam.setTitleColor(COLOR_APP_THEME(), for: .normal)
@@ -1243,6 +1311,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.tagCollectionView.reloadData()
         self.SetStateOfTagSaveButton()
     }
+    
     func SetStateOfTagSaveButton()
     {
         var isEnable: Bool = true
@@ -1265,7 +1334,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     //MARK:- Gesture
     func addPanGesture()
     {
-//        return
+        //        return
         if !self.isVideoPlay
         {
             return
@@ -1317,7 +1386,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     @objc func respondToPanGesture(gesture: UIPanGestureRecognizer)
     {
-//        return
+        //        return
         if self.focusSquare == nil
         {
             return
@@ -1327,7 +1396,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             return
         }
         let location: CGPoint = gesture.location(in: self.viewVideoRecordingOptionContainer)
-
+        
         if gesture.state == .began
         {
             lastPanY = location.y
@@ -1397,7 +1466,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             print("panning ended")
         }
-
+        
         
     }
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
@@ -1436,7 +1505,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 else
                 {
                     self.OpenRecordingView()
-
+                    
                 }
                 
             case UISwipeGestureRecognizerDirection.up:
@@ -1450,27 +1519,27 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     {
         self.viewVideoRecordingOptionContainer.isHidden = false
         self.viewOverlayContainer.isHidden = true
-//        if overlayImageView.image != nil
-//        {
-//            self.overlayRecordingImageView.image = overlayImageView.image
-//            self.overlayRecordingImageView.isHidden = false
-//        }
-//        else
-//        {
-//            self.overlayRecordingImageView.image = nil
-//            self.overlayRecordingImageView.isHidden = true
-//        }
+        //        if overlayImageView.image != nil
+        //        {
+        //            self.overlayRecordingImageView.image = overlayImageView.image
+        //            self.overlayRecordingImageView.isHidden = false
+        //        }
+        //        else
+        //        {
+        //            self.overlayRecordingImageView.image = nil
+        //            self.overlayRecordingImageView.isHidden = true
+        //        }
         var arrayImageView: Array = self.recordingOverlayView.subviews
         
         for i in 0..<arrayImageView.count
         {
             let subview: UIImageView = arrayImageView[i] as! UIImageView
             subview.removeFromSuperview()
-//            subview = nil
+            //            subview = nil
         }
         
         arrayImageView = overlayAllView.subviews
-    
+        
         for view in arrayImageView
         {
             let imageView: DrageImageView = view as! DrageImageView
@@ -1480,19 +1549,19 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             self.recordingOverlayView.addSubview(newImageView)
         }
-//        self.overlayRecordingImageView.frame = overlayImageView.frame
+        //        self.overlayRecordingImageView.frame = overlayImageView.frame
         self.GetScoreBoardImage()
-
+        
     }
     func OpenOverlayView()
     {
         self.viewVideoRecordingOptionContainer.isHidden = true
         self.viewOverlayContainer.isHidden = false
         
-//        self.recordEventInfo.homeTeamScore = Int64(homeScroe)!
-//        self.recordEventInfo.awayTeamScore = Int64(awayScore)!
-//        
-//        self.lblScoreField.text = "\(self.recordEventInfo.homeTeamScore )" + " - " + "\(self.recordEventInfo.awayTeamScore )"
+        //        self.recordEventInfo.homeTeamScore = Int64(homeScroe)!
+        //        self.recordEventInfo.awayTeamScore = Int64(awayScore)!
+        //
+        //        self.lblScoreField.text = "\(self.recordEventInfo.homeTeamScore )" + " - " + "\(self.recordEventInfo.awayTeamScore )"
         
         
         
@@ -1500,7 +1569,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     //MARK:- Add buttons in bottom bar
     func addButtonInBottomBar() {
         self.view.layoutIfNeeded()
-
+        
         for i in 0...totalNumberOfButtons {
             let button = UIButton()
             let y = 2.0
@@ -1533,15 +1602,15 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.viewVideoRecordingOptionContainer.isHidden = true
             self.viewScorecardContainer.isHidden = false
             
-//            let watch = StopWatch(totalSeconds: totalVideoSecond)
+            //            let watch = StopWatch(totalSeconds: totalVideoSecond)
             
             self.txtHomeTeamName.text = self.recordEventInfo.homeTeamName
             self.txtAwayTeamName.text = self.recordEventInfo.awayTeamName
             
             self.txtHomeTeamScore.text = "\(self.recordEventInfo.homeTeamScore)"
             self.txtAwayTeamScore.text = "\(self.recordEventInfo.awayTeamScore)"
-//            self.settingHomeLogo.image = self.imgHomeLogo.image
-//            self.settingAwayLogo.image = self.imgAwayLogo.image
+            //            self.settingHomeLogo.image = self.imgHomeLogo.image
+            //            self.settingAwayLogo.image = self.imgAwayLogo.image
             
             if self.isScorebaordOn
             {
@@ -1576,7 +1645,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 self.txtMinutes.text = String(format: "%02i", watch.minutes)
                 
             } else  {
-            self.txtMinutes.text = String(format: "%03i", watch.minutes)
+                self.txtMinutes.text = String(format: "%03i", watch.minutes)
                 
             }
         }
@@ -1589,158 +1658,158 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             return
         }
-//        sessionQueue.async { [unowned self] in
+        //        sessionQueue.async { [unowned self] in
         
-            let videoQuality: String = self.videoSettingDict["Quality"] as! String
-            
-            if videoQuality == Constants.HDQuality
+        let videoQuality: String = self.videoSettingDict["Quality"] as! String
+        
+        if videoQuality == Constants.HDQuality
+        {
+            self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
+        }
+        else if videoQuality == Constants.HDQuality
+        {
+            self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1920x1080
+        }
+        else if videoQuality == Constants.HDQuality
+        {
+            self.captureSession.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
+        }
+        
+        // Get Available Devices Capable Of Recording Video
+        let devices = AVCaptureDevice.devices(for: AVMediaType.video)
+        
+        // Get Back Camera
+        for device in devices
+        {
+            let recordingSource: String = self.videoSettingDict["RecordingSource"] as! String
+            if recordingSource == Constants.FrontCamera
             {
-                self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
-            }
-            else if videoQuality == Constants.HDQuality
-            {
-                self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1920x1080
-            }
-            else if videoQuality == Constants.HDQuality
-            {
-                self.captureSession.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
-            }
-            
-            // Get Available Devices Capable Of Recording Video
-            let devices = AVCaptureDevice.devices(for: AVMediaType.video)
-            
-            // Get Back Camera
-            for device in devices
-            {
-                let recordingSource: String = self.videoSettingDict["RecordingSource"] as! String
-                if recordingSource == Constants.FrontCamera
+                if device.position == AVCaptureDevice.Position.front
                 {
-                    if device.position == AVCaptureDevice.Position.front
-                    {
-                        self.currentDevice = device
-                        break
-                    }
-
-                }
-                else if recordingSource == Constants.BackCamera
-                {
-                    if device.position == AVCaptureDevice.Position.back
-                    {
-                        self.currentDevice = device
-                        break
-                    }
+                    self.currentDevice = device
+                    break
                 }
                 
             }
-            
-            let camera = AVCaptureDevice.default(for: AVMediaType.video)
-            
-            // Audio Input
-            let audioInputDevice = AVCaptureDevice.default(for: AVMediaType.audio)
-            
-            do
+            else if recordingSource == Constants.BackCamera
             {
-                let audioInput = try AVCaptureDeviceInput(device: audioInputDevice!)
-                
-                // Add Audio Input
-                if self.captureSession.canAddInput(audioInput)
+                if device.position == AVCaptureDevice.Position.back
                 {
-                    self.captureSession.addInput(audioInput)
-                }
-                else
-                {
-                    NSLog("Can't Add Audio Input")
+                    self.currentDevice = device
+                    break
                 }
             }
-            catch let error
-            {
-                NSLog("Error Getting Input Device: \(error)")
-            }
             
-            // Video Input
-            let videoInput: AVCaptureDeviceInput
-            do
-            {
-                videoInput = try AVCaptureDeviceInput(device: camera!)
-                
-                // Add Video Input
-                if self.captureSession.canAddInput(videoInput)
-                {
-                    self.captureSession.addInput(videoInput)
-                }
-                else
-                {
-                    NSLog("ERROR: Can't add video input")
-                }
-            }
-            catch let error
-            {
-                NSLog("ERROR: Getting input device: \(error)")
-            }
-            
-            // Video Output
-            self.videoFileOutput = AVCaptureMovieFileOutput()
-            self.captureSession.addOutput(self.videoFileOutput!)
-            
-            // Show Camera Preview
-//            self.cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-//            self.viewCameraContainer.layer.addSublayer(self.cameraPreviewLayer!)
-//            self.cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-//            let width = self.view.bounds.width
-//            self.cameraPreviewLayer?.frame = CGRect(x: 0, y: 0, width: width, height: width)
-//            self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.current.orientation.rawValue)!
-            // Bring Record Button To Front & Start Session
-            //        viewCameraContainer.bringSubview(toFront:recordButton)
+        }
         
-//        let FPSValue: String = self.videoSettingDict["FPS"] as! String
-//        for vFormat in self.currentDevice!.formats {
-//
-//            var ranges = vFormat.videoSupportedFrameRateRanges as [AVFrameRateRange]
-//            let frameRates = ranges[0]
-//
-//            if FPSValue == Constants.FPS30
-//            {
-//                if frameRates.maxFrameRate == 30
-//                {
-//                    do {
-//                        try self.currentDevice?.lockForConfiguration()
-//                        self.currentDevice?.activeFormat = vFormat as AVCaptureDevice.Format
-//                        self.currentDevice?.activeVideoMinFrameDuration = frameRates.minFrameDuration
-//                        self.currentDevice?.activeVideoMaxFrameDuration = frameRates.maxFrameDuration
-//                        self.currentDevice?.unlockForConfiguration()
-//                    }
-//                    catch {
-//                        print("Error locking configuration")
-//                    }
-//                    break
-//                }
-//            }
-//            if FPSValue == Constants.FPS60
-//            {
-//                if frameRates.maxFrameRate == 60
-//                {
-//                    do {
-//                        try self.currentDevice?.lockForConfiguration()
-//                        self.currentDevice?.activeFormat = vFormat as AVCaptureDevice.Format
-//                        self.currentDevice?.activeVideoMinFrameDuration = frameRates.minFrameDuration
-//                        self.currentDevice?.activeVideoMaxFrameDuration = frameRates.maxFrameDuration
-//                        self.currentDevice?.unlockForConfiguration()
-//                    }
-//                    catch {
-//                        print("Error locking configuration")
-//                    }
-//                    break
-//                }
-//            }
-//        }
+        let camera = AVCaptureDevice.default(for: AVMediaType.video)
         
-            self.captureSession.startRunning()
+        // Audio Input
+        let audioInputDevice = AVCaptureDevice.default(for: AVMediaType.audio)
+        
+        do
+        {
+            let audioInput = try AVCaptureDeviceInput(device: audioInputDevice!)
             
-//        }
+            // Add Audio Input
+            if self.captureSession.canAddInput(audioInput)
+            {
+                self.captureSession.addInput(audioInput)
+            }
+            else
+            {
+                NSLog("Can't Add Audio Input")
+            }
+        }
+        catch let error
+        {
+            NSLog("Error Getting Input Device: \(error)")
+        }
+        
+        // Video Input
+        let videoInput: AVCaptureDeviceInput
+        do
+        {
+            videoInput = try AVCaptureDeviceInput(device: camera!)
+            
+            // Add Video Input
+            if self.captureSession.canAddInput(videoInput)
+            {
+                self.captureSession.addInput(videoInput)
+            }
+            else
+            {
+                NSLog("ERROR: Can't add video input")
+            }
+        }
+        catch let error
+        {
+            NSLog("ERROR: Getting input device: \(error)")
+        }
+        
+        // Video Output
+        self.videoFileOutput = AVCaptureMovieFileOutput()
+        self.captureSession.addOutput(self.videoFileOutput!)
+        
+        // Show Camera Preview
+        //            self.cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+        //            self.viewCameraContainer.layer.addSublayer(self.cameraPreviewLayer!)
+        //            self.cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        //            let width = self.view.bounds.width
+        //            self.cameraPreviewLayer?.frame = CGRect(x: 0, y: 0, width: width, height: width)
+        //            self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.current.orientation.rawValue)!
+        // Bring Record Button To Front & Start Session
+        //        viewCameraContainer.bringSubview(toFront:recordButton)
+        
+        //        let FPSValue: String = self.videoSettingDict["FPS"] as! String
+        //        for vFormat in self.currentDevice!.formats {
+        //
+        //            var ranges = vFormat.videoSupportedFrameRateRanges as [AVFrameRateRange]
+        //            let frameRates = ranges[0]
+        //
+        //            if FPSValue == Constants.FPS30
+        //            {
+        //                if frameRates.maxFrameRate == 30
+        //                {
+        //                    do {
+        //                        try self.currentDevice?.lockForConfiguration()
+        //                        self.currentDevice?.activeFormat = vFormat as AVCaptureDevice.Format
+        //                        self.currentDevice?.activeVideoMinFrameDuration = frameRates.minFrameDuration
+        //                        self.currentDevice?.activeVideoMaxFrameDuration = frameRates.maxFrameDuration
+        //                        self.currentDevice?.unlockForConfiguration()
+        //                    }
+        //                    catch {
+        //                        print("Error locking configuration")
+        //                    }
+        //                    break
+        //                }
+        //            }
+        //            if FPSValue == Constants.FPS60
+        //            {
+        //                if frameRates.maxFrameRate == 60
+        //                {
+        //                    do {
+        //                        try self.currentDevice?.lockForConfiguration()
+        //                        self.currentDevice?.activeFormat = vFormat as AVCaptureDevice.Format
+        //                        self.currentDevice?.activeVideoMinFrameDuration = frameRates.minFrameDuration
+        //                        self.currentDevice?.activeVideoMaxFrameDuration = frameRates.maxFrameDuration
+        //                        self.currentDevice?.unlockForConfiguration()
+        //                    }
+        //                    catch {
+        //                        print("Error locking configuration")
+        //                    }
+        //                    break
+        //                }
+        //            }
+        //        }
+        
+        self.captureSession.startRunning()
+        
+        //        }
         self.StartVideoRecording()
         print(captureSession.inputs)
     }
-
+    
     
     
     //MARK:- Buttons click
@@ -1751,10 +1820,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         viewVideoRecordingOptionContainer.addGestureRecognizer(pinchGesture)
     }
     @objc fileprivate func zoomGesture(pinch: UIPinchGestureRecognizer) {
-//        guard pinchToZoom == true && self.currentCamera == .rear else {
-//            //ignore pinch
-//            return
-//        }
+        //        guard pinchToZoom == true && self.currentCamera == .rear else {
+        //            //ignore pinch
+        //            return
+        //        }
         
         guard let device = AVCaptureDevice.devices().first else { return }
         
@@ -1803,7 +1872,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             try device.lockForConfiguration()
             defer { device.unlockForConfiguration() }
             device.ramp(toVideoZoomFactor: CGFloat(zoomScale), withRate: Float(20.0/Double(zoomSpeed) * 1.5))
-
+            
         } catch {
             print("\(error.localizedDescription)")
         }
@@ -1851,7 +1920,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     
     @IBAction func btnBackToRecordingClicked(_ sender: Any) {
-
+        
         recording()
         
     }
@@ -1912,23 +1981,23 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     @IBAction func btnFinishRecordingClicked(_ sender: Any) {
         
-//        self.trimEnd = self.currentTime
-//
-//        let trimDict: NSMutableDictionary = NSMutableDictionary.init()
-//        trimDict.setValue(self.trimStart, forKey: "trimstart")
-//        trimDict.setValue(self.trimEnd, forKey: "trimend")
-//
-//        self.trimPositionArray.add(trimDict)
+        //        self.trimEnd = self.currentTime
+        //
+        //        let trimDict: NSMutableDictionary = NSMutableDictionary.init()
+        //        trimDict.setValue(self.trimStart, forKey: "trimstart")
+        //        trimDict.setValue(self.trimEnd, forKey: "trimend")
+        //
+        //        self.trimPositionArray.add(trimDict)
         
-      //  painter.stopCameraRecording(competionHandler: nil)
-//        self.SaveVideoRcordedInfoToDB()
+        //  painter.stopCameraRecording(competionHandler: nil)
+        //        self.SaveVideoRcordedInfoToDB()
         
         if self.isVideoPlay
         {
             if self.avPlayer.rate > 0
             {
-//                painter.stopCameraRecording(competionHandler: nil)
-//                self.lastRecordedSecond = self.totalRecordedSecond
+                //                painter.stopCameraRecording(competionHandler: nil)
+                //                self.lastRecordedSecond = self.totalRecordedSecond
                 self.avPlayer.pause()
             }
             APP_DELEGATE.showHUDWithText(textMessage: "Saving...")
@@ -1939,11 +2008,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             APP_DELEGATE.showHUDWithText(textMessage: "Saving...")
             self.Merge1()
         }
-//        self.Merge1()
-//        viewTagsContainer.isHidden = false
-//        viewZoomOptionsContainer.isHidden = true
-//        viewVideoRecordingOptionContainer.isHidden = true
-//        viewProgressiveZoomContainer.isHidden = true
+        //        self.Merge1()
+        //        viewTagsContainer.isHidden = false
+        //        viewZoomOptionsContainer.isHidden = true
+        //        viewVideoRecordingOptionContainer.isHidden = true
+        //        viewProgressiveZoomContainer.isHidden = true
     }
     func SaveVideoRcordedInfoToDB()
     {
@@ -2041,7 +2110,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         self.RedirectToBackAfterMerderVideo()
     }
-
+    
     func RedirectToBackAfterMerderVideo()
     {
         if !self.isVideoPlay
@@ -2051,12 +2120,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         DispatchQueue.main.async {
             
-        APP_DELEGATE.hideHUD()
-        APP_DELEGATE.myOrientation = .portrait
-        APP_DELEGATE.landscaperSide = UIInterfaceOrientation.portrait
-        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-        self.view.layoutIfNeeded()
-        self.navigationController?.popToRootViewController(animated: true)
+            APP_DELEGATE.hideHUD()
+            APP_DELEGATE.myOrientation = .portrait
+            APP_DELEGATE.landscaperSide = UIInterfaceOrientation.portrait
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+            self.view.layoutIfNeeded()
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
@@ -2103,7 +2172,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             btnMinutesSwitch.setImage(UIImage(named: "switch_off"), for: .normal)
             btnPeriodSwitch.setImage(UIImage(named: "switch_off"), for: .normal)
-
+            
             txtMinutes.isEnabled = false
             txtPeriod.isEnabled = false
         }
@@ -2146,10 +2215,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     
     @IBAction func btnSaveRecordingClicked(_ sender: Any) {
-//        APP_DELEGATE.myOrientation = .portrait
-//        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-//        self.view.layoutIfNeeded()
-//        self.navigationController?.popToRootViewController(animated: true)
+        //        APP_DELEGATE.myOrientation = .portrait
+        //        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        //        self.view.layoutIfNeeded()
+        //        self.navigationController?.popToRootViewController(animated: true)
         
         if self.selectedtagsArray.count > 0
         {
@@ -2168,8 +2237,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             viewProgressiveZoomContainer.isHidden = false
         }
-
-//        viewZoomOptionsContainer.isHidden = true
+        
+        //        viewZoomOptionsContainer.isHidden = true
         viewVideoRecordingOptionContainer.isHidden = false
         
         var clipSecond: Int64 = 0
@@ -2196,7 +2265,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             let tagItem: TagInfo = self.selectedtagsArray.object(at: 0) as! TagInfo
             
             let maxTagSecond: Int64 = self.selectedtagsArray.value(forKeyPath: "@max.tagSecondValue") as! Int64
-
+            
             clipSecond = maxTagSecond
             clipName = tagItem.tagName!
         }
@@ -2205,10 +2274,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             clipSecond = 30
             clipName = "Hightlight"
         }
-//        if teamName.count > 0
-//        {
-//            clipName = clipName + " (\(teamName))"
-//        }
+        //        if teamName.count > 0
+        //        {
+        //            clipName = clipName + " (\(teamName))"
+        //        }
         let dict: Dictionary <String, Any> = [
             "clipcapturesecond" : Int64(self.totalRecordedSecond),
             "cliptagsecond" : clipSecond,
@@ -2225,7 +2294,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     @IBAction func btnHomeScoreClicked(_ sender: UIButton)
     {
         self.recordEventInfo.homeTeamScore = self.recordEventInfo.homeTeamScore + Int64((sender.titleLabel?.text)!)!
-//        self.recordEventInfo.homeTeamScore = Int64((sender.titleLabel?.text)!)!
+        //        self.recordEventInfo.homeTeamScore = Int64((sender.titleLabel?.text)!)!
         let scoreStr: String = "\(self.recordEventInfo.homeTeamScore )" + " - " + "\(self.recordEventInfo.awayTeamScore )"
         self.overlayScoreBtn.setTitle(scoreStr, for: .normal)
         self.GetScoreBoardImage()
@@ -2250,7 +2319,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         let timerValue: String = self.txtMinutes.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         let periodValue: String = self.txtPeriod.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-
+        
         
         if homeTeamName.isEmpty
         {
@@ -2282,17 +2351,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Please add period value.", withTitle: "Alert")
             return
         }
-
+        
         self.recordEventInfo.homeTeamName = homeTeamName
         self.recordEventInfo.awayTeamName = awayTeamName
         
         self.recordEventInfo.homeTeamScore = Int64(homeScroe)!
         self.recordEventInfo.awayTeamScore = Int64(awayScore)!
-
+        
         let scoreStr: String = "\(self.recordEventInfo.homeTeamScore )" + " - " + "\(self.recordEventInfo.awayTeamScore )"
-//        totalVideoSecond = Int(timerValue)!
-//        self.lblTime.text = timerValue
-//        self.totalRecordedSecond =
+        //        totalVideoSecond = Int(timerValue)!
+        //        self.lblTime.text = timerValue
+        //        self.totalRecordedSecond =
         
         self.lblPeriod.text = periodValue
         self.lblHomeTeam.text = homeTeamName
@@ -2310,9 +2379,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             self.isScorebaordOn = false
             
-//            self.overlayHomeTeamView.isHidden = true
-//            self.overlayAwayTeamView.isHidden = true
-//            self.overlayScoreView.isHidden = true
+            //            self.overlayHomeTeamView.isHidden = true
+            //            self.overlayAwayTeamView.isHidden = true
+            //            self.overlayScoreView.isHidden = true
             
             self.overlayNameScoreView.isHidden = true
             
@@ -2323,9 +2392,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             self.isScorebaordOn = true
             
-//            self.overlayHomeTeamView.isHidden = false
-//            self.overlayAwayTeamView.isHidden = false
-//            self.overlayScoreView.isHidden = false
+            //            self.overlayHomeTeamView.isHidden = false
+            //            self.overlayAwayTeamView.isHidden = false
+            //            self.overlayScoreView.isHidden = false
             
             self.overlayNameScoreView.isHidden = false
             self.away_ScoreView.isHidden = false
@@ -2366,9 +2435,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
         UIGraphicsBeginImageContextWithOptions(imageAndScoreBoardView.frame.size, false, 0)
         
-//        UIGraphicsBeginImageContextWithOptions((self.videoSize)!, false, 0)
-
-
+        //        UIGraphicsBeginImageContextWithOptions((self.videoSize)!, false, 0)
+        
+        
         let context = UIGraphicsGetCurrentContext()!
         self.imageAndScoreBoardView.layer.render(in: context)
         self.overlayScoreBoardImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -2428,7 +2497,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 isProductPurchased = true
             }
         }
-//        isProductPurchased = true
+        //        isProductPurchased = true
         if !isProductPurchased
         {
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "You have to purchase Image in overlay product for overlay screen. You can purchase it from Home Page.", withTitle: "Alert")
@@ -2448,7 +2517,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 isProductPurchased = true
             }
         }
-//        isProductPurchased = true
+        //        isProductPurchased = true
         if !isProductPurchased
         {
             APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "You have to purchase Scoreboard product to set Scoreboard setting. You can purchase it from Home Page.", withTitle: "Alert")
@@ -2459,13 +2528,13 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     func AddImageOverVideo(outputFileURL: String)
     {
-       
+        
     }
     func MergePlayVideoFile()
     {
         let documentsPath = self.selectedVideoURL.path // self.recordEventInfo.videoFolderName as String
         
-//        let tempVideoPath = APP_DELEGATE.FetchFullVideoPath(videoFolderName: documentsPath) + "/1.mov"
+        //        let tempVideoPath = APP_DELEGATE.FetchFullVideoPath(videoFolderName: documentsPath) + "/1.mov"
         let sourceURL = URL.init(fileURLWithPath: documentsPath)
         
         let outputFileName = UUID().uuidString
@@ -2488,28 +2557,28 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         outputFilePath = outputFilePath + "/mynew.mov"
         let destinationURL = URL.init(fileURLWithPath: outputFilePath) //NSURL(fileURLWithPath: outputFilePath)
         
-//        if let sourceURL = sourceURL, let destinationURL = destinationURL
-//        {/
-//            let timeScale: Int32 = 1000
+        //        if let sourceURL = sourceURL, let destinationURL = destinationURL
+        //        {/
+        //            let timeScale: Int32 = 1000
         
-//            let trimPoints = [(CMTimeMake(2000, timeScale), CMTimeMake(5000, timeScale)),
-//                              (CMTimeMake(20500, timeScale), CMTimeMake(23000, timeScale)),
-//                              (CMTimeMake(60000, timeScale), CMTimeMake(65000, timeScale))]
+        //            let trimPoints = [(CMTimeMake(2000, timeScale), CMTimeMake(5000, timeScale)),
+        //                              (CMTimeMake(20500, timeScale), CMTimeMake(23000, timeScale)),
+        //                              (CMTimeMake(60000, timeScale), CMTimeMake(65000, timeScale))]
         
         self.trimVideo(sourceURL: sourceURL, destinationURL: destinationURL, trimPoints: self.trimPositionArray ) { error in
-                if let error = error
-                {
-                    NSLog("Failure: \(error)")
-                }
-                else
-                {
-                    NSLog("Success")
-                }
-                
+            if let error = error
+            {
+                NSLog("Failure: \(error)")
             }
-//        } else {
-//            NSLog("error: Please check the source and destination paths.")
-//        }
+            else
+            {
+                NSLog("Success")
+            }
+            
+        }
+        //        } else {
+        //            NSLog("error: Please check the source and destination paths.")
+        //        }
         
     }
     func Merge1()
@@ -2519,7 +2588,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         let tempVideoPath = APP_DELEGATE.FetchFullVideoPath(videoFolderName: documentsPath)
         
-//        outputFilePath = outputFilePath + "\(documentsPath)"
+        //        outputFilePath = outputFilePath + "\(documentsPath)"
         
         let dirContents = try? fileManager.contentsOfDirectory(atPath: tempVideoPath)
         let count = dirContents?.count
@@ -2560,31 +2629,31 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         if NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first != nil {
             /// create a path to the video file
             completeMoviePath = URL(fileURLWithPath: outputFilePath).appendingPathComponent("mynew.mov")
-
+            
             if let completeMoviePath = completeMoviePath {
                 if FileManager.default.fileExists(atPath: completeMoviePath.path) {
                     do {
                         /// delete an old duplicate file
                         try FileManager.default.removeItem(at: completeMoviePath)
                     } catch {
-
+                        
                     }
                 }
             }
         } else {
-
+            
         }
         
-//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        let documentsDirectory = paths[0].path as String
-//        outputFilePath = documentsDirectory + "/file.mp4"
-//        completeMoviePath = URL.init(fileURLWithPath: outputFilePath)
-//        do {
-//            try FileManager.default.removeItem(atPath: outputFilePath)
-//        }
-//        catch {
-//
-//        }
+        //        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        //        let documentsDirectory = paths[0].path as String
+        //        outputFilePath = documentsDirectory + "/file.mp4"
+        //        completeMoviePath = URL.init(fileURLWithPath: outputFilePath)
+        //        do {
+        //            try FileManager.default.removeItem(atPath: outputFilePath)
+        //        }
+        //        catch {
+        //
+        //        }
         
         let composition = AVMutableComposition()
         
@@ -2592,7 +2661,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             /// add audio and video tracks to the composition
             if let videoTrack: AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.video, preferredTrackID: kCMPersistentTrackID_Invalid),
-            let audioTrack: AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
+                let audioTrack: AVMutableCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
                 
                 var insertTime = CMTime(seconds: 0, preferredTimescale: 1)
                 
@@ -2665,7 +2734,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     func exportDidFinish(session: AVAssetExportSession)
     {
         self.SaveVideoRcordedInfoToDB()
-
+        
         return
         
         if session.status == AVAssetExportSessionStatus.completed
@@ -2683,7 +2752,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
                         let newObj = avurlAsset as! AVURLAsset
                         print(newObj.url)
-
+                        
                         self.SaveVideoRcordedInfoToDB()
                         // This is the URL we need now to access the video from gallery directly.
                     })
@@ -2738,9 +2807,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.tagsRecordingList = NSMutableArray.init(array: SubCategoryArray1)
         }
         
-//        DispatchQueue.main.async {
-//
-//        }
+        //        DispatchQueue.main.async {
+        //
+        //        }
     }
     
     func SetHighLightButtons()
@@ -2750,7 +2819,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     func runTimer()
     {
         print("run Timer")
-//        return
+        //        return
         
         if self.recordEventInfo.isDayEvent
         {
@@ -2761,9 +2830,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             timer.invalidate()
             timer = nil
         }
-
-            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(RecordCameraVideoVC.updateTimer)), userInfo: nil, repeats: true)
         
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(RecordCameraVideoVC.updateTimer)), userInfo: nil, repeats: true)
         
     }
     @objc func updateTimer()
@@ -2774,14 +2842,14 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             return
         }
-//        totalVideoSecond = totalVideoSecond + 1
+        //        totalVideoSecond = totalVideoSecond + 1
         
-//        let watch = StopWatch(totalSeconds: totalVideoSecond)
-//
-//        self.lblTime.text = String(format: "%02i:%02i", watch.minutes, watch.seconds)
-//        self.lblTimeString = self.lblTime.text
-//        self.txtMinutes.text = String(format: "%02i", watch.minutes)
-//        self.GetScoreBoardImage()
+        //        let watch = StopWatch(totalSeconds: totalVideoSecond)
+        //
+        //        self.lblTime.text = String(format: "%02i:%02i", watch.minutes, watch.seconds)
+        //        self.lblTimeString = self.lblTime.text
+        //        self.txtMinutes.text = String(format: "%02i", watch.minutes)
+        //        self.GetScoreBoardImage()
     }
     
     func createCameraPreview()
@@ -2790,7 +2858,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         let screenRect: CGRect =  self.topView.bounds// self.view.bounds
         
         let screenSize: CGSize = screenRect.size
-
+        
         var videoTempSize: CGSize = CGSize.zero
         let videoQuality: String = self.videoSettingDict["Quality"] as! String
         
@@ -2817,7 +2885,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         let newSize = CGSize.init(width: videoTempSize.width/resizeFactor, height: videoTempSize.height/resizeFactor)
         var scaledImageRect = CGRect.zero
-
+        
         scaledImageRect.size.width  = newSize.width
         scaledImageRect.size.height = newSize.height
         scaledImageRect.origin.x    = (screenSize.width - scaledImageRect.size.width) / 2.0
@@ -2839,26 +2907,26 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.viewCameraContainer.addSubview(self.cameraPreview)
         
         /*
-        playerItem = AVPlayerItem.init(url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "YGMW9856", ofType: "MP4")!))
-        player = AVPlayer.init(playerItem: playerItem)
-        player.play()
-        
-        movieFile = GPUImageMovie.init(playerItem: playerItem)
-        //        let movie: GPUImageMovie = GPUImageMovie.init(url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "YGMW9856", ofType: "MP4")!))
-        ////        movie.delegate = self as! GPUImageMovieDelegate
-        //        movieFile.runBenchmark = true
-        movieFile.playAtActualSpeed = true
-        movieFile.delegate = self
-        
-        filter = GPUImageAlphaBlendFilter.init()
-        filter.forceProcessing(at: self.cameraPreview.sizeInPixels)
-        
-        movieFile.addTarget(filter)
-        filter.addTarget(self.cameraPreview)
-        movieFile.startProcessing()
-        player.actionAtItemEnd = .none
-//        [movie startProcessing];
- */
+         playerItem = AVPlayerItem.init(url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "YGMW9856", ofType: "MP4")!))
+         player = AVPlayer.init(playerItem: playerItem)
+         player.play()
+         
+         movieFile = GPUImageMovie.init(playerItem: playerItem)
+         //        let movie: GPUImageMovie = GPUImageMovie.init(url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "YGMW9856", ofType: "MP4")!))
+         ////        movie.delegate = self as! GPUImageMovieDelegate
+         //        movieFile.runBenchmark = true
+         movieFile.playAtActualSpeed = true
+         movieFile.delegate = self
+         
+         filter = GPUImageAlphaBlendFilter.init()
+         filter.forceProcessing(at: self.cameraPreview.sizeInPixels)
+         
+         movieFile.addTarget(filter)
+         filter.addTarget(self.cameraPreview)
+         movieFile.startProcessing()
+         player.actionAtItemEnd = .none
+         //        [movie startProcessing];
+         */
     }
     @objc func InitCameraCapture()
     {
@@ -2903,7 +2971,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         painter = AVCameraPainter.init(sessionPreset: sessionPreset, cameraPosition: AVCaptureDevice.Position(rawValue: cameraPostion)!, framRate: frameSecondRate, captureVideo: self.isVideoPlay)
         
-//        painter = AVCameraPainter.
+        //        painter = AVCameraPainter.
         painter.shouldCaptureAudio = true
         painter.shouldRecordOverlay = true
         
@@ -2919,36 +2987,36 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             
         }
-//        let screenRect: CGRect = UIScreen.main.bounds
+        //        let screenRect: CGRect = UIScreen.main.bounds
         
         let screenRect: CGRect = self.topView.bounds
         var widthRatio: CGFloat = 1.0
         var heightRatio: CGFloat = 1.0
         
-//        let insetRect = AVMakeRect(aspectRatio: self.videoSize!, insideRect: self.cameraPreview.bounds)
-//
-//
-//        if self.cameraPreview.fillMode == kGPUImageFillModeStretch
-//        {
-//            widthRatio = 1.0
-//            heightRatio = 1.0
-//        }
-//        else if self.cameraPreview.fillMode == kGPUImageFillModePreserveAspectRatio
-//        {
-//            //            widthRatio = insetRect.size.width / screenRect.size.width
-//            //            heightRatio = insetRect.size.height / screenRect.size.height
-//
-//            widthRatio = (self.videoSize?.width)!/screenRect.size.width
-//            heightRatio = (self.videoSize?.height)!/screenRect.size.height
-//        }
-//        else if self.cameraPreview.fillMode == kGPUImageFillModePreserveAspectRatioAndFill
-//        {
-//            //            widthRatio = insetRect.size.height / screenRect.size.height
-//            //            heightRatio = insetRect.size.width / screenRect.size.width
-//
-//            widthRatio = (self.videoSize?.height)!/screenRect.size.height
-//            heightRatio = (self.videoSize?.width)!/screenRect.size.width
-//        }
+        //        let insetRect = AVMakeRect(aspectRatio: self.videoSize!, insideRect: self.cameraPreview.bounds)
+        //
+        //
+        //        if self.cameraPreview.fillMode == kGPUImageFillModeStretch
+        //        {
+        //            widthRatio = 1.0
+        //            heightRatio = 1.0
+        //        }
+        //        else if self.cameraPreview.fillMode == kGPUImageFillModePreserveAspectRatio
+        //        {
+        //            //            widthRatio = insetRect.size.width / screenRect.size.width
+        //            //            heightRatio = insetRect.size.height / screenRect.size.height
+        //
+        //            widthRatio = (self.videoSize?.width)!/screenRect.size.width
+        //            heightRatio = (self.videoSize?.height)!/screenRect.size.height
+        //        }
+        //        else if self.cameraPreview.fillMode == kGPUImageFillModePreserveAspectRatioAndFill
+        //        {
+        //            //            widthRatio = insetRect.size.height / screenRect.size.height
+        //            //            heightRatio = insetRect.size.width / screenRect.size.width
+        //
+        //            widthRatio = (self.videoSize?.height)!/screenRect.size.height
+        //            heightRatio = (self.videoSize?.width)!/screenRect.size.width
+        //        }
         widthRatio = (self.videoSize?.width)!/screenRect.size.width
         heightRatio = (self.videoSize?.height)!/screenRect.size.height
         self.GetScoreBoardImage()
@@ -2989,12 +3057,12 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 self.trimStart = time
                 
             }
-//            self.currentTime = time
+            //            self.currentTime = time
             var secondsf: Float = Float(time.value) / Float(time.timescale)
             
             print("time: \(time)")
             print("secondsf: \(secondsf)")
-
+            
             
             if !secondsf.isNaN
             {
@@ -3028,11 +3096,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                         self.lblTimeString = String(format: "%02i:%02i", watch.minutes, watch.seconds)
                         
                     } else {
-                    
+                        
                         self.lblTimeString = String(format: "%03i:%02i", watch.minutes, watch.seconds)
-                    
+                        
                     }
-                
+                    
                 }
                 
                 if  self.overlayScoreBoardImage != nil
@@ -3051,43 +3119,43 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 
                 if  self.lblTimeString != nil {
                     print("9: isDayEvent lblTimestring!=nil")
-                if  self.isTimeLabelHide == false
-                {
-                    
-                    print("isDayEvent 10: isTimeLabelhide==false")
-                    context?.translateBy(x: 0, y: (self.videoSize?.height)!);
-                    context?.scaleBy(x: widthRatio, y: -heightRatio)
-                    //                    context?.clear(lblTimeFrame)
-                    context?.setFillColor(UIColor.white.cgColor)
-                    context?.fill(CGRect(x: lblTimeFrame.origin.x, y: lblTimeFrame.origin.y+2, width: lblTimeFrame.size.width, height: lblTimeFrame.size.height-4))
-                    let ypoint = 2*lblTimeFrame.midY
-                    context?.translateBy(x:0, y:  ypoint)
-                    context?.scaleBy(x: 1.0, y: -1.0)
-                    let path = CGMutablePath()
-                    path.addRect(lblTimeFrame)
-                    let attrString = NSAttributedString(string: self.lblTimeString!, attributes: attrs)
-                    let framesetter = CTFramesetterCreateWithAttributedString(attrString as CFAttributedString)
-                    let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, attrString.length), path, nil)
-                    CTFrameDraw(frame, context!)
-                    
-                    context?.translateBy(x:0, y:  ypoint)
-                    context?.scaleBy(x: 1.0/widthRatio, y: 1.0/heightRatio)
-                    context?.translateBy(x: 0, y: -(self.videoSize?.height)!)
-                    //                    context?.showTextAtPoint(x: 0, y: 0, string: self.lblTimeString!, length: (self.lblTimeString?.count)!)
-                    
-                    print("isDayEvent lblTimeString1: \(String(describing: self.lblTimeString))")
-                    print("isDayEvent isTimerOn2: \(self.isTimerOn)")
-
-                    DispatchQueue.main.async {
-                        print("isDayEvent 11: Dispatch queue")
- self.overlayTimerBtn.setTitle(self.lblTimeString!, for: .normal)
-                        print("lblTimeString2: \(String(describing: self.lblTimeString))")
-                    }
-                    
-                    print("isDayEvent isTimerOn3: \(self.isTimerOn)")
-
-                    print("lblTimeString3: \(String(describing: self.lblTimeString))")
-                    
+                    if  self.isTimeLabelHide == false
+                    {
+                        
+                        print("isDayEvent 10: isTimeLabelhide==false")
+                        context?.translateBy(x: 0, y: (self.videoSize?.height)!);
+                        context?.scaleBy(x: widthRatio, y: -heightRatio)
+                        //                    context?.clear(lblTimeFrame)
+                        context?.setFillColor(UIColor.white.cgColor)
+                        context?.fill(CGRect(x: lblTimeFrame.origin.x, y: lblTimeFrame.origin.y+2, width: lblTimeFrame.size.width, height: lblTimeFrame.size.height-4))
+                        let ypoint = 2*lblTimeFrame.midY
+                        context?.translateBy(x:0, y:  ypoint)
+                        context?.scaleBy(x: 1.0, y: -1.0)
+                        let path = CGMutablePath()
+                        path.addRect(lblTimeFrame)
+                        let attrString = NSAttributedString(string: self.lblTimeString!, attributes: attrs)
+                        let framesetter = CTFramesetterCreateWithAttributedString(attrString as CFAttributedString)
+                        let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, attrString.length), path, nil)
+                        CTFrameDraw(frame, context!)
+                        
+                        context?.translateBy(x:0, y:  ypoint)
+                        context?.scaleBy(x: 1.0/widthRatio, y: 1.0/heightRatio)
+                        context?.translateBy(x: 0, y: -(self.videoSize?.height)!)
+                        //                    context?.showTextAtPoint(x: 0, y: 0, string: self.lblTimeString!, length: (self.lblTimeString?.count)!)
+                        
+                        print("isDayEvent lblTimeString1: \(String(describing: self.lblTimeString))")
+                        print("isDayEvent isTimerOn2: \(self.isTimerOn)")
+                        
+                        DispatchQueue.main.async {
+                            print("isDayEvent 11: Dispatch queue")
+                            self.overlayTimerBtn.setTitle(self.lblTimeString!, for: .normal)
+                            print("lblTimeString2: \(String(describing: self.lblTimeString))")
+                        }
+                        
+                        print("isDayEvent isTimerOn3: \(self.isTimerOn)")
+                        
+                        print("lblTimeString3: \(String(describing: self.lblTimeString))")
+                        
                     }
                 }
             }
@@ -3111,32 +3179,32 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     func StartCameraCapture()
     {
         self.runTimer()
-
+        
         let outputFileName = self.recordEventInfo.videoFolderName
         var outputFilePath = NSTemporaryDirectory() as String
         outputFilePath = outputFilePath + "\(outputFileName)"
         
-//        if self.recordedVideoIndex == 0
-//        {
-//            if !FileManager.default.fileExists(atPath: outputFilePath as String)
-//            {
-//                do
-//                {
-//                    try FileManager.default.createDirectory(atPath: outputFilePath, withIntermediateDirectories: true, attributes: nil)
-//                }
-//                catch
-//                {
-//
-//                }
-//            }
-//        }
-
+        //        if self.recordedVideoIndex == 0
+        //        {
+        //            if !FileManager.default.fileExists(atPath: outputFilePath as String)
+        //            {
+        //                do
+        //                {
+        //                    try FileManager.default.createDirectory(atPath: outputFilePath, withIntermediateDirectories: true, attributes: nil)
+        //                }
+        //                catch
+        //                {
+        //
+        //                }
+        //            }
+        //        }
+        
         self.recordedVideoIndex = self.recordedVideoIndex + 1
         let videoIndex: String = "\(self.recordedVideoIndex)"
-
+        
         let outputFilePath1 = (outputFilePath as NSString).appendingPathComponent((videoIndex as NSString).appendingPathExtension("mov")!)
-
-//        let outputFilePath1 = outputFilePath + "/mynew.mov"
+        
+        //        let outputFilePath1 = outputFilePath + "/mynew.mov"
         let videoCodec: String = self.videoSettingDict["Codec"] as! String
         var codecValue: String = AVVideoCodecH264
         if videoCodec == Constants.CodecH264
@@ -3171,9 +3239,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil, outputSettings: nil)
         }
         
-//        painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil)
+        //        painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil)
     }
-
+    
     func StopCameraCapture()
     {
         if self.isVideoPlay
@@ -3197,31 +3265,31 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         painter.stopCameraRecording(competionHandler: {(_ painter: AVCameraPainter) -> Void in
             
             self.RedirectToBackAfterMerderVideo()
-//            PHPhotoLibrary.shared().performChanges({
-//                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL.init(fileURLWithPath: outputFilePath))
-//            }) { saved, error in
-//                if saved {
-//                    let fetchOptions = PHFetchOptions()
-//                    fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-//
-//                    // After uploading we fetch the PHAsset for most recent video and then get its current location url
-//
-//                    let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions).lastObject
-//                    PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
-//                        let newObj = avurlAsset as! AVURLAsset
-//                        print(newObj.url)
-//                        self.RedirectToBackAfterMerderVideo()
-//                        // This is the URL we need now to access the video from gallery directly.
-//                    })
-//                }
-//                else
-//                {
-//                    self.RedirectToBackAfterMerderVideo()
-//                }
-//            }
+            //            PHPhotoLibrary.shared().performChanges({
+            //                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL.init(fileURLWithPath: outputFilePath))
+            //            }) { saved, error in
+            //                if saved {
+            //                    let fetchOptions = PHFetchOptions()
+            //                    fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+            //
+            //                    // After uploading we fetch the PHAsset for most recent video and then get its current location url
+            //
+            //                    let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions).lastObject
+            //                    PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
+            //                        let newObj = avurlAsset as! AVURLAsset
+            //                        print(newObj.url)
+            //                        self.RedirectToBackAfterMerderVideo()
+            //                        // This is the URL we need now to access the video from gallery directly.
+            //                    })
+            //                }
+            //                else
+            //                {
+            //                    self.RedirectToBackAfterMerderVideo()
+            //                }
+            //            }
             
             } as! (AVCameraPainter?) -> Void)
-
+        
     }
     
     func verifyPresetForAsset(preset: String, asset: AVAsset) -> Bool {
@@ -3280,77 +3348,77 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             }
             
             var accumulatedTime = kCMTimeZero
-//            for (startTimeForCurrentSlice, endTimeForCurrentSlice) in trimPoints {
+            //            for (startTimeForCurrentSlice, endTimeForCurrentSlice) in trimPoints {
             
-                for i in 0..<self.trimPositionArray.count
-                {
-                    let trimDict: NSMutableDictionary = self.trimPositionArray.object(at: i) as! NSMutableDictionary
+            for i in 0..<self.trimPositionArray.count
+            {
+                let trimDict: NSMutableDictionary = self.trimPositionArray.object(at: i) as! NSMutableDictionary
+                
+                let startTimeForCurrentSlice: CMTime = trimDict.value(forKey: "trimstart") as! CMTime
+                let endTimeForCurrentSlice: CMTime = trimDict.value(forKey: "trimend") as! CMTime
+                
+                let durationOfCurrentSlice = CMTimeSubtract(endTimeForCurrentSlice, startTimeForCurrentSlice)
+                let timeRangeForCurrentSlice = CMTimeRangeMake(startTimeForCurrentSlice, durationOfCurrentSlice)
+                
+                do {
+                    try videoCompTrack!.insertTimeRange(timeRangeForCurrentSlice, of: assetVideoTrack, at: accumulatedTime)
                     
-                    let startTimeForCurrentSlice: CMTime = trimDict.value(forKey: "trimstart") as! CMTime
-                    let endTimeForCurrentSlice: CMTime = trimDict.value(forKey: "trimend") as! CMTime
-                    
-                    let durationOfCurrentSlice = CMTimeSubtract(endTimeForCurrentSlice, startTimeForCurrentSlice)
-                    let timeRangeForCurrentSlice = CMTimeRangeMake(startTimeForCurrentSlice, durationOfCurrentSlice)
-                    
-                    do {
-                        try videoCompTrack!.insertTimeRange(timeRangeForCurrentSlice, of: assetVideoTrack, at: accumulatedTime)
+                    if hasAudio
+                    {
+                        try audioCompTrack!.insertTimeRange(timeRangeForCurrentSlice, of: assetAudioTrack, at: accumulatedTime)
                         
-                        if hasAudio
-                        {
-                            try audioCompTrack!.insertTimeRange(timeRangeForCurrentSlice, of: assetAudioTrack, at: accumulatedTime)
-
-                        }
-                        accumulatedTime = CMTimeAdd(accumulatedTime, durationOfCurrentSlice)
                     }
-                    catch let compError {
-                        print("TrimVideo: error during composition: \(compError)")
-                        completion?(compError)
-                    }
+                    accumulatedTime = CMTimeAdd(accumulatedTime, durationOfCurrentSlice)
+                }
+                catch let compError {
+                    print("TrimVideo: error during composition: \(compError)")
+                    completion?(compError)
+                }
             }
             
-//            UIGraphicsBeginImageContextWithOptions(self.playerVideoView1.frame.size, false, 0)
-//            let context = UIGraphicsGetCurrentContext()!
-//            self.playerVideoView1.layer.render(in: context)
-//            let watermarkImage = UIGraphicsGetImageFromCurrentImageContext()
-//            UIGraphicsEndImageContext()
-//
-//            let videoSize = videoCompTrack?.naturalSize
-//
-//            let instruction = AVMutableVideoCompositionInstruction()
-//            instruction.timeRange = CMTimeRangeMake(kCMTimeZero, accumulatedTime)
-//
-//            let layerInstruction = self.videoCompositionInstructionForTrack(track: videoCompTrack!, asset: asset)
-//            layerInstruction.setTransform((videoCompTrack?.preferredTransform)!, at: kCMTimeZero)
-//            instruction.layerInstructions = [layerInstruction]
-//
-//            let videoComp = AVMutableVideoComposition()
-//            videoComp.renderSize = videoSize!
-//            videoComp.frameDuration = CMTimeMake(1, 30)
-//            videoComp.instructions = [instruction]
-//
-//            let animatedTitleLayerr = CALayer()
-//            let imageLayer = CALayer()
-//            animatedTitleLayerr.contents = watermarkImage?.cgImage
-//            animatedTitleLayerr.frame = CGRect(x: 0.0, y: 0.0, width: (videoSize?.width)!, height: (videoSize?.height)!)
-//            animatedTitleLayerr.masksToBounds = true
-//            animatedTitleLayerr.addSublayer(imageLayer)
-//
-//            let parentLayer = CALayer()
-//            let videoLayer = CALayer()
-//            parentLayer.frame = CGRect(x: 0, y: 0, width: (videoSize?.width)!, height: (videoSize?.height)!)
-//            videoLayer.frame = CGRect(x: 0, y: 0, width: (videoSize?.width)!, height: (videoSize?.height)!)
-//            parentLayer.addSublayer(videoLayer)
-//            parentLayer.addSublayer(animatedTitleLayerr)
-//
-//            videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
+            //            UIGraphicsBeginImageContextWithOptions(self.playerVideoView1.frame.size, false, 0)
+            //            let context = UIGraphicsGetCurrentContext()!
+            //            self.playerVideoView1.layer.render(in: context)
+            //            let watermarkImage = UIGraphicsGetImageFromCurrentImageContext()
+            //            UIGraphicsEndImageContext()
+            //
+            //            let videoSize = videoCompTrack?.naturalSize
+            //
+            //            let instruction = AVMutableVideoCompositionInstruction()
+            //            instruction.timeRange = CMTimeRangeMake(kCMTimeZero, accumulatedTime)
+            //
+            //            let layerInstruction = self.videoCompositionInstructionForTrack(track: videoCompTrack!, asset: asset)
+            //            layerInstruction.setTransform((videoCompTrack?.preferredTransform)!, at: kCMTimeZero)
+            //            instruction.layerInstructions = [layerInstruction]
+            //
+            //            let videoComp = AVMutableVideoComposition()
+            //            videoComp.renderSize = videoSize!
+            //            videoComp.frameDuration = CMTimeMake(1, 30)
+            //            videoComp.instructions = [instruction]
+            //
+            //            let animatedTitleLayerr = CALayer()
+            //            let imageLayer = CALayer()
+            //            animatedTitleLayerr.contents = watermarkImage?.cgImage
+            //            animatedTitleLayerr.frame = CGRect(x: 0.0, y: 0.0, width: (videoSize?.width)!, height: (videoSize?.height)!)
+            //            animatedTitleLayerr.masksToBounds = true
+            //            animatedTitleLayerr.addSublayer(imageLayer)
+            //
+            //            let parentLayer = CALayer()
+            //            let videoLayer = CALayer()
+            //            parentLayer.frame = CGRect(x: 0, y: 0, width: (videoSize?.width)!, height: (videoSize?.height)!)
+            //            videoLayer.frame = CGRect(x: 0, y: 0, width: (videoSize?.width)!, height: (videoSize?.height)!)
+            //            parentLayer.addSublayer(videoLayer)
+            //            parentLayer.addSublayer(animatedTitleLayerr)
+            //
+            //            videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
             
             guard let exportSession = AVAssetExportSession(asset: composition, presetName: preferredPreset) else { return }
             
             exportSession.outputURL = destinationURL as URL
             exportSession.outputFileType = AVFileType.mp4
             exportSession.shouldOptimizeForNetworkUse = true
-//            exportSession.videoComposition = videoComp
-
+            //            exportSession.videoComposition = videoComp
+            
             removeFileAtURLIfExists(url: destinationURL as URL)
             
             exportSession.exportAsynchronously {
@@ -3422,7 +3490,7 @@ extension RecordCameraVideoVC : GPUImageMovieDelegate
 {
     func didCompletePlayingMovie()
     {
-//        filter.removeTarget(movieWriter)
+        //        filter.removeTarget(movieWriter)
     }
 }
 extension RecordCameraVideoVC : AVCaptureFileOutputRecordingDelegate
@@ -3446,8 +3514,8 @@ extension RecordCameraVideoVC : AVCaptureFileOutputRecordingDelegate
             //            }
         } else {
             print("Recording Complete")
-//            self.AddImageOverVideo(outputFileURL: outputFileURL.path)
-
+            //            self.AddImageOverVideo(outputFileURL: outputFileURL.path)
+            
             //Call delegate function with the URL of the outputfile
             //            DispatchQueue.main.async {
             //                self.cameraDelegate?.swiftyCam(self, didFinishProcessVideoAt: outputFileURL)
@@ -3493,7 +3561,7 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
         cell.hightLightButton.backgroundColor = UIColor.white
         cell.hightLightButton.addTarget(self, action: #selector(TagButtonClicked(_:)), for: .touchUpInside)
         cell.hightLightButton.tag = indexPath.item
-
+        
         cell.hightLightButton.setTitleColor(COLOR_FONT_GRAY(), for: .normal)
         
         if self.selectedtagsArray.contains(tagItem)
@@ -3546,14 +3614,14 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
     }
     @IBAction func btnAddOverlayClicked(_ sender: UIButton)
     {
-//        print("btnAddOverlayClicked: ", self.picker)
+        //        print("btnAddOverlayClicked: ", self.picker)
         self.picker.delegate = self
         
         self.picker.allowsEditing = false
         self.picker.sourceType = .photoLibrary
         //            self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         self.picker.mediaTypes = [kUTTypeImage as String]
-
+        
         if isIpad()
         {
             self.picker.modalPresentationStyle = .popover
@@ -3568,7 +3636,7 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
         self.viewOverlayContainer.bringSubview(toFront: self.imageUploadButton)
     }
     
-   
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
@@ -3588,7 +3656,7 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
                 photoTagImage = pngimage
                 
                 print("photoImage::::::\(photoTagImage)")
-
+                
                 try pngimage.write(to : filePath , options : .atomic)
                 
                 /*FETCH DATA:
@@ -3617,7 +3685,7 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
             print("couldn't write image")
             
         }
-
+        
         
         
         self.dismiss(animated: true) {
@@ -3671,7 +3739,7 @@ extension RecordCameraVideoVC :UICollectionViewDelegate, UICollectionViewDataSou
         actionSheet.popoverPresentationController?.sourceView = sender.view // works for both iPhone & iPad
         
         //Present the controller
-//        self.window?.rootViewController?.present(actionSheet, animated: true, completion: nil)
+        //        self.window?.rootViewController?.present(actionSheet, animated: true, completion: nil)
         
         self.present(actionSheet, animated: true, completion: nil)
     }
@@ -3728,29 +3796,29 @@ class CustomHighLightButton: UIButton
             super.isHighlighted = newValue
         }
     }
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-////        print("touchesBegan")
-////        super.touchesBegan(touches, with: event)
-//        self.backgroundColor = UIColor(red: 0.0/255.0, green: 165.0/255.0, blue: 251.0/255.0, alpha: 0.5)
-//    }
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
-//    {
-////        print("touchesEnded")
-//        UIView.animate(withDuration: 0.5) {
-//            self.backgroundColor = COLOR_APP_THEME()
-//        }
-//        self.superview.btnVideoHighlightClicked()
-//    }
-//
-//    override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?)
-//    {
-////        print("touchesCancelled")
-//        // Don't forget to add "?" after Set<UITouch>
-//        UIView.animate(withDuration: 0.5) {
-//            self.backgroundColor = COLOR_APP_THEME()
-//        }
-//
-//    }
+    //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    ////        print("touchesBegan")
+    ////        super.touchesBegan(touches, with: event)
+    //        self.backgroundColor = UIColor(red: 0.0/255.0, green: 165.0/255.0, blue: 251.0/255.0, alpha: 0.5)
+    //    }
+    //    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+    //    {
+    ////        print("touchesEnded")
+    //        UIView.animate(withDuration: 0.5) {
+    //            self.backgroundColor = COLOR_APP_THEME()
+    //        }
+    //        self.superview.btnVideoHighlightClicked()
+    //    }
+    //
+    //    override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?)
+    //    {
+    ////        print("touchesCancelled")
+    //        // Don't forget to add "?" after Set<UITouch>
+    //        UIView.animate(withDuration: 0.5) {
+    //            self.backgroundColor = COLOR_APP_THEME()
+    //        }
+    //
+    //    }
 }
 extension UIImage {
     
@@ -3807,5 +3875,28 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return scaledImage!
+    }
+}
+
+extension RecordCameraVideoVC : FBSDKLiveVideoDelegate {
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
+        self.loader.stopAnimating()
+        self.loader.removeFromSuperview()
+        self.btnPause.isEnabled = true
+        
+        self.btnPause.imageView?.image = UIImage(named: "stop-button")
+    }
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {
+        print("Session state changed to: \(sessionState)")
+    }
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
+        self.btnPause.imageView?.image = UIImage(named: "record-button")
+    }
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
+        self.btnPause.imageView?.image = UIImage(named: "record-button")
     }
 }
