@@ -1596,13 +1596,20 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             
             let separator = "><meta property"
             
-            
             if (decodedData?.contains(separator) != nil){
                 
                 var contentArray = decodedData!.components(separatedBy: separator)
                 
+                print("contentArray: \(contentArray[0])")
                 print("contentArray: \(contentArray[1])")
-//                var separator2 = "</span>"
+                print("contentArray: \(contentArray[2])")
+                print("contentArray: \(contentArray[3])")
+                print("contentArray: \(contentArray[4])")
+                print("contentArray: \(contentArray[5])")
+                print("contentArray: \(contentArray[6])")
+                print("contentArray: \(contentArray[7])")
+                
+                //                var separator2 = "</span>"
 //
 //                var newContentArray = contentArray[1].componentsSeparatedByString(separator2)
 //

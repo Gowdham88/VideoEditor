@@ -182,9 +182,11 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
         print("logourl: \(logourl)")
         
         let activityViewController = UIActivityViewController(activityItems: sharingItems.compactMap({$0}), applicationActivities: nil)
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             activityViewController.popoverPresentationController?.sourceView = view
         }
+        
         present(activityViewController, animated: true, completion: nil)
         
     }
