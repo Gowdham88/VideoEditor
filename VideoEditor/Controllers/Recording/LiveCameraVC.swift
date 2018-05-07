@@ -107,7 +107,10 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     func downloadVideoLinkAndCreateAsset(_ videoLink: String) {
         
         // use guard to make sure you have a valid url
-        guard let videoURL = URL(string: videoLink) else { return }
+        let videoLink1 = "https://www.facebook.com/nasdaily/videos/869248556560631/"
+        //"https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=8d788078431aaef7d3083a14b82ce208&oe=5AF004C5"
+        
+        guard let videoURL = URL(string: videoLink1) else { return }
         
         guard let documentsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         
@@ -122,13 +125,15 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                 
                 // create a deatination url with the server response suggested file name
                 let destinationURL = documentsDirectoryURL.appendingPathComponent(response?.suggestedFilename ?? videoURL.lastPathComponent)
+                let httpResponse = response as! HTTPURLResponse
                 
+                print("httpResponse: \(httpResponse)")
                 print("destinationURL: \(destinationURL)")
 
                 do {
                     
                     try FileManager.default.moveItem(at: location, to: destinationURL)
-                    
+
                     PHPhotoLibrary.requestAuthorization({ (authorizationStatus: PHAuthorizationStatus) -> Void in
                         
                         // check if user authorized access photos for your app
@@ -138,7 +143,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                                     if completed {
                                         print("Video asset created")
                                     } else {
-                                        print(error)
+                                        print(error!)
                                     }
                             }
                         }
@@ -217,9 +222,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         setCornerRadiusAndShadowOnButton(button: btnLiveSettings, backColor: COLOR_APP_THEME())
         setCornerRadiusAndShadowOnButton(button: btnBackToDetails, backColor: COLOR_APP_THEME())
         
-        
-        
-
         
         // set default to back camera
         btnFrontCam.backgroundColor = COLOR_WHITE_ALPHA_40()
@@ -1391,7 +1393,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             
-            
             self.CheckForValidationAndStartDownload(videoURL: (textField?.text)!)
 //            self.StartDownloadEnteredURL(videoURL: (textField?.text)!)
             
@@ -1573,19 +1574,66 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     func GetURLForFacebook(videoURL: String)
     {
+        print("Get url for facebook")
+//        downloadVideoLinkAndCreateAsset(videoURL)
         
-        downloadVideoLinkAndCreateAsset(videoURL)
+//        let params: Parameters = [
+//            "url": videoURL
+//            ]
+        
+//        print("params: \(params)")
+        
+        let requestURL = URL(string: "https://www.facebook.com/nasdaily/videos/869248556560631/")
+        
+/** let videoLink1 = "https://www.facebook.com/nasdaily/videos/869248556560631/"
+ //"https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=8d788078431aaef7d3083a14b82ce208&oe=5AF004C5"*/
 
         
-        let params: Parameters = [
-            "url": videoURL
-            ]
+        let task = URLSession.shared.dataTask(with: requestURL!){
+            (data, response, error) in
+            
+            let decodedData = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            
+            let separator = "><meta property"
+            
+            
+            if (decodedData?.contains(separator) != nil){
+                
+                var contentArray = decodedData!.components(separatedBy: separator)
+                
+                print("contentArray: \(contentArray[1])")
+//                var separator2 = "</span>"
+//
+//                var newContentArray = contentArray[1].componentsSeparatedByString(separator2)
+//
+//                var weatherForecast = (newContentArray[0] as String).stringByReplacingOccurrencesOfString("&deg;", withString: "º")
+//                print(weatherForecast)
+//
+//                dispatch_async(dispatch_get_main_queue()){
+//
+//
+//                }
+                
+            } else {
+                
+//                dispatch_get_main_queue().async(){
+//
+//                }//end dispatch_async
+            } //end else
+            
+        }
         
-        print("params: \(params)")
+        task.resume()
         
-        let requestURL: String = "http://www.simpsip.com/main.php"
         
-//        Alamofire.request(requestURL, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil)
+//        Alamofire.request(requestURL, method: .get).response { data in
+//
+//            let str = NSString(data: data, encoding: String.Encoding.utf8)
+//
+//            print(str)
+//        }
+        
+//        Alamofire.request(requestURL, method: .post, parameters: nil, encoding: URLEncoding.default, headers: nil)
 //            .responseJSON { response in
 //
 //                switch response.result
@@ -1597,6 +1645,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
 //                    if response.result.value != nil
 //                    {
 //                        let dict = response.result.value as! NSDictionary
+//
 //                        if dict.value(forKey: "type") != nil
 //                        {
 //                            var finalURLStr: String = ""
