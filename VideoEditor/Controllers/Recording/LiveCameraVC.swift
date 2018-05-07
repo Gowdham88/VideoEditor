@@ -100,64 +100,6 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     @IBOutlet weak var BactBtnTopConstraint: NSLayoutConstraint!
     //    let notificationhide = Notification.Name("hideLiveBtn")
     
-    func downloadVideoLinkAndCreateAsset(_ videoLink: String) {
-        
-        // use guard to make sure you have a valid url
-        let videoLink1 = "https://www.facebook.com/nasdaily/videos/869248556560631/"
-        //"https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=8d788078431aaef7d3083a14b82ce208&oe=5AF004C5"
-        
-        guard let videoURL = URL(string: videoLink1) else { return }
-        
-        guard let documentsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-        
-        // check if the file already exist at the destination folder if you don't want to download it twice
-        if !FileManager.default.fileExists(atPath: documentsDirectoryURL.appendingPathComponent(videoURL.lastPathComponent).path) {
-            
-            // set up your download task
-            URLSession.shared.downloadTask(with: videoURL) { (location, response, error) -> Void in
-                
-                // use guard to unwrap your optional url
-                guard let location = location else { return }
-                
-                // create a deatination url with the server response suggested file name
-                let destinationURL = documentsDirectoryURL.appendingPathComponent(response?.suggestedFilename ?? videoURL.lastPathComponent)
-                let httpResponse = response as! HTTPURLResponse
-                
-                print("httpResponse: \(httpResponse)")
-                print("destinationURL: \(destinationURL)")
-                
-                do {
-                    
-                    try FileManager.default.moveItem(at: location, to: destinationURL)
-                    
-                    PHPhotoLibrary.requestAuthorization({ (authorizationStatus: PHAuthorizationStatus) -> Void in
-                        
-                        // check if user authorized access photos for your app
-                        if authorizationStatus == .authorized {
-                            PHPhotoLibrary.shared().performChanges({
-                                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: destinationURL)}) { completed, error in
-                                    if completed {
-                                        print("Video asset created")
-                                    } else {
-                                        print(error!)
-                                    }
-                            }
-                        }
-                    })
-                    
-                } catch { print(error) }
-                
-                }.resume()
-            
-        } else {
-            print("File already exists at destination url")
-        }
-        
-    }
-    
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1414,7 +1356,15 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         
         print("StartDownloadEnteredURL")
         
-        let task = self.activate().downloadTask(with: URL(string: videoURL)!)
+        print("videoURL: \(videoURL)")
+        
+        var videoURL1 = String(videoURL.dropFirst(1))
+        videoURL1 = String(videoURL.dropLast(1))
+        
+        print("videoURL1: \(videoURL1)")
+        
+        let task = self.activate().downloadTask(with: URL(string: videoURL1)!)
+        
         
         task.resume()
         
@@ -1429,11 +1379,13 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         progressHUD.mode = .indeterminate
         progressHUD.progress = 0.0
     }
+    
     func HideProgress()
     {
         print("End Loading Progress")
         progressHUD.hide(animated: true)
     }
+    
     func EnableOtherSettings()
     {
         var enable: Bool = false
@@ -1572,51 +1524,41 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     func GetURLForFacebook(videoURL: String)
     {
         print("Get url for facebook")
-        //        downloadVideoLinkAndCreateAsset(videoURL)
         
-        //        let params: Parameters = [
-        //            "url": videoURL
-        //            ]
-        
-        //        print("params: \(params)")
-        
-        let requestURL = URL(string: "https://www.facebook.com/nasdaily/videos/869248556560631")
-        
-        /** let videoLink1 = "https://www.facebook.com/nasdaily/videos/869248556560631/"
-         //"https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=8d788078431aaef7d3083a14b82ce208&oe=5AF004C5"
-         
-         https://video-sit4-1.xx.fbcdn.net/v/t42.1790-2/20459508_463845200647475_5533058311324172288_n.mp4?_nc_cat=0&efg=eyJybHIiOjQ3NSwicmxhIjo1MTIsInZlbmNvZGVfdGFnIjoic3ZlX3NkIn0%3D&rl=475&vabr=264&oh=d920f43e03b793955d7673369cfa5f69&oe=5AF02EF5
-         */
-        
+        let requestURL = URL(string: videoURL)
         
         let task = URLSession.shared.dataTask(with: requestURL!){
             (data, response, error) in
             
             let decodedData = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             
-            let separator = "><meta property"
+            print("decodedData: \(decodedData)")
+            
+            let separator = "og:video\" content=\""
             
             if (decodedData?.contains(separator) != nil){
                 
                 var contentArray = decodedData!.components(separatedBy: separator)
                 
-                print("contentArray6: \(contentArray[6])")
-                print("contentArray7: \(contentArray[7])")
+//                print("contentArray0: \(contentArray[0])")
+                print("contentArray1: \(contentArray[1])")
                 
-                var separator2 = " /"
+                let separator2 = " /><meta property"
                 
-                var newContentArray = contentArray[6].components(separatedBy: separator2)
+                var newContentArray = contentArray[1].components(separatedBy: separator2)
                 
-                var videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
+                let videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
                 
                 print("videoLink: \(videoLink)")
                 
-                //                dispatch_async(dispatch_get_main_queue()){
-                //
-                //
-                //                }
+                self.StartDownloadEnteredURL(videoURL: videoLink)
                 
             } else {
+                
+                print("ERROR")
+                
+                self.HideProgress()
+                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
                 
                 //                dispatch_get_main_queue().async(){
                 //
@@ -1872,8 +1814,10 @@ extension LiveCameraVC {
         
         self.selectedVideoURL = URL.init(fileURLWithPath: tempFolderPath)
         DispatchQueue.main.async {
+            
             self.HideProgress()
             self.OpenRecordingView()
+            
         }
         
     }

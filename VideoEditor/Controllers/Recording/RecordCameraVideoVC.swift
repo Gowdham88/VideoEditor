@@ -1994,6 +1994,19 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         if self.isVideoPlay
         {
+            if recordEventInfo.fbLive == true {
+            if !self.liveVideo.isStreaming {
+                
+                startStreaming()
+                
+            } else {
+                
+                stopStreaming()
+//                recordEventInfo.fbLive = false
+            }
+                
+            }
+            
             if self.avPlayer.rate > 0
             {
                 //                painter.stopCameraRecording(competionHandler: nil)
