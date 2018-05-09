@@ -12,6 +12,7 @@ import GPUImage
 import FBSDKCoreKit
 import FBSDKLoginKit
 import FBSDKShareKit
+import VideoCore
 
 class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerDelegate {
     
@@ -208,7 +209,6 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         print("1.RCVC isVideoPlay: \(isVideoPlay)")
         print(" RCVC selectedCameraSource: \(selectedCameraSource)")
-        
         
         if selectedCameraSource == 2 || selectedCameraSource == 3
         {
@@ -473,7 +473,6 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
         
         print("2. isVideoPlay: \(isVideoPlay)")
-        
     }
     
     func startStreaming() {
@@ -481,6 +480,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.liveVideo.start()
         recordEventInfo.fbLive = true
         self.loader.startAnimating()
+        self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
         self.btnPause.addSubview(self.loader)
         self.btnPause.isEnabled = false
         
@@ -489,6 +489,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     func stopStreaming() {
         
         self.liveVideo.stop()
+        self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
+//        imageView?.image = UIImage(named: "record-button")
         
     }
     
@@ -523,13 +525,38 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             self.trimPositionArray.add(trimDict)
             
-            self.playPauseButton.setBackgroundImage(UIImage.init(named: "play_gray"), for: .normal)
+            if fbAvailable == true {
+//                self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
+//                self.btnPause.imageView?.image = UIImage(named: "record-button")
+                self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
+                
+            } else {
+//                self.btnPause.imageView?.image = UIImage(named: "stop-button")
+                self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
+                
+                
+            }
         }
         else
         {
             self.trimStart = avPlayer.currentTime()
             avPlayer.play()
-            self.playPauseButton.setBackgroundImage(UIImage.init(named: "pause_gray"), for: .normal)
+            
+            if fbAvailable == true {
+               
+//                self.btnPause.imageView?.image = UIImage(named: "stop-button")
+                 self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
+                
+//                self.playPauseButton.setBackgroundImage(UIImage.init(named: "stop-button"), for: .normal)
+                
+            } else {
+                
+//           self.btnPause.imageView?.image = UIImage(named: "record-button")
+                 self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
+                
+//                self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
+
+            }
         }
         
     }
@@ -1976,7 +2003,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             {
                 //                painter.stopCameraRecording(competionHandler: nil)
                 //                self.lastRecordedSecond = self.totalRecordedSecond
-//                stopStreaming()
+                stopStreaming()
 
                 self.avPlayer.pause()
                 
@@ -3308,11 +3335,14 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         var outputFilePath = NSTemporaryDirectory() as String
         outputFilePath = outputFilePath + "\(outputFileName)"
         outputFilePath = outputFilePath + "/file.mp4"
+        
+                    self.stopStreaming()
+        
         painter.stopCameraRecording(competionHandler: {(_ painter: AVCameraPainter) -> Void in
             
             self.RedirectToBackAfterMerderVideo()
             
-            self.stopStreaming()
+
             //            PHPhotoLibrary.shared().performChanges({
             //                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL.init(fileURLWithPath: outputFilePath))
             //            }) { saved, error in
@@ -3929,22 +3959,38 @@ extension UIImage {
 extension RecordCameraVideoVC : FBSDKLiveVideoDelegate {
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
+        
+//        self.btnPause.imageView?.image = UIImage(named: "stop-button")
+        self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
+        
+//        self.playPauseButton.setBackgroundImage(UIImage.init(named: "stop-button"), for: .normal)
+        
         self.loader.stopAnimating()
         self.loader.removeFromSuperview()
         self.btnPause.isEnabled = true
         
-        self.btnPause.imageView?.image = UIImage(named: "stop-button")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {
+        
         print("Session state changed to: \(sessionState)")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
-        self.btnPause.imageView?.image = UIImage(named: "record-button")
+        
+        self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
+        
+//        self.btnPause.imageView?.image = UIImage(named: "record-button")
+//        self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
+        
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
-        self.btnPause.imageView?.image = UIImage(named: "record-button")
+        
+        self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
+        
+//        self.btnPause.imageView?.image = UIImage(named: "record-button")
+//        self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
+        
     }
 }

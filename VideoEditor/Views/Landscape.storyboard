@@ -2151,7 +2151,6 @@
                                                     <constraint firstAttribute="height" constant="65" id="Lbe-sH-WXw"/>
                                                     <constraint firstAttribute="width" constant="65" id="Nhc-IM-BYd"/>
                                                 </constraints>
-                                                <state key="normal" image="pause_white"/>
                                                 <connections>
                                                     <action selector="btnPauseClicked:" destination="CFv-Nk-NXZ" eventType="touchUpInside" id="j5E-9u-gkJ"/>
                                                 </connections>
@@ -2777,7 +2776,6 @@
         <image name="made_by_logo" width="87" height="30"/>
         <image name="minus_circle_white" width="50" height="50"/>
         <image name="pause_gray" width="25" height="25"/>
-        <image name="pause_white" width="50" height="50"/>
         <image name="pause_white_small" width="25" height="25"/>
         <image name="plus_circle_white" width="50" height="50"/>
         <image name="problem_solving" width="157" height="36"/>

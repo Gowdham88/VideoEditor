@@ -961,7 +961,6 @@
                                                     <constraint firstAttribute="width" constant="65" id="ERE-PS-sFO"/>
                                                     <constraint firstAttribute="height" constant="65" id="rWD-fJ-Aww"/>
                                                 </constraints>
-                                                <state key="normal" image="pause_white"/>
                                                 <connections>
                                                     <action selector="btnPauseClicked:" destination="E4f-KO-Qff" eventType="touchUpInside" id="z2d-Kd-Ib4"/>
                                                 </connections>
@@ -1917,7 +1916,6 @@
         <image name="fb_live" width="960" height="411"/>
         <image name="made_by_logo" width="87" height="30"/>
         <image name="minus_circle_white" width="50" height="50"/>
-        <image name="pause_white" width="50" height="50"/>
         <image name="pause_white_small" width="25" height="25"/>
         <image name="play_white" width="27" height="27"/>
         <image name="plus_circle_white" width="50" height="50"/>

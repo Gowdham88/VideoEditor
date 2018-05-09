@@ -1527,7 +1527,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     {
         print("Get url for facebook")
         
-        let requestURL = URL(string: videoURL)
+        let requestURL = URL(string: "https://www.facebook.com/mrtvlivevideo/videos/2020045284982296")
         
         let task = URLSession.shared.dataTask(with: requestURL!){
             (data, response, error) in
@@ -1536,36 +1536,36 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             
             print("decodedData: \(decodedData)")
             
-            let separator = "og:video\" content=\""
-            
-            if (decodedData?.contains(separator) != nil){
-                
-                var contentArray = decodedData!.components(separatedBy: separator)
-                
-//                print("contentArray0: \(contentArray[0])")
-                print("contentArray1: \(contentArray[1])")
-                
-                let separator2 = " /><meta property"
-                
-                var newContentArray = contentArray[1].components(separatedBy: separator2)
-                
-                let videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
-                
-                print("videoLink: \(videoLink)")
-                
-                self.StartDownloadEnteredURL(videoURL: videoLink)
-                
-            } else {
-                
-                print("ERROR")
-                
-                self.HideProgress()
-                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
-                
-                //                dispatch_get_main_queue().async(){
-                //
-                //                }//end dispatch_async
-            } //end else
+//            let separator = "og:video\" content=\""
+//
+//            if (decodedData?.contains(separator) != nil){
+//
+//                var contentArray = decodedData!.components(separatedBy: separator)
+//
+////                print("contentArray0: \(contentArray[0])")
+//                print("contentArray1: \(contentArray[1])")
+//
+//                let separator2 = " /><meta property"
+//
+//                var newContentArray = contentArray[1].components(separatedBy: separator2)
+//
+//                let videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
+//
+//                print("videoLink: \(videoLink)")
+//
+//                self.StartDownloadEnteredURL(videoURL: videoLink)
+//
+//            } else {
+//
+//                print("ERROR")
+//
+//                self.HideProgress()
+//                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
+//
+//                //                dispatch_get_main_queue().async(){
+//                //
+//                //                }//end dispatch_async
+//            } //end else
             
         }
         
@@ -1841,6 +1841,7 @@ extension LiveCameraVC {
 extension LiveCameraVC : FBSDKLiveVideoDelegate {
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
+        
         self.loader.stopAnimating()
         self.loader.removeFromSuperview()
         self.btnStartRecoding.isEnabled = true
@@ -1849,14 +1850,17 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {
+        
         print("Session state changed to: \(sessionState)")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
+        
         //        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
+        
         //        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }
 }
