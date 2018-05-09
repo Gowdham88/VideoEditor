@@ -435,6 +435,7 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
                 catch
                 {
                     
+                    print("Error: \(error)")
                 }
             }
             CoreDataHelperInstance.sharedInstance.manageObjectContext.delete(recordedEvent)

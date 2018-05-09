@@ -458,43 +458,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.viewHomeContainer.isHidden = true
         self.viewAwayContainer.isHidden = true
         self.viewScoreAndMinuteContainer.isHidden = true
-        if fbAvailable == true {
-            
-            recordEventInfo.fbLive = true
-            
-            self.liveVideo = FBSDKLiveVideo(
-                delegate: self,
-                previewSize: self.view.bounds,
-                videoSize: CGSize(width: 1280, height: 720)
-            )
-            
-            let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
-            
-            //myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-            
-            myOverlay.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-            
-            self.liveVideo.privacy = .me
-            self.liveVideo.audience = "me"
-            
-            self.loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-            self.loader.frame = CGRect(x: 15, y: 15, width: 40, height: 40)
-            
-            self.blurOverlay = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-            self.blurOverlay.frame = self.view.bounds
-            
-            
-            if !self.liveVideo.isStreaming {
-                
-                startStreaming()
-                
-            } else {
-                
-                stopStreaming()
-                recordEventInfo.fbLive = false
-            }
-            
-        }
+       
         
         print("1. isVideoPlay: \(isVideoPlay)")
         if self.isVideoPlay
@@ -515,7 +479,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     func startStreaming() {
         
         self.liveVideo.start()
-        
+        recordEventInfo.fbLive = true
         self.loader.startAnimating()
         self.btnPause.addSubview(self.loader)
         self.btnPause.isEnabled = false
@@ -523,7 +487,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     
     func stopStreaming() {
+        
         self.liveVideo.stop()
+        
     }
     
     public enum ImageFormat {
@@ -592,13 +558,14 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.sliderVideo.maximumValue = Float(seconds)
         self.sliderVideo.value = Float(0.0)
         
-        if (lround(seconds) / 60) % 60 > 99 {
+        if (lround(seconds) / 60) % 60 < 100 {
             
-            self.lblEndTime.text = String(format: "%03d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
+             self.lblEndTime.text = String(format: "%02d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
             
         } else {
             
-            self.lblEndTime.text = String(format: "%02d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
+            self.lblEndTime.text = String(format: "%03d:%02d", ((lround(seconds) / 60) % 60), lround(seconds) % 60)
+            
             
         }
         
@@ -644,13 +611,13 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             let timeRemaining: Float64 = totalVideoDuration - elapsedSecond
             
-            if (lround(timeRemaining) / 60) % 60 > 99 {
+            if (lround(timeRemaining) / 60) % 60 < 100 {
                 
-                self.lblEndTime.text = String(format: "%03d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
+                self.lblEndTime.text = String(format: "%02d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
                 
             } else {
                 
-                self.lblEndTime.text = String(format: "%02d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
+                self.lblEndTime.text = String(format: "%03d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
                 
             }
             
@@ -766,15 +733,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             elapsedTime = Float64(self.totalVideoSecond)
         }
         
-        if (lround(elapsedTime) / 60) % 60 > 99 {
+        if (lround(elapsedTime) / 60) % 60 < 100 {
             
-            self.lblEndTime.text = String(format: "%03d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
-            
+            self.lblEndTime.text = String(format: "%02d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
         } else {
             
             self.lblEndTime.text = String(format: "%03d:%02d", ((lround(elapsedTime) / 60) % 60), lround(elapsedTime) % 60)
             
+            
         }
+        
+        
         
         self.lastSliderValue = Float(elapsedTime)
         avPlayer.seek(to: CMTimeMakeWithSeconds(elapsedTime, preferedScale))
@@ -910,11 +879,13 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             self.viewProgressiveZoomContainer.isHidden = true
         }
     }
+    
     func StartVideoRecording()
     {
+        print("StartVideoRecording")
         
         self.isRecordingInProgress = true
-        return
+//        return
         
         guard let movieFileOutput = self.videoFileOutput else {
             return
@@ -926,6 +897,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 }
                 
                 let movieFileOutputConnection = self.videoFileOutput?.connection(with: AVMediaType.video)
+                
                 
                 //flip video output if front facing camera is selected
                 //                if self.currentCamera == .front {
@@ -964,6 +936,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 let outputFilePath1 = (outputFilePath as NSString).appendingPathComponent((videoIndex as NSString).appendingPathExtension("mov")!)
                 
                 movieFileOutput.startRecording(to: URL(fileURLWithPath: outputFilePath1), recordingDelegate: self)
+                
+                self.liveVideo.url = URL(string: outputFilePath)
+                
+                self.liveVideo.start()
+
                 //                self.isVideoRecording = true
             }
             else {
@@ -1994,25 +1971,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         
         if self.isVideoPlay
         {
-            if recordEventInfo.fbLive == true {
-            if !self.liveVideo.isStreaming {
-                
-                startStreaming()
-                
-            } else {
-                
-                stopStreaming()
-//                recordEventInfo.fbLive = false
-            }
-                
-            }
-            
+           
             if self.avPlayer.rate > 0
             {
                 //                painter.stopCameraRecording(competionHandler: nil)
                 //                self.lastRecordedSecond = self.totalRecordedSecond
+//                stopStreaming()
+
                 self.avPlayer.pause()
+                
             }
+            
             APP_DELEGATE.showHUDWithText(textMessage: "Saving...")
             self.MergePlayVideoFile()
         }
@@ -2829,6 +2798,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     {
         
     }
+    
     func runTimer()
     {
         print("run Timer")
@@ -2847,6 +2817,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(RecordCameraVideoVC.updateTimer)), userInfo: nil, repeats: true)
         
     }
+    
     @objc func updateTimer()
     {
         print("updateTimer")
@@ -2855,14 +2826,25 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             return
         }
-        //        totalVideoSecond = totalVideoSecond + 1
+                totalVideoSecond = totalVideoSecond + 1
         
-        //        let watch = StopWatch(totalSeconds: totalVideoSecond)
-        //
-        //        self.lblTime.text = String(format: "%02i:%02i", watch.minutes, watch.seconds)
-        //        self.lblTimeString = self.lblTime.text
-        //        self.txtMinutes.text = String(format: "%02i", watch.minutes)
-        //        self.GetScoreBoardImage()
+        let watch = StopWatch(totalSeconds: Int(totalVideoSecond))
+        
+        if watch.minutes < 100 {
+            
+            self.lblTime.text = String(format: "%02i:%02i", watch.minutes, watch.seconds)
+            self.lblTimeString = self.lblTime.text
+            self.txtMinutes.text = String(format: "%02i", watch.minutes)
+            
+        } else {
+            
+            self.lblTime.text = String(format: "%03i:%02i", watch.minutes, watch.seconds)
+            self.lblTimeString = self.lblTime.text
+            self.txtMinutes.text = String(format: "%03i", watch.minutes)
+            
+        }
+        self.GetScoreBoardImage()
+
     }
     
     func createCameraPreview()
@@ -2918,6 +2900,9 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         self.cameraPreview.transform = transform
         self.cameraPreview.fillMode = kGPUImageFillModePreserveAspectRatio
         self.viewCameraContainer.addSubview(self.cameraPreview)
+        
+        
+        
         
         /*
          playerItem = AVPlayerItem.init(url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "YGMW9856", ofType: "MP4")!))
@@ -3000,6 +2985,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             
         }
+        
+        
         //        let screenRect: CGRect = UIScreen.main.bounds
         
         let screenRect: CGRect = self.topView.bounds
@@ -3179,13 +3166,17 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         painter.setOverlay(frameDrawer)
         
         painter.startCameraCapture()
+        
     }
     func StartPlayingRecording()
     {
         let playerIsPlaying = avPlayer.rate > 0
         if playerIsPlaying
         {
-            self.trimStart = self.currentTime //self.painter.movie.playerItem.currentTime()
+            self.trimStart = self.currentTime
+            //self.painter.movie.playerItem.currentTime()
+//            liveVideo.start()
+            liveVideo.update()
         }
         
     }
@@ -3246,10 +3237,52 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 AVVideoHeightKey : NSNumber.init(value: Int((self.videoSize?.height)!))
             ]
             painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil, outputSettings: myDictOfDict as! [AnyHashable : Any])
-        }
-        else
+            
+            
+
+        } else
         {
             painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil, outputSettings: nil)
+            
+          
+        }
+        
+        if fbAvailable == true {
+            
+            recordEventInfo.fbLive = true
+            
+            self.liveVideo = FBSDKLiveVideo(
+                delegate: self,
+                previewSize: self.view.bounds,
+                videoSize: CGSize(width: 1280, height: 720)
+            )
+            
+            //            let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
+            
+            //myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+            
+            //            myOverlay.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+            
+            self.liveVideo.privacy = .me
+            self.liveVideo.audience = "me"
+            
+            self.loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            self.loader.frame = CGRect(x: 15, y: 15, width: 40, height: 40)
+            
+            //            self.blurOverlay = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+            //            self.blurOverlay.frame = self.view.bounds
+            
+            
+            if !self.liveVideo.isStreaming {
+                
+                startStreaming()
+                
+            } else {
+                
+                stopStreaming()
+                recordEventInfo.fbLive = false
+            }
+            
         }
         
         //        painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil)
@@ -3278,6 +3311,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         painter.stopCameraRecording(competionHandler: {(_ painter: AVCameraPainter) -> Void in
             
             self.RedirectToBackAfterMerderVideo()
+            
+            self.stopStreaming()
             //            PHPhotoLibrary.shared().performChanges({
             //                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL.init(fileURLWithPath: outputFilePath))
             //            }) { saved, error in

@@ -594,6 +594,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
+        
         //        if !self.liveVideo.isStreaming {
         //            startStreaming()
         //        } else {
@@ -605,6 +606,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         //
         //
         //        }
+        
         if selectedCameraSource == 3
         {
             self.OpenAlertForSelectVideo(sender: sender)

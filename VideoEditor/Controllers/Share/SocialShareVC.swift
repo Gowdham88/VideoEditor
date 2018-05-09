@@ -146,7 +146,6 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
             return
         }
         
-        
         if let item = MediaItem(url: sharingURL!) {
             let logoImage = UIImage(named: "app_logo")
             
@@ -170,8 +169,6 @@ class SocialShareVC: BaseVC, UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
         }
-        
-       
 
     }
     
