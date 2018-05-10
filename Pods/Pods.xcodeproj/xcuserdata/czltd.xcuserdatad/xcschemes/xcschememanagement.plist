@@ -46,77 +46,77 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>IQKeyboardManagerSwift.xcscheme</key>
+		<key>HaishinKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
-		<key>MARKRangeSlider-MARKRangeSlider.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
-		</dict>
-		<key>MARKRangeSlider.xcscheme</key>
+		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
-		<key>MBProgressHUD.xcscheme</key>
+		<key>Logboard.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>8</integer>
 		</dict>
-		<key>MediaWatermark.xcscheme</key>
+		<key>MARKRangeSlider-MARKRangeSlider.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>10</integer>
 		</dict>
-		<key>Pods-VideoEditor.xcscheme</key>
+		<key>MARKRangeSlider.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
+		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>11</integer>
 		</dict>
-		<key>Segmentio-Segmentio.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
-		</dict>
-		<key>Segmentio.xcscheme</key>
+		<key>MediaWatermark.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>12</integer>
 		</dict>
-		<key>SwipeCellKit.xcscheme</key>
+		<key>Pods-VideoEditor.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>13</integer>
 		</dict>
-		<key>UriParser-cpp.xcscheme</key>
+		<key>Segmentio-Segmentio.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>15</integer>
 		</dict>
-		<key>VideoCore.xcscheme</key>
+		<key>Segmentio.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
+		<key>SwipeCellKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

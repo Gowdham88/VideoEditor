@@ -10,7 +10,7 @@ import UIKit
 
 class SegmentioCell: UICollectionViewCell {
     
-    let padding: CGFloat = 4
+    let padding: CGFloat = 8
     let segmentTitleLabelHeight: CGFloat = 22
     
     var verticalSeparatorView: UIView?

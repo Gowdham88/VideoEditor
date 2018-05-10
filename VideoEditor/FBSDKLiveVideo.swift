@@ -7,13 +7,27 @@
 //
 
 import UIKit
+import HaishinKit
+
+
+
 
 // MARK: FBSDKLiveVideoDelegate
+class ExampleRecorded : DefaultAVMixerRecorderDelegate {
+    override func didFinishWriting(_ recorder: AVMixerRecorder) {
+        guard let writer: AVAssetWriter = recorder.writer else { return }
+       
+    }
+}
+
+
 
 public protocol FBSDKLiveVideoDelegate {
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession);
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: RTMPConnection);
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession);
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: RTMPConnection);
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, VideoUrl url: URL);
 }
 
 public extension FBSDKLiveVideoDelegate {
@@ -21,11 +35,11 @@ public extension FBSDKLiveVideoDelegate {
     
     func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {}
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didAdd cameraSource: FBSDKLiveVideoSession) {}
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didAdd cameraSource: RTMPConnection) {}
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didUpdate session: FBSDKLiveVideoSession) {}
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didUpdate session: RTMPConnection) {}
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didDelete session: FBSDKLiveVideoSession) {}
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didDelete session: RTMPConnection) {}
 }
 
 // MARK: Enumerations
@@ -80,10 +94,7 @@ struct FBSDKLiveVideoParameter {
     var value: String!
 }
 
-public class FBSDKLiveVideoSession : VCSimpleSession {
-    
-    // Subclass for more generic API-interface
-}
+let sampleRate: Double = 44_100
 
 open class FBSDKLiveVideo: NSObject {
     
@@ -180,6 +191,8 @@ open class FBSDKLiveVideo: NSObject {
         }
     }
     
+  
+    
     // MARK: - Utility API's
     
     var delegate: FBSDKLiveVideoDelegate!
@@ -200,32 +213,66 @@ open class FBSDKLiveVideo: NSObject {
     
     // MARK: - Internal API's
     
-    private var session: FBSDKLiveVideoSession!
+    var rtmpConnection: RTMPConnection = RTMPConnection()
+    var rtmpStream: RTMPStream!
     
     private var createParameters: [String : Any] = [:]
     
     private var updateParameters: [String : Any] = [:]
+    
+    var currentPosition: AVCaptureDevice.Position = .back
+    
+    let myAVMixerRecorderDelegate = ExampleRecorded()
     
     required public init(delegate: FBSDKLiveVideoDelegate, previewSize: CGRect, videoSize: CGSize) {
         super.init()
         
         self.delegate = delegate
         
-        self.session = FBSDKLiveVideoSession(videoSize: videoSize, frameRate: Int32(self.frameRate), bitrate: Int32(self.bitRate), useInterfaceOrientation: false)
-        self.session.previewView.frame = previewSize
-        self.session.delegate = self
+        rtmpStream = RTMPStream(connection: rtmpConnection)
+        rtmpStream.syncOrientation = true
+        rtmpStream.captureSettings = [
+            "sessionPreset": AVCaptureSession.Preset.hd1280x720.rawValue,
+            "continuousAutofocus": true,
+            "continuousExposure": true
+        ]
+        rtmpStream.videoSettings = [
+            "width": 720,
+            "height": 1280
+        ]
+        rtmpStream.audioSettings = [
+            "sampleRate": sampleRate
+        ]
         
-        self.preview = self.session.previewView
+        rtmpStream.mixer.recorder.delegate = myAVMixerRecorderDelegate
+        
+        print(rtmpStream.mixer.recorder.delegate)
+        
+//        let lfView : LFView = LFView(frame: previewSize)
+        
+        rtmpStream.attachAudio(AVCaptureDevice.default(for: .audio)) { error in
+            
+        }
+        rtmpStream.attachCamera(DeviceUtil.device(withPosition: currentPosition)) { error in
+            
+        }
+       
+//        lfView.attachStream(rtmpStream)
+//
+//        self.preview = UIView(frame: previewSize)
+//        self.preview.addSubview(lfView)
+     
+        
     }
     
     deinit {
-        if self.session.rtmpSessionState != .ended {
-            self.session.endRtmpSession()
-        }
+       
+        isStreaming = false
+        rtmpStream.close()
+        rtmpStream.dispose()
         
         self.delegate = nil
-        self.session.delegate = nil
-        self.preview = nil
+        self.preview  = nil
     }
     
     // MARK: - Public API's
@@ -246,12 +293,15 @@ open class FBSDKLiveVideo: NSObject {
                 self.url = URL(string:(dict.value(forKey: "stream_url") as? String)!)
                 self.id = dict.value(forKey: "id") as? String
                 
-                guard let streamPath = self.url?.lastPathComponent, let query = self.url?.query else {
+                guard let _ = self.url?.lastPathComponent, let _ = self.url?.query else {
                     return self.delegate.liveVideo(self, didErrorWith: FBSDKLiveVideo.errorFromDescription(description: "The stream path is invalid"))
                 }
                 
-                self.session.startRtmpSession(withURL: "rtmp://rtmp-api.facebook.com:80/rtmp/", andStreamKey: "\(streamPath)?\(query)")
-                self.delegate.liveVideo(self, didStartWith:self.session)
+                self.rtmpConnection.addEventListener(Event.RTMP_STATUS, selector: #selector(self.rtmpStatusHandler), observer: self)
+                self.rtmpConnection.connect("rtmp://rtmp-api.facebook.com:80/rtmp")
+                
+               
+                
             }
         }
     }
@@ -274,9 +324,11 @@ open class FBSDKLiveVideo: NSObject {
                     
                 }
                 
-                self.session.endRtmpSession()
+                self.rtmpConnection.close()
+                self.rtmpConnection.removeEventListener(Event.RTMP_STATUS, selector: #selector(self.rtmpStatusHandler), observer: self)
+                self.isStreaming = false
                 
-                self.delegate.liveVideo(self, didStopWith:self.session)
+                self.delegate.liveVideo(self, didStopWith:self.rtmpConnection)
                 
             }
         }
@@ -295,7 +347,7 @@ open class FBSDKLiveVideo: NSObject {
                     return self.delegate.liveVideo(self, didErrorWith: FBSDKLiveVideo.errorFromDescription(description: "Error initializing the live video session: \(String(describing: error?.localizedDescription))"))
                 }
                 
-                self.delegate.liveVideo(self, didUpdate: self.session)
+                self.delegate.liveVideo(self, didUpdate: self.rtmpConnection)
             }
         }
     }
@@ -313,10 +365,40 @@ open class FBSDKLiveVideo: NSObject {
                     return self.delegate.liveVideo(self, didErrorWith: FBSDKLiveVideo.errorFromDescription(description: "Error deleting the live video session: \(String(describing: error?.localizedDescription))"))
                 }
                 
-                self.delegate.liveVideo(self, didDelete: self.session)
+                self.delegate.liveVideo(self, didDelete: self.rtmpConnection)
             }
         }
     }
+    
+    @objc func rtmpStatusHandler(_ notification: Notification) {
+        let e: Event = Event.from(notification)
+        if let data: ASObject = e.data as? ASObject, let code: String = data["code"] as? String {
+            switch code {
+            case RTMPConnection.Code.connectSuccess.rawValue:
+                
+                guard let streamPath = self.url?.lastPathComponent, let query = self.url?.query else {
+                    return self.delegate.liveVideo(self, didErrorWith: FBSDKLiveVideo.errorFromDescription(description: "The stream path is invalid"))
+                }
+                
+                
+//                rtmpStream!.publish("/\(streamPath)?\(query)", type: .localRecord)
+                self.isStreaming = true
+                self.delegate.liveVideo(self, didStartWith:self.rtmpConnection)
+            
+            case RTMPConnection.Code.connectNetworkChange.rawValue :
+                
+                break;
+                
+            case RTMPConnection.Code.connectClosed.rawValue :
+                
+                break;
+                
+            default:
+                break
+            }
+        }
+    }
+    
     
     // MARK: Utilities
     
@@ -329,19 +411,21 @@ open class FBSDKLiveVideo: NSObject {
     }
 }
 
-extension FBSDKLiveVideo : VCSessionDelegate {
-    public func connectionStatusChanged(_ sessionState: VCSessionState) {
-        if sessionState == .started {
-            self.isStreaming = true
-        } else if sessionState == .ended || sessionState == .error {
-            self.isStreaming = false
-        }
-        
-        self.delegate.liveVideo(self, didChange: FBSDKLiveVideoSessionState(rawValue: sessionState.rawValue)!)
-    }
-    
-    public func didAddCameraSource(_ session: VCSimpleSession!) {
-        
-        self.delegate.liveVideo(self, didAdd: session as! FBSDKLiveVideoSession)
-    }
-}
+
+
+//extension FBSDKLiveVideo : VCSessionDelegate {
+//    public func connectionStatusChanged(_ sessionState: VCSessionState) {
+//        if sessionState == .started {
+//            self.isStreaming = true
+//        } else if sessionState == .ended || sessionState == .error {
+//            self.isStreaming = false
+//        }
+//
+//        self.delegate.liveVideo(self, didChange: FBSDKLiveVideoSessionState(rawValue: sessionState.rawValue)!)
+//    }
+//
+//    public func didAddCameraSource(_ session: VCSimpleSession!) {
+//
+//        self.delegate.liveVideo(self, didAdd: session as! FBSDKLiveVideoSession)
+//    }
+//}

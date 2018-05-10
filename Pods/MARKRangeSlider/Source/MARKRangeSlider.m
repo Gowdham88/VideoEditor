@@ -12,9 +12,6 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
 @property (nonatomic) UIImageView *leftThumbImageView;
 @property (nonatomic) UIImageView *rightThumbImageView;
 
-@property (nonatomic) UIView *viewLeftThumbImageContainer;
-@property (nonatomic) UIView *viewRightThumbImageContainer;
-
 @end
 
 @implementation MARKRangeSlider
@@ -23,8 +20,6 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
 @synthesize rangeImage = _rangeImage;
 @synthesize leftThumbImage = _leftThumbImage;
 @synthesize rightThumbImage = _rightThumbImage;
-@synthesize viewLeftThumbImageContainer = _viewLeftThumbImageContainer;
-@synthesize viewRightThumbImageContainer = _viewRightThumbImageContainer;
 
 #pragma mark - Initialization
 
@@ -88,36 +83,25 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
     self.rangeImageView = [[UIImageView alloc] initWithImage:self.rangeImage];
     [self addSubview:self.rangeImageView];
 
-    self.viewLeftThumbImageContainer = [[UIView alloc] init];
-    self.viewLeftThumbImageContainer.userInteractionEnabled = YES;
-//    self.viewLeftThumbImageContainer.backgroundColor = [UIColor redColor];
-    [self addSubview:self.viewLeftThumbImageContainer];
-    
     // Init left thumb image
     self.leftThumbImageView = [[UIImageView alloc] initWithImage:self.leftThumbImage];
-//    self.leftThumbImageView.userInteractionEnabled = YES;
-    self.leftThumbImageView.contentMode = UIViewContentModeScaleToFill;
-    [self.viewLeftThumbImageContainer addSubview:self.leftThumbImageView];
+    self.leftThumbImageView.userInteractionEnabled = YES;
+    self.leftThumbImageView.contentMode = UIViewContentModeCenter;
+    [self addSubview:self.leftThumbImageView];
 
     // Add left pan recognizer
     UIPanGestureRecognizer *leftPanRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleLeftPan:)];
-    [self.viewLeftThumbImageContainer addGestureRecognizer:leftPanRecognizer];
+    [self.leftThumbImageView addGestureRecognizer:leftPanRecognizer];
 
-    
-    self.viewRightThumbImageContainer = [[UIView alloc] init];
-//    self.viewRightThumbImageContainer.backgroundColor = [UIColor redColor];
-    self.viewRightThumbImageContainer.userInteractionEnabled = YES;
-    [self addSubview:self.viewRightThumbImageContainer];
-    
     // Init right thumb image
     self.rightThumbImageView = [[UIImageView alloc] initWithImage:self.rightThumbImage];
-//    self.rightThumbImageView.userInteractionEnabled = YES;
-    self.rightThumbImageView.contentMode = UIViewContentModeScaleToFill;
-    [self.viewRightThumbImageContainer addSubview:self.rightThumbImageView];
+    self.rightThumbImageView.userInteractionEnabled = YES;
+    self.rightThumbImageView.contentMode = UIViewContentModeCenter;
+    [self addSubview:self.rightThumbImageView];
 
     // Add right pan recognizer
     UIPanGestureRecognizer *rightPanRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightPan:)];
-    [self.viewRightThumbImageContainer addGestureRecognizer:rightPanRecognizer];
+    [self.rightThumbImageView addGestureRecognizer:rightPanRecognizer];
 }
 
 #pragma mark - Layout
@@ -137,10 +121,8 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
 
     CGFloat trackHeight = _trackImage.size.height;
 
-    CGSize leftThumbImageSize = self.leftThumbImageView.image.size;//CGSizeMake(self.leftThumbImageView.image.size.width + 10, self.leftThumbImageView.image.size.height);//self.leftThumbImageView.image.size;
+    CGSize leftThumbImageSize = self.leftThumbImageView.image.size;
     CGSize rightThumbImageSize = self.rightThumbImageView.image.size;
-    
-    //CGSizeMake(self.rightThumbImageView.image.size.width + 10, self.rightThumbImageView.image.size.height);//self.rightThumbImageView.image.size;
 
     CGFloat leftAvailableWidth = width - leftThumbImageSize.width;
     CGFloat rightAvailableWidth = width - rightThumbImageSize.width;
@@ -181,9 +163,7 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
     if (self.disableOverlapping) {
         rangeWidth += rightInset + gap;
     }
-    
-    CGFloat rangeY = (height - _rangeImage.size.height) / 2 + 2 ;
-    self.rangeImageView.frame = CGRectMake(leftX + leftInset, rangeY, rangeWidth, _rangeImage.size.height - 3);
+    self.rangeImageView.frame = CGRectMake(leftX + leftInset, trackY, rangeWidth, trackHeight);
 
     // Set thumb image view frame sizes
     CGRect leftImageViewFrame = { CGPointMake(0, 0), leftThumbImageSize };
@@ -191,24 +171,14 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
     self.leftThumbImageView.frame = leftImageViewFrame;
     self.rightThumbImageView.frame = rightImageViewFrame;
 
-    self.viewLeftThumbImageContainer.frame = CGRectMake(0, 0, leftImageViewFrame.size.width + 15, leftImageViewFrame.size.height);
-    self.viewRightThumbImageContainer.frame = CGRectMake(0, 0, rightImageViewFrame.size.width + 15, rightImageViewFrame.size.height);
-    
     // Set left & right thumb frames
     leftX += leftInset;
     rightX += rightInset;
     if (self.disableOverlapping) {
         rightX = rightX + rightInset * 2 - gap;
     }
-    
-//    self.leftThumbImageView.center = CGPointMake(leftX, height / 2);
-//    self.rightThumbImageView.center = CGPointMake(rightX, height / 2);
-    self.leftThumbImageView.center = CGPointMake(self.leftThumbImageView.frame.size.width/2, self.leftThumbImageView.frame.size.height/2);
-    self.rightThumbImageView.center = CGPointMake((self.leftThumbImageView.frame.size.width/2) + 10, self.leftThumbImageView.frame.size.height/2);
-    
-    self.viewLeftThumbImageContainer.center = CGPointMake(leftX + 7, height / 2);
-    self.viewRightThumbImageContainer.center = CGPointMake(rightX - 5, height / 2);
-    
+    self.leftThumbImageView.center = CGPointMake(leftX, height / 2);
+    self.rightThumbImageView.center = CGPointMake(rightX, height / 2);
 }
 
 #pragma mark - Gesture recognition
@@ -217,9 +187,8 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
 {
     if (gesture.state == UIGestureRecognizerStateBegan || gesture.state == UIGestureRecognizerStateChanged) {
         //Fix when minimumDistance = 0.0 and slider is move to 1.0-1.0
-//        [self bringSubviewToFront:self.leftThumbImageView];
-        [self bringSubviewToFront:self.viewLeftThumbImageContainer];
-        
+        [self bringSubviewToFront:self.leftThumbImageView];
+
         CGPoint translation = [gesture translationInView:self];
         CGFloat trackRange = self.maximumValue - self.minimumValue;
         CGFloat width = CGRectGetWidth(self.frame) - CGRectGetWidth(self.leftThumbImageView.frame);
@@ -237,8 +206,7 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
 {
     if (gesture.state == UIGestureRecognizerStateBegan || gesture.state == UIGestureRecognizerStateChanged) {
         //Fix when minimumDistance = 0.0 and slider is move to 1.0-1.0
-//        [self bringSubviewToFront:self.rightThumbImageView];
-        [self bringSubviewToFront:self.viewRightThumbImageContainer];
+        [self bringSubviewToFront:self.rightThumbImageView];
 
         CGPoint translation = [gesture translationInView:self];
         CGFloat trackRange = self.maximumValue - self.minimumValue;
@@ -275,9 +243,9 @@ static NSString * const kMARKRangeSliderTrackRangeImage = @"rangeSliderTrackRang
 
 - (UIImage *)rangeImage
 {
-    //if (!_rangeImage) {
-    //    _rangeImage = [self bundleImageNamed: kMARKRangeSliderTrackRangeImage];
-    //}
+    if (!_rangeImage) {
+        _rangeImage = [self bundleImageNamed: kMARKRangeSliderTrackRangeImage];
+    }
     return _rangeImage;
 }
 

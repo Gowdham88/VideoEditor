@@ -36,6 +36,7 @@
 		3B275F062034A033004630B5 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B275F052034A033004630B5 /* ForgotPasswordVC.swift */; };
 		3B2889F92043B1390098A8E4 /* TagCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B2889F82043B1390098A8E4 /* TagCollectionCell.xib */; };
 		3BB83C2B20384FB800C433D5 /* WebviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB83C2A20384FB800C433D5 /* WebviewVC.swift */; };
+		4DD336372AE250F555ADB29C /* Pods_VideoEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 479607D5CA518A4C2EA59786 /* Pods_VideoEditor.framework */; };
 		88115FC620528F7C0096A5D7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88115FC520528F7B0096A5D7 /* AssetsLibrary.framework */; };
 		8965CB8D202584B3002F7259 /* StudioVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8965CB8C202584B3002F7259 /* StudioVC.swift */; };
 		8965CB902025C7E7002F7259 /* StudioVideoEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8965CB8E2025C7E6002F7259 /* StudioVideoEditCell.swift */; };
@@ -119,7 +120,6 @@
 		89FFA98B2021BFCD004FFC0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9892021BFCD004FFC0B /* LaunchScreen.storyboard */; };
 		89FFA9982021D7D0004FFC0B /* AudioAdjustCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */; };
 		89FFA9992021D7D0004FFC0B /* AudioAdjustCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */; };
-		995A99A0AA3F169715FC210B /* Pods_VideoEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFE8E7AA3F199F15C2B6E761 /* Pods_VideoEditor.framework */; };
 		B4FD86DE2098C1B5001B389E /* FBSDKLiveVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */; };
 		F83D3118207CDE5F001B90E7 /* HCYoutubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */; };
 		F841924A205AB0DA006E3727 /* DrageImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8419249205AB0DA006E3727 /* DrageImageView.swift */; };
@@ -129,6 +129,8 @@
 
 /* Begin PBXFileReference section */
 		0F028CD9209AC27E00E23353 /* VideoEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VideoEditor.entitlements; sourceTree = "<group>"; };
+		259116D0AE3BE7864ED23519 /* Pods-VideoEditor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor.debug.xcconfig"; sourceTree = "<group>"; };
+		26CB8B7FD865AC8180B02D96 /* Pods-VideoEditor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditor.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor.release.xcconfig"; sourceTree = "<group>"; };
 		3B20146A2036839D003F93E2 /* VideoEditor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VideoEditor.xcdatamodel; sourceTree = "<group>"; };
 		3B20147420368416003F93E2 /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		3B20F0622033C41F00E1ACAA /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		3B275F052034A033004630B5 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		3B2889F82043B1390098A8E4 /* TagCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCollectionCell.xib; sourceTree = "<group>"; };
 		3BB83C2A20384FB800C433D5 /* WebviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewVC.swift; sourceTree = "<group>"; };
+		479607D5CA518A4C2EA59786 /* Pods_VideoEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VideoEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88115FC520528F7B0096A5D7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8965CB8C202584B3002F7259 /* StudioVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudioVC.swift; sourceTree = "<group>"; };
 		8965CB8E2025C7E6002F7259 /* StudioVideoEditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudioVideoEditCell.swift; sourceTree = "<group>"; };
@@ -252,14 +255,11 @@
 		89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAdjustCell.swift; sourceTree = "<group>"; };
 		89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioAdjustCell.xib; sourceTree = "<group>"; };
 		B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBSDKLiveVideo.swift; sourceTree = "<group>"; };
-		C10F533DFC2D27392403F4A9 /* Pods-VideoEditor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor.debug.xcconfig"; sourceTree = "<group>"; };
-		F7517FC39C0B8FA6AE4245C1 /* Pods-VideoEditor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditor.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor.release.xcconfig"; sourceTree = "<group>"; };
 		F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCYoutubeParser.m; sourceTree = "<group>"; };
 		F83D3117207CDE5F001B90E7 /* HCYoutubeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCYoutubeParser.h; sourceTree = "<group>"; };
 		F8419249205AB0DA006E3727 /* DrageImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrageImageView.swift; sourceTree = "<group>"; };
 		F85384B4207F3FDD00B08202 /* VerticalSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalSlider.swift; sourceTree = "<group>"; };
 		F85D2DA7207B7056000375DA /* CameraFocusSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFocusSquare.swift; sourceTree = "<group>"; };
-		FFE8E7AA3F199F15C2B6E761 /* Pods_VideoEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VideoEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,7 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88115FC620528F7C0096A5D7 /* AssetsLibrary.framework in Frameworks */,
-				995A99A0AA3F169715FC210B /* Pods_VideoEditor.framework in Frameworks */,
+				4DD336372AE250F555ADB29C /* Pods_VideoEditor.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,9 +279,18 @@
 			isa = PBXGroup;
 			children = (
 				88115FC520528F7B0096A5D7 /* AssetsLibrary.framework */,
-				FFE8E7AA3F199F15C2B6E761 /* Pods_VideoEditor.framework */,
+				479607D5CA518A4C2EA59786 /* Pods_VideoEditor.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2EC0F9B88E4B21DD937C1404 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				259116D0AE3BE7864ED23519 /* Pods-VideoEditor.debug.xcconfig */,
+				26CB8B7FD865AC8180B02D96 /* Pods-VideoEditor.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		3B2014652036827D003F93E2 /* Coredata DB */ = {
@@ -363,15 +372,6 @@
 				3B26ECBE20373C94007145BC /* DropDown+Appearance.swift */,
 			);
 			path = src;
-			sourceTree = "<group>";
-		};
-		7EEBA223D84DAE8255820563 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C10F533DFC2D27392403F4A9 /* Pods-VideoEditor.debug.xcconfig */,
-				F7517FC39C0B8FA6AE4245C1 /* Pods-VideoEditor.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		8965CB8B202581F9002F7259 /* Studio */ = {
@@ -595,8 +595,8 @@
 			children = (
 				89FFA97F2021BFCD004FFC0B /* VideoEditor */,
 				89FFA97E2021BFCD004FFC0B /* Products */,
-				7EEBA223D84DAE8255820563 /* Pods */,
 				1D9DB0F43241F427FB979E6E /* Frameworks */,
+				2EC0F9B88E4B21DD937C1404 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -684,12 +684,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 89FFA98F2021BFCE004FFC0B /* Build configuration list for PBXNativeTarget "VideoEditor" */;
 			buildPhases = (
-				F5ED3ED3AA6C3A3EE1B2C336 /* [CP] Check Pods Manifest.lock */,
+				D7FF7C92BDDCEE3A43AF0A53 /* [CP] Check Pods Manifest.lock */,
 				89FFA9792021BFCD004FFC0B /* Sources */,
 				89FFA97A2021BFCD004FFC0B /* Frameworks */,
 				89FFA97B2021BFCD004FFC0B /* Resources */,
-				415084146BEBD56AF080EFA6 /* [CP] Embed Pods Frameworks */,
-				CD29EF404E732BE9837FE5B9 /* [CP] Copy Pods Resources */,
+				FD037B0F9A0E54BBDCA2B56A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -798,66 +797,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		415084146BEBD56AF080EFA6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/MARKRangeSlider/MARKRangeSlider.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MediaWatermark/MediaWatermark.framework",
-				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
-				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
-				"${BUILT_PRODUCTS_DIR}/UriParser-cpp/UriParser.framework",
-				"${BUILT_PRODUCTS_DIR}/VideoCore/VideoCore.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MARKRangeSlider.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediaWatermark.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UriParser.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoCore.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CD29EF404E732BE9837FE5B9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F5ED3ED3AA6C3A3EE1B2C336 /* [CP] Check Pods Manifest.lock */ = {
+		D7FF7C92BDDCEE3A43AF0A53 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -873,6 +813,50 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FD037B0F9A0E54BBDCA2B56A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
+				"${BUILT_PRODUCTS_DIR}/HaishinKit/HaishinKit.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Logboard/Logboard.framework",
+				"${BUILT_PRODUCTS_DIR}/MARKRangeSlider/MARKRangeSlider.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MediaWatermark/MediaWatermark.framework",
+				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
+				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HaishinKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Logboard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MARKRangeSlider.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediaWatermark.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VideoEditor/Pods-VideoEditor-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1094,7 +1078,7 @@
 		};
 		89FFA9902021BFCE004FFC0B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C10F533DFC2D27392403F4A9 /* Pods-VideoEditor.debug.xcconfig */;
+			baseConfigurationReference = 259116D0AE3BE7864ED23519 /* Pods-VideoEditor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VideoEditor/VideoEditor.entitlements;
@@ -1117,7 +1101,7 @@
 		};
 		89FFA9912021BFCE004FFC0B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7517FC39C0B8FA6AE4245C1 /* Pods-VideoEditor.release.xcconfig */;
+			baseConfigurationReference = 26CB8B7FD865AC8180B02D96 /* Pods-VideoEditor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VideoEditor/VideoEditor.entitlements;

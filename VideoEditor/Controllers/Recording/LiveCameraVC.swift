@@ -11,6 +11,7 @@ import Alamofire
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Photos
+import HaishinKit
 
 class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate, URLSessionDownloadDelegate
 {
@@ -1841,8 +1842,12 @@ extension LiveCameraVC {
 }
 
 extension LiveCameraVC : FBSDKLiveVideoDelegate {
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, VideoUrl url: URL) {
+        
+    }
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: RTMPConnection) {
         
         self.loader.stopAnimating()
         self.loader.removeFromSuperview()
@@ -1856,7 +1861,7 @@ extension LiveCameraVC : FBSDKLiveVideoDelegate {
         print("Session state changed to: \(sessionState)")
     }
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: RTMPConnection) {
         
         //        self.btnStartRecoding.imageView?.image = UIImage(named: "record-button")
     }

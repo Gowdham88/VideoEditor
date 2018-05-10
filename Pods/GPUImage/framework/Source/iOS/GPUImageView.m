@@ -227,7 +227,7 @@
 #pragma mark -
 #pragma mark Handling fill mode
 
-- (void)recalculateViewGeometry
+- (void)recalculateViewGeometry;
 {
     runSynchronouslyOnVideoProcessingQueue(^{
         CGFloat heightScaling, widthScaling;

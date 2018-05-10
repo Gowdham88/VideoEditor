@@ -32,7 +32,7 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
     dispatch_queue_t audioQueue, videoQueue;
     BOOL audioEncodingIsFinished, videoEncodingIsFinished;
 
-    
+    BOOL isRecording;
 }
 
 // Movie recording
@@ -62,13 +62,13 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
 @synthesize movieWriterContext = _movieWriterContext;
 
 @synthesize delegate = _delegate;
-@synthesize isRecording;
+
 #pragma mark -
 #pragma mark Initialization and teardown
 
-- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize outputSettings:(NSMutableDictionary *)outputSettings;
+- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
 {
-    return [self initWithMovieURL:newMovieURL size:newSize fileType:AVFileTypeQuickTimeMovie outputSettings:outputSettings];
+    return [self initWithMovieURL:newMovieURL size:newSize fileType:AVFileTypeQuickTimeMovie outputSettings:nil];
 }
 
 - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSMutableDictionary *)outputSettings;

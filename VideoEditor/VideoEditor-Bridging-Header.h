@@ -6,7 +6,7 @@
 #ifndef VideoEditor_Bridging_Header_h
 #define VideoEditor_Bridging_Header_h
 
-#import "VCSimpleSession.h"
+
 
 #endif /* VideoEditor_Bridging_Header_h */
 #import "UIViewController+MJPopupViewController.h"

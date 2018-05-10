@@ -19,6 +19,6 @@ target 'VideoEditor' do
     pod 'FBSDKLoginKit'
     pod 'Bolts'
     pod 'FBSDKCoreKit'
-    pod 'VideoCore/Swift', :git => 'https://github.com/maxcampolo/VideoCore.git'
+    pod 'HaishinKit', '~> 0.8.8'
 
 end

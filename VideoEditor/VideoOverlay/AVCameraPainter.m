@@ -263,7 +263,7 @@
         }
         
         [self removeFileObserver];
-        [_writer cancelRecording];
+        [_writers cancelRecording];
         [self destroyCameraWriter];
     }
 }
@@ -362,26 +362,26 @@
     
     _isRecording = YES;
     
-    _writer = [[GPUImageMovieWriter alloc] initWithMovieURL:url size:size fileType:AVFileTypeQuickTimeMovie outputSettings:outputSettings];
-    _writer.delegate = self;
-    _writer.metaData = metadata;
+    _writers = [[GPUImageMovieWriter alloc] initWithMovieURL:url size:size fileType:AVFileTypeQuickTimeMovie outputSettings:outputSettings];
+    _writers.delegate = self;
+    _writers.metaData = metadata;
     
-    [[self mainWriterOutput] addTarget:_writer];
+    [[self mainWriterOutput] addTarget:_writers];
 
     if(self.shouldCaptureAudio)
     {
         if(self.isCaptureVideo)
         {
-            _writer.shouldPassthroughAudio = YES;
-            _movie.audioEncodingTarget = _writer;
+            _writers.shouldPassthroughAudio = YES;
+            _movie.audioEncodingTarget = _writers;
         }
         else
         {
-            _camera.audioEncodingTarget = _writer;
+            _camera.audioEncodingTarget = _writers;
         }
     }
-    _writer.encodingLiveVideo = YES;
-    [_writer startRecording];
+    _writers.encodingLiveVideo = YES;
+    [_writers startRecording];
 
     [self createFileObserver];
     if(self.isCaptureVideo)
@@ -402,7 +402,7 @@
         return ;
     }
     
-    AVAssetWriter *assetWriter = _writer.assetWriter;
+    AVAssetWriter *assetWriter = _writers.assetWriter;
     if(!assetWriter || !assetWriter.outputURL) {
         return ;
     }
@@ -488,7 +488,7 @@
     {
         _camera.audioEncodingTarget = nil;
     }
-    [[self mainWriterOutput] removeTarget:_writer];
+    [[self mainWriterOutput] removeTarget:_writers];
     
     if (dispatch_semaphore_wait(self.dataUpdateSemaphore, DISPATCH_TIME_NOW) != 0)
     {
@@ -497,7 +497,7 @@
     
     [self removeFileObserver];
     __weak AVCameraPainter *weakSelf = self;
-    [_writer finishRecordingWithCompletionHandler:^(){
+    [_writers finishRecordingWithCompletionHandler:^(){
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if(strongSelf)
         {
@@ -514,7 +514,7 @@
 {
     _isRecording = NO;
     _isPaused = NO;
-    _writer = nil;
+    _writers = nil;
     dispatch_semaphore_signal(self.dataUpdateSemaphore);
 }
 
@@ -539,7 +539,7 @@
 
 -(CMTime) recordTime
 {
-    return (_isRecording) ? _writer.duration : kCMTimeIndefinite;
+    return (_isRecording) ? _writers.duration : kCMTimeIndefinite;
 }
 
 #pragma mark - GPUImageMovieWriterDelegate protocol implementation

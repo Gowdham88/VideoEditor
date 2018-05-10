@@ -535,60 +535,20 @@ NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString = SHAD
 {
 	_frameRate = frameRate;
 	
-    
 	if (_frameRate > 0)
 	{
 		if ([_inputCamera respondsToSelector:@selector(setActiveVideoMinFrameDuration:)] &&
             [_inputCamera respondsToSelector:@selector(setActiveVideoMaxFrameDuration:)]) {
             
-            AVCaptureDeviceFormat *bestFormat = nil;
-            AVFrameRateRange *bestFrameRateRange = nil;
-            NSInteger maxWidth = 0;
-            for ( AVCaptureDeviceFormat *format in [_inputCamera formats] ) {
-                for ( AVFrameRateRange *range in format.videoSupportedFrameRateRanges )
-                {
-                    CMVideoFormatDescriptionRef dec = [format formatDescription];
-                    CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(dec);
-                    NSInteger width = dimensions.width;
-                    //NSLog(@"Format %@",format);
-                    if ( range.maxFrameRate >= _frameRate && range.minFrameRate <= _frameRate &&  width >= maxWidth)
-                    {
-                        bestFormat = format;
-                        bestFrameRateRange = range;
-                        maxWidth = width;
-                    }
-                }
-            }
-
-            //NSLog(@"Format %@",bestFormat);
-            if (bestFormat)
-            {
-                NSError *error;
-                [_inputCamera lockForConfiguration:&error];
-                if (error == nil) {
+            NSError *error;
+            [_inputCamera lockForConfiguration:&error];
+            if (error == nil) {
 #if defined(__IPHONE_7_0)
-//                    _inputCamera.activeFormat = bestFormat;
-                    [_inputCamera setActiveVideoMinFrameDuration:bestFrameRateRange.minFrameDuration];
-                    [_inputCamera setActiveVideoMaxFrameDuration:bestFrameRateRange.minFrameDuration];
-                    
-                    [_inputCamera setActiveVideoMinFrameDuration:CMTimeMake(1, _frameRate)];
-                    [_inputCamera setActiveVideoMaxFrameDuration:CMTimeMake(1, _frameRate)];
+                [_inputCamera setActiveVideoMinFrameDuration:CMTimeMake(1, _frameRate)];
+                [_inputCamera setActiveVideoMaxFrameDuration:CMTimeMake(1, _frameRate)];
 #endif
-                }
-                [_inputCamera unlockForConfiguration];
             }
-            else
-            {
-                NSError *error;
-                [_inputCamera lockForConfiguration:&error];
-                if (error == nil) {
-#if defined(__IPHONE_7_0)
-                    [_inputCamera setActiveVideoMinFrameDuration:kCMTimeInvalid];
-                    [_inputCamera setActiveVideoMaxFrameDuration:kCMTimeInvalid];
-#endif
-                }
-                [_inputCamera unlockForConfiguration];
-            }
+            [_inputCamera unlockForConfiguration];
             
         } else {
             
@@ -715,7 +675,6 @@ NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString = SHAD
 
 - (void)processVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 {
-    
     if (capturePaused)
     {
         return;

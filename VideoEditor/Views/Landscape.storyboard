@@ -2151,6 +2151,7 @@
                                                     <constraint firstAttribute="height" constant="65" id="Lbe-sH-WXw"/>
                                                     <constraint firstAttribute="width" constant="65" id="Nhc-IM-BYd"/>
                                                 </constraints>
+                                                <state key="normal" backgroundImage="pause_gray"/>
                                                 <connections>
                                                     <action selector="btnPauseClicked:" destination="CFv-Nk-NXZ" eventType="touchUpInside" id="j5E-9u-gkJ"/>
                                                 </connections>

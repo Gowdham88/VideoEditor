@@ -12,7 +12,8 @@ import GPUImage
 import FBSDKCoreKit
 import FBSDKLoginKit
 import FBSDKShareKit
-import VideoCore
+import HaishinKit
+
 
 class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerDelegate {
     
@@ -943,6 +944,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 var outputFilePath = NSTemporaryDirectory() as String
                 
                 outputFilePath = outputFilePath + "\(outputFileName)"
+                
+                print(outputFilePath)
                 
                 if self.recordedVideoIndex == 0
                 {
@@ -2849,7 +2852,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     {
         print("updateTimer")
         
-        if !painter.writer.isRecording
+        if !painter.isRecording
         {
             return
         }
@@ -3336,7 +3339,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         outputFilePath = outputFilePath + "\(outputFileName)"
         outputFilePath = outputFilePath + "/file.mp4"
         
-                    self.stopStreaming()
+        self.stopStreaming()
         
         painter.stopCameraRecording(competionHandler: {(_ painter: AVCameraPainter) -> Void in
             
@@ -3957,8 +3960,16 @@ extension UIImage {
 }
 
 extension RecordCameraVideoVC : FBSDKLiveVideoDelegate {
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, VideoUrl url: URL) {
+        
+        print(url)
+        
+    }
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: FBSDKLiveVideoSession) {
+    
+    
+    
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: RTMPConnection) {
         
 //        self.btnPause.imageView?.image = UIImage(named: "stop-button")
         self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
@@ -3976,7 +3987,7 @@ extension RecordCameraVideoVC : FBSDKLiveVideoDelegate {
         print("Session state changed to: \(sessionState)")
     }
     
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: FBSDKLiveVideoSession) {
+    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: RTMPConnection) {
         
         self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
         

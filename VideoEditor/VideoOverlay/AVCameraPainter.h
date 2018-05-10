@@ -25,7 +25,7 @@
 @property (nonatomic, readonly) AVFrameDrawer *overlay;
 
 @property (nonatomic, readonly) GPUImageVideoCamera *camera;
-@property (nonatomic, readonly) GPUImageMovieWriter *writer;
+@property (nonatomic, readonly) GPUImageMovieWriter *writers;
 
 /// @name Initialization and teardown
 

@@ -30,7 +30,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
     CGSize videoSize;
     GPUImageRotationMode inputRotation;
 }
-@property(readwrite, nonatomic)BOOL isRecording;
+
 @property(readwrite, nonatomic) BOOL hasAudioTrack;
 @property(readwrite, nonatomic) BOOL shouldPassthroughAudio;
 @property(readwrite, nonatomic) BOOL shouldInvalidateAudioSampleWhenDone;
@@ -50,8 +50,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 @property(nonatomic, retain) GPUImageContext *movieWriterContext;
 
 // Initialization and teardown
-//- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
-- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize outputSettings:(NSMutableDictionary *)outputSettings;
+- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
 - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSDictionary *)outputSettings;
 
 - (void)setHasAudioTrack:(BOOL)hasAudioTrack audioSettings:(NSDictionary *)audioOutputSettings;

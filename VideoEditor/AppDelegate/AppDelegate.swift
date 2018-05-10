@@ -63,6 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set("YES", forKey: Constants.kRecordingsource_PurchaseKey)
         UserDefaults.standard.synchronize()
         
+        let session: AVAudioSession = AVAudioSession.sharedInstance()
+        do {
+            try session.setPreferredSampleRate(44_100)
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
+            try session.setMode(AVAudioSessionModeDefault)
+            try session.setActive(true)
+        } catch {
+        }
+        
         if FBSDKAccessToken.current() == nil {
             
             FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
