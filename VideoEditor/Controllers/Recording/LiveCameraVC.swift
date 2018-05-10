@@ -410,6 +410,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             if self.captureSession.canAddInput(videoInput)
             {
                 self.captureSession.addInput(videoInput)
+                
             }
             else
             {
@@ -623,6 +624,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         }
         
     }
+    
     func OpenRecordingView()
     {
         let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idRecordCameraVideoVC) as! RecordCameraVideoVC

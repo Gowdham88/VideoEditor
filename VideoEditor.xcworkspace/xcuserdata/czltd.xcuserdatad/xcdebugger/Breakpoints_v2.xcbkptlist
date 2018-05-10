@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.4130321"
+            timestampString = "547580875.4401751"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1161"
-            endingLineNumber = "1161"
-            landmarkName = "HightLightButtonClicked(_:)"
+            startingLineNumber = "1165"
+            endingLineNumber = "1165"
+            landmarkName = "respondToTapGesture(gesture:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413088"
+            timestampString = "547580875.440641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3078"
-            endingLineNumber = "3078"
+            startingLineNumber = "3082"
+            endingLineNumber = "3082"
             landmarkName = "InitCameraCapture()"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,139 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413128"
+            timestampString = "547580875.440992"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "712"
-            endingLineNumber = "712"
-            landmarkName = "sliderValueChanged(slider:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413165"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2730"
-            endingLineNumber = "2730"
-            landmarkName = "exportDidFinish(session:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.4132"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2723"
-            endingLineNumber = "2723"
-            landmarkName = "exportDidFinish(session:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.4132349"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2726"
-            endingLineNumber = "2726"
-            landmarkName = "exportDidFinish(session:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413269"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2733"
-            endingLineNumber = "2733"
-            landmarkName = "exportDidFinish(session:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413304"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2736"
-            endingLineNumber = "2736"
-            landmarkName = "exportDidFinish(session:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.4133379"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "582"
-            endingLineNumber = "582"
-            landmarkName = "PlayVideoFromURL()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413372"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
-            landmarkName = "observeTime(elapsedTime:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413408"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "693"
-            endingLineNumber = "693"
+            startingLineNumber = "716"
+            endingLineNumber = "716"
             landmarkName = "sliderEndedTracking(slider:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,11 +58,155 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413443"
+            timestampString = "547580875.441327"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "716"
-            endingLineNumber = "716"
+            startingLineNumber = "2734"
+            endingLineNumber = "2734"
+            landmarkName = "Merge1()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.44166"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2727"
+            endingLineNumber = "2727"
+            landmarkName = "Merge1()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.441991"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2730"
+            endingLineNumber = "2730"
+            landmarkName = "Merge1()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.442319"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2737"
+            endingLineNumber = "2737"
+            landmarkName = "Merge1()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.44265"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2740"
+            endingLineNumber = "2740"
+            landmarkName = "Merge1()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.4429801"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "586"
+            endingLineNumber = "586"
+            landmarkName = "PlayVideoFromURL()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.443306"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "605"
+            endingLineNumber = "605"
+            landmarkName = "PlayVideoFromURL()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.44363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "697"
+            endingLineNumber = "697"
+            landmarkName = "sliderBeganTracking(slider:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.443952"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "720"
+            endingLineNumber = "720"
+            landmarkName = "sliderEndedTracking(slider:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.444273"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "763"
+            endingLineNumber = "763"
             landmarkName = "sliderValueChanged(slider:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -202,11 +218,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413476"
+            timestampString = "547580875.44459"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "759"
-            endingLineNumber = "759"
+            startingLineNumber = "776"
+            endingLineNumber = "776"
+            landmarkName = "sliderValueChanged(slider:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
+            timestampString = "547580875.444905"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "803"
+            endingLineNumber = "803"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -218,27 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413511"
+            timestampString = "547580875.4452209"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "772"
-            endingLineNumber = "772"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413545"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "799"
-            endingLineNumber = "799"
+            startingLineNumber = "825"
+            endingLineNumber = "825"
             landmarkName = "appMovedToBackground()"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,12 +266,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413579"
+            timestampString = "547580875.44554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "821"
-            endingLineNumber = "821"
-            landmarkName = "viewWillDisappear(_:)"
+            startingLineNumber = "887"
+            endingLineNumber = "887"
+            landmarkName = "MakeProgressiveZoomOnOff()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -266,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413612"
+            timestampString = "547580875.445859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "883"
-            endingLineNumber = "883"
+            startingLineNumber = "951"
+            endingLineNumber = "951"
             landmarkName = "StartVideoRecording()"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413645"
+            timestampString = "547580875.446178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "947"
-            endingLineNumber = "947"
+            startingLineNumber = "964"
+            endingLineNumber = "964"
             landmarkName = "StartVideoRecording()"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,28 +314,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.4136781"
+            timestampString = "547580875.446593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "960"
-            endingLineNumber = "960"
-            landmarkName = "btnPauseClicked(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.41371"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "972"
-            endingLineNumber = "972"
-            landmarkName = "btnPauseClicked(_:)"
+            startingLineNumber = "976"
+            endingLineNumber = "976"
+            landmarkName = "StartVideoRecording()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -330,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/LiveCameraVC.swift"
-            timestampString = "547553281.413746"
+            timestampString = "547580875.447032"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1484"
-            endingLineNumber = "1484"
+            startingLineNumber = "1487"
+            endingLineNumber = "1487"
             landmarkName = "GetURLForYoutuber(videoURL:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/LiveCameraVC.swift"
-            timestampString = "547553281.413779"
+            timestampString = "547580875.447534"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1494"
-            endingLineNumber = "1494"
+            startingLineNumber = "1497"
+            endingLineNumber = "1497"
             landmarkName = "GetURLForYoutuber(videoURL:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/LiveCameraVC.swift"
-            timestampString = "547553281.4138089"
+            timestampString = "547580875.447824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1500"
-            endingLineNumber = "1500"
+            startingLineNumber = "1503"
+            endingLineNumber = "1503"
             landmarkName = "GetURLForYoutuber(videoURL:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -378,12 +378,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.4138401"
+            timestampString = "547580875.448103"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1979"
-            endingLineNumber = "1979"
-            landmarkName = "btnFinishRecordingClicked(_:)"
+            startingLineNumber = "1983"
+            endingLineNumber = "1983"
+            landmarkName = "recording()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -394,13 +394,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413873"
+            timestampString = "547580875.448427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1981"
-            endingLineNumber = "1981"
-            landmarkName = "btnFinishRecordingClicked(_:)"
-            landmarkType = "7">
+            startingLineNumber = "1985"
+            endingLineNumber = "1985"
+            landmarkName = "RecordCameraVideoVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413906"
+            timestampString = "547580875.448743"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "466"
-            endingLineNumber = "466"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413941"
+            timestampString = "547580875.44906"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2917"
-            endingLineNumber = "2917"
+            startingLineNumber = "2921"
+            endingLineNumber = "2921"
             landmarkName = "createCameraPreview()"
             landmarkType = "7">
          </BreakpointContent>
@@ -442,12 +442,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.413974"
+            timestampString = "547580875.4493819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3172"
-            endingLineNumber = "3172"
-            landmarkName = "StartPlayingRecording()"
+            startingLineNumber = "3176"
+            endingLineNumber = "3176"
+            landmarkName = "InitCameraCapture()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -458,12 +458,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.414008"
+            timestampString = "547580875.44971"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2803"
-            endingLineNumber = "2803"
-            landmarkName = "runTimer()"
+            startingLineNumber = "2807"
+            endingLineNumber = "2807"
+            landmarkName = "addAudioTrack(composition:videoAsset:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -474,12 +474,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.41404"
+            timestampString = "547580875.45003"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3171"
-            endingLineNumber = "3171"
-            landmarkName = "StartPlayingRecording()"
+            startingLineNumber = "3175"
+            endingLineNumber = "3175"
+            landmarkName = "InitCameraCapture()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -490,12 +490,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.414073"
+            timestampString = "547580875.450361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2806"
-            endingLineNumber = "2806"
-            landmarkName = "runTimer()"
+            startingLineNumber = "2810"
+            endingLineNumber = "2810"
+            landmarkName = "FetchTagInfoFromDB()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -506,12 +506,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.414106"
+            timestampString = "547580875.45068"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2811"
-            endingLineNumber = "2811"
-            landmarkName = "runTimer()"
+            startingLineNumber = "2815"
+            endingLineNumber = "2815"
+            landmarkName = "FetchTagInfoFromDB()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -522,12 +522,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.414138"
+            timestampString = "547580875.4509979"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2813"
-            endingLineNumber = "2813"
-            landmarkName = "runTimer()"
+            startingLineNumber = "2817"
+            endingLineNumber = "2817"
+            landmarkName = "FetchTagInfoFromDB()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -714,11 +714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoEditor/Controllers/Recording/RecordCameraVideoVC.swift"
-            timestampString = "547553281.414286"
+            timestampString = "547580875.451394"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
