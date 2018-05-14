@@ -597,17 +597,15 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
         
-        //        if !self.liveVideo.isStreaming {
-        //            startStreaming()
-        //        } else {
-        //            stopStreaming()
-        //        }
-        
-        //        if fbAvailable == true {
-        //
-        //
-        //
-        //        }
+//        if fbAvailable == true {
+//
+//            let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idFacebookCameraVideoVC) as! FaceBookLiveVideoVc
+//            redirectTo.recordEventInfo  = self.recordEventInfo
+//            redirectTo.videoSettingDict = self.videoSettingDict
+//            self.navigationController?.pushViewController(redirectTo, animated: true)
+//
+//            return
+//        }
         
         if selectedCameraSource == 3
         {
@@ -629,7 +627,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     func OpenRecordingView()
     {
         let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idRecordCameraVideoVC) as! RecordCameraVideoVC
-        redirectTo.recordEventInfo = self.recordEventInfo
+        redirectTo.recordEventInfo  = self.recordEventInfo
         redirectTo.videoSettingDict = self.videoSettingDict
         redirectTo.selectedCameraSource = selectedCameraSource
         if selectedCameraSource == 3 || selectedCameraSource == 2

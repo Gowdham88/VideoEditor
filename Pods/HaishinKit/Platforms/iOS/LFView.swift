@@ -28,6 +28,8 @@ open class LFView: UIView {
         }
     }
     var position: AVCaptureDevice.Position = .front
+    
+    var image : UIImage!
 
     private weak var currentStream: NetStream? {
         didSet {
@@ -63,7 +65,13 @@ open class LFView: UIView {
 
         stream.mixer.session.beginConfiguration()
         layer.session = stream.mixer.session
-        orientation = stream.mixer.videoIO.orientation
+        orientation   = stream.mixer.videoIO.orientation
+        let myLayer = CALayer()
+        let myImage = image.cgImage
+        myLayer.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
+        myLayer.contents = myImage
+        layer.addSublayer(myLayer)
+        
         stream.mixer.session.commitConfiguration()
 
         stream.lockQueue.async {

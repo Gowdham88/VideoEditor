@@ -125,6 +125,7 @@ extension AVMixer: Running {
             return
         }
         DispatchQueue.global(qos: .userInteractive).async {
+            
             self.session.startRunning()
         }
     }

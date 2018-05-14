@@ -135,11 +135,13 @@ class AllVideosListVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
 
     func FetchVideoInfo()
     {
-        let SubCategoryArray1: NSArray =         CoreDataHelperInstance.sharedInstance.fetchDataFrom(entityName1: "RecEventList", sorting: false, predicate: nil, sortKey: "recordingDate")! as NSArray
+        let SubCategoryArray1: NSArray = CoreDataHelperInstance.sharedInstance.fetchDataFrom(entityName1: "RecEventList", sorting: false, predicate: nil, sortKey: "recordingDate")! as NSArray
 
         if SubCategoryArray1 != nil
         {
             self.videoRecordingList = NSMutableArray.init(array: SubCategoryArray1)
+            
+            print(self.videoRecordingList)
         }
         
         DispatchQueue.main.async

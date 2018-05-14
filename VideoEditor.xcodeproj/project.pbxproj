@@ -120,6 +120,7 @@
 		89FFA98B2021BFCD004FFC0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9892021BFCD004FFC0B /* LaunchScreen.storyboard */; };
 		89FFA9982021D7D0004FFC0B /* AudioAdjustCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */; };
 		89FFA9992021D7D0004FFC0B /* AudioAdjustCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */; };
+		B4BE6D5620A992B000CE9174 /* FaceBookLiveVideoVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BE6D5520A992B000CE9174 /* FaceBookLiveVideoVc.swift */; };
 		B4FD86DE2098C1B5001B389E /* FBSDKLiveVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */; };
 		F83D3118207CDE5F001B90E7 /* HCYoutubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */; };
 		F841924A205AB0DA006E3727 /* DrageImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8419249205AB0DA006E3727 /* DrageImageView.swift */; };
@@ -254,6 +255,7 @@
 		89FFA98C2021BFCE004FFC0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAdjustCell.swift; sourceTree = "<group>"; };
 		89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioAdjustCell.xib; sourceTree = "<group>"; };
+		B4BE6D5520A992B000CE9174 /* FaceBookLiveVideoVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceBookLiveVideoVc.swift; sourceTree = "<group>"; };
 		B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBSDKLiveVideo.swift; sourceTree = "<group>"; };
 		F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCYoutubeParser.m; sourceTree = "<group>"; };
 		F83D3117207CDE5F001B90E7 /* HCYoutubeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCYoutubeParser.h; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 				F85D2DA7207B7056000375DA /* CameraFocusSquare.swift */,
 				F85384B4207F3FDD00B08202 /* VerticalSlider.swift */,
 				F8419249205AB0DA006E3727 /* DrageImageView.swift */,
+				B4BE6D5520A992B000CE9174 /* FaceBookLiveVideoVc.swift */,
 			);
 			path = Recording;
 			sourceTree = "<group>";
@@ -896,6 +899,7 @@
 				F83D3118207CDE5F001B90E7 /* HCYoutubeParser.m in Sources */,
 				3B20F0632033C41F00E1ACAA /* UIViewController.swift in Sources */,
 				3B26785B205F6B59001F9316 /* FadeButton.swift in Sources */,
+				B4BE6D5620A992B000CE9174 /* FaceBookLiveVideoVc.swift in Sources */,
 				3B26ECC420373C94007145BC /* DropDown.swift in Sources */,
 				89714EC2202B163900F0B504 /* FullScreenPhotoVC.swift in Sources */,
 				89DB0EE520237EF500DD47B4 /* CustomFlowLayout.swift in Sources */,

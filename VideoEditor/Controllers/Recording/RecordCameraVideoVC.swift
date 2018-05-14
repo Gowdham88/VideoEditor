@@ -2438,7 +2438,28 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
         
         self.GetScoreBoardImage()
+        
+        /********************For dev purpose ********************************/
+        
+        if fbAvailable == true {
+            
+            let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idFacebookCameraVideoVC) as! FaceBookLiveVideoVc
+            redirectTo.recordEventInfo  = self.recordEventInfo
+            redirectTo.videoSettingDict = self.videoSettingDict
+            self.navigationController?.pushViewController(redirectTo, animated: true)
+            
+            if (timer != nil)
+            {
+                timer.invalidate()
+                timer = nil
+            }
+        
+            return
+        }
+        
+        
     }
+    
     func GetScoreBoardImage()
     {
         if self.recordEventInfo.isDayEvent
@@ -2667,6 +2688,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         //
         //        }
         
+        print(completeMoviePath)
+        
         let composition = AVMutableComposition()
         
         if let completeMoviePath = completeMoviePath {
@@ -2710,6 +2733,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                     sessionPreset = AVAssetExportPreset3840x2160
                 }
                 
+                print(completeMoviePath)
+                
                 /// try to start an export session and set the path and file type
                 if let exportSession = AVAssetExportSession(asset: composition, presetName: sessionPreset) {
                     exportSession.outputURL = completeMoviePath
@@ -2721,6 +2746,10 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                         switch exportSession.status {
                         case .failed:
                             if let _error = exportSession.error {
+                                
+                                print(_error)
+                                
+                               
                                 
                             }
                             
@@ -3259,6 +3288,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             }
         }
         
+        print(outputFilePath1)
+        
         if videoCodec == Constants.CodecH264 || videoCodec == Constants.CodecH265
         {
             let myDictOfDict:NSDictionary = [
@@ -3267,53 +3298,53 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 AVVideoHeightKey : NSNumber.init(value: Int((self.videoSize?.height)!))
             ]
             painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil, outputSettings: myDictOfDict as! [AnyHashable : Any])
-            
-            
+
+
 
         } else
         {
             painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil, outputSettings: nil)
-            
-          
+
+
         }
         
-        if fbAvailable == true {
-            
-            recordEventInfo.fbLive = true
-            
-            self.liveVideo = FBSDKLiveVideo(
-                delegate: self,
-                previewSize: self.view.bounds,
-                videoSize: CGSize(width: 1280, height: 720)
-            )
-            
-            //            let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
-            
-            //myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-            
-            //            myOverlay.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-            
-            self.liveVideo.privacy = .me
-            self.liveVideo.audience = "me"
-            
-            self.loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-            self.loader.frame = CGRect(x: 15, y: 15, width: 40, height: 40)
-            
-            //            self.blurOverlay = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-            //            self.blurOverlay.frame = self.view.bounds
-            
-            
-            if !self.liveVideo.isStreaming {
-                
-                startStreaming()
-                
-            } else {
-                
-                stopStreaming()
-                recordEventInfo.fbLive = false
-            }
-            
-        }
+//        if fbAvailable == true {
+//
+//            recordEventInfo.fbLive = true
+//
+//            self.liveVideo = FBSDKLiveVideo(
+//                delegate: self,
+//                previewSize: self.view.bounds,
+//                videoSize: CGSize(width: 1280, height: 720), device: self.painter.camera.inputCamera, path: outputFilePath1
+//            )
+//
+//            //            let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
+//
+//            //myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+//
+//            //            myOverlay.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
+//
+//            self.liveVideo.privacy = .me
+//            self.liveVideo.audience = "me"
+//
+//            self.loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+//            self.loader.frame = CGRect(x: 15, y: 15, width: 40, height: 40)
+//
+//            //            self.blurOverlay = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+//            //            self.blurOverlay.frame = self.view.bounds
+//
+//
+//            if !self.liveVideo.isStreaming {
+//
+//                startStreaming()
+//
+//            } else {
+//
+//                stopStreaming()
+//                recordEventInfo.fbLive = false
+//            }
+//
+//        }
         
         //        painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil)
     }

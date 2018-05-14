@@ -13,12 +13,7 @@ import HaishinKit
 
 
 // MARK: FBSDKLiveVideoDelegate
-class ExampleRecorded : DefaultAVMixerRecorderDelegate {
-    override func didFinishWriting(_ recorder: AVMixerRecorder) {
-        guard let writer: AVAssetWriter = recorder.writer else { return }
-       
-    }
-}
+
 
 
 
@@ -209,6 +204,13 @@ open class FBSDKLiveVideo: NSObject {
     
     var preview: UIView!
     
+    var lfView : LFView!
+    
+    var videoPath : String = ""
+    
+    
+    
+    
     var isStreaming: Bool = false
     
     // MARK: - Internal API's
@@ -222,9 +224,12 @@ open class FBSDKLiveVideo: NSObject {
     
     var currentPosition: AVCaptureDevice.Position = .back
     
-    let myAVMixerRecorderDelegate = ExampleRecorded()
     
-    required public init(delegate: FBSDKLiveVideoDelegate, previewSize: CGRect, videoSize: CGSize) {
+    
+  
+
+    
+    required public init(delegate: FBSDKLiveVideoDelegate, previewSize: CGRect, videoSize: CGSize,path : String,fbvideoDelegate : AVMixerRecorderDelegate) {
         super.init()
         
         self.delegate = delegate
@@ -232,23 +237,30 @@ open class FBSDKLiveVideo: NSObject {
         rtmpStream = RTMPStream(connection: rtmpConnection)
         rtmpStream.syncOrientation = true
         rtmpStream.captureSettings = [
-            "sessionPreset": AVCaptureSession.Preset.hd1280x720.rawValue,
+            "sessionPreset": AVCaptureSession.Preset.hd1280x720,
             "continuousAutofocus": true,
             "continuousExposure": true
         ]
         rtmpStream.videoSettings = [
-            "width": 720,
-            "height": 1280
+            "width": previewSize.width,
+            "height": previewSize.height
         ]
         rtmpStream.audioSettings = [
             "sampleRate": sampleRate
         ]
         
-        rtmpStream.mixer.recorder.delegate = myAVMixerRecorderDelegate
+        rtmpStream.mixer.recorder.delegate = fbvideoDelegate
+        
+        let previewlayer = AVCaptureVideoPreviewLayer(session: rtmpStream.mixer.session)
+        let myLayer = CALayer()
+        let myImage = UIImage(named: "app_logo")?.cgImage
+        myLayer.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
+        myLayer.contents = myImage
+        previewlayer.addSublayer(myLayer)
         
         print(rtmpStream.mixer.recorder.delegate)
         
-//        let lfView : LFView = LFView(frame: previewSize)
+        lfView  = LFView(frame: previewSize)
         
         rtmpStream.attachAudio(AVCaptureDevice.default(for: .audio)) { error in
             
@@ -256,11 +268,14 @@ open class FBSDKLiveVideo: NSObject {
         rtmpStream.attachCamera(DeviceUtil.device(withPosition: currentPosition)) { error in
             
         }
+        
+        
+        videoPath = path
        
-//        lfView.attachStream(rtmpStream)
-//
-//        self.preview = UIView(frame: previewSize)
-//        self.preview.addSubview(lfView)
+        lfView.attachStream(rtmpStream)
+        preview = UIView(frame: previewSize)
+        preview.addSubview(lfView)
+        preview.layer.addSublayer(previewlayer)
      
         
     }
@@ -299,7 +314,6 @@ open class FBSDKLiveVideo: NSObject {
                 
                 self.rtmpConnection.addEventListener(Event.RTMP_STATUS, selector: #selector(self.rtmpStatusHandler), observer: self)
                 self.rtmpConnection.connect("rtmp://rtmp-api.facebook.com:80/rtmp")
-                
                
                 
             }
@@ -327,7 +341,6 @@ open class FBSDKLiveVideo: NSObject {
                 self.rtmpConnection.close()
                 self.rtmpConnection.removeEventListener(Event.RTMP_STATUS, selector: #selector(self.rtmpStatusHandler), observer: self)
                 self.isStreaming = false
-                
                 self.delegate.liveVideo(self, didStopWith:self.rtmpConnection)
                 
             }
@@ -381,8 +394,11 @@ open class FBSDKLiveVideo: NSObject {
                 }
                 
                 
-//                rtmpStream!.publish("/\(streamPath)?\(query)", type: .localRecord)
+                
+                 rtmpStream!.publish("/\(streamPath)?\(query)", type: .localRecord, path: videoPath)
                 self.isStreaming = true
+               
+               
                 self.delegate.liveVideo(self, didStartWith:self.rtmpConnection)
             
             case RTMPConnection.Code.connectNetworkChange.rawValue :
@@ -409,6 +425,8 @@ open class FBSDKLiveVideo: NSObject {
     internal func updateLiveStreamParameters(with parameter: FBSDKLiveVideoParameter) {
         self.createParameters[parameter.key] = parameter.value
     }
+    
+   
 }
 
 

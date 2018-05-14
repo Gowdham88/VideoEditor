@@ -277,9 +277,8 @@ extension DefaultAVMixerRecorderDelegate: AVMixerRecorderDelegate {
                 }
                 fileComponent = fileName + dateFormatter.string(from: Date())
             }
-            let url: URL = moviesDirectory.appendingPathComponent((fileComponent ?? UUID().uuidString) + ".mp4")
+            let url:URL = moviesDirectory.appendingPathComponent((fileComponent ?? UUID().uuidString) + ".mp4")
             logger.info("\(url)")
-            
             
             return try AVAssetWriter(outputURL: url, fileType: .mp4)
         } catch {

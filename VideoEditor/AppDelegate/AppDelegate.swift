@@ -69,6 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
             try session.setMode(AVAudioSessionModeDefault)
             try session.setActive(true)
+           
+            
         } catch {
         }
         

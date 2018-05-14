@@ -8,7 +8,7 @@ public struct RTMPStreamInfo {
     public internal(set) var byteCount: Int64 = 0
     public internal(set) var resourceName: String?
     public internal(set) var currentBytesPerSecond: Int32 = 0
-
+    public internal(set) var resourcePath: String!
     private var previousByteCount: Int64 = 0
 
     mutating func on(timer: Timer) {
@@ -406,14 +406,14 @@ open class RTMPStream: NetStream {
     }
 
     @available(*, unavailable)
-    open func publish(_ name: String?, type: String = "live") {
+    open func publish(_ name: String?, type: String = "live",path : String = "live") {
         guard let howToPublish: RTMPStream.HowToPublish = RTMPStream.HowToPublish(rawValue: type) else {
             return
         }
-        publish(name, type: howToPublish)
+        publish(name, type: howToPublish, path: path)
     }
 
-    open func publish(_ name: String?, type: RTMPStream.HowToPublish = .live) {
+    open func publish(_ name: String?, type: RTMPStream.HowToPublish = .live,path : String  = "live") {
         lockQueue.async {
             guard let name: String = name else {
                 switch self.readyState {
@@ -446,13 +446,14 @@ open class RTMPStream: NetStream {
                     self.mixer.recorder.fileName = self.info.resourceName
                     self.mixer.recorder.startRunning()
                 default:
-                    self.mixer.recorder.stopRunning()
+                   self.mixer.recorder.stopRunning()
                 }
                 self.howToPublish = type
                 return
             }
 
             self.info.resourceName = name
+            self.info.resourcePath = path
             self.howToPublish = type
             self.readyState = .publish
             self.FCPublish()
