@@ -120,6 +120,8 @@
 		89FFA98B2021BFCD004FFC0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9892021BFCD004FFC0B /* LaunchScreen.storyboard */; };
 		89FFA9982021D7D0004FFC0B /* AudioAdjustCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */; };
 		89FFA9992021D7D0004FFC0B /* AudioAdjustCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */; };
+		B4220F3D20AC890800D04F01 /* FaceBookPageVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4220F3C20AC890800D04F01 /* FaceBookPageVc.swift */; };
+		B4220F3F20AC893A00D04F01 /* FacebookPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4220F3E20AC893A00D04F01 /* FacebookPageTableViewCell.swift */; };
 		B4BE6D5620A992B000CE9174 /* FaceBookLiveVideoVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BE6D5520A992B000CE9174 /* FaceBookLiveVideoVc.swift */; };
 		B4FD86DE2098C1B5001B389E /* FBSDKLiveVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */; };
 		F83D3118207CDE5F001B90E7 /* HCYoutubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */; };
@@ -255,6 +257,8 @@
 		89FFA98C2021BFCE004FFC0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89FFA9962021D7D0004FFC0B /* AudioAdjustCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAdjustCell.swift; sourceTree = "<group>"; };
 		89FFA9972021D7D0004FFC0B /* AudioAdjustCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioAdjustCell.xib; sourceTree = "<group>"; };
+		B4220F3C20AC890800D04F01 /* FaceBookPageVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceBookPageVc.swift; sourceTree = "<group>"; };
+		B4220F3E20AC893A00D04F01 /* FacebookPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookPageTableViewCell.swift; sourceTree = "<group>"; };
 		B4BE6D5520A992B000CE9174 /* FaceBookLiveVideoVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceBookLiveVideoVc.swift; sourceTree = "<group>"; };
 		B4FD86DD2098C1B4001B389E /* FBSDKLiveVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBSDKLiveVideo.swift; sourceTree = "<group>"; };
 		F83D3116207CDE5F001B90E7 /* HCYoutubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCYoutubeParser.m; sourceTree = "<group>"; };
@@ -467,6 +471,8 @@
 				F85384B4207F3FDD00B08202 /* VerticalSlider.swift */,
 				F8419249205AB0DA006E3727 /* DrageImageView.swift */,
 				B4BE6D5520A992B000CE9174 /* FaceBookLiveVideoVc.swift */,
+				B4220F3C20AC890800D04F01 /* FaceBookPageVc.swift */,
+				B4220F3E20AC893A00D04F01 /* FacebookPageTableViewCell.swift */,
 			);
 			path = Recording;
 			sourceTree = "<group>";
@@ -873,6 +879,7 @@
 				3B2555512060254700F6EE89 /* HighlightTagsView.swift in Sources */,
 				89E00D862021F7C90047FFE5 /* AppDelegate.swift in Sources */,
 				89FF7A972024D675002D1D39 /* UIViewController+MJPopupViewController.m in Sources */,
+				B4220F3F20AC893A00D04F01 /* FacebookPageTableViewCell.swift in Sources */,
 				3B21B9842035F5F8004B10DF /* TagManagementVC.swift in Sources */,
 				3B22030A207DB69F00222EB1 /* RMYouTubeExtractor.m in Sources */,
 				89B3618020231686008767F4 /* StreamRecordingVC.swift in Sources */,
@@ -941,6 +948,7 @@
 				89E00DAE2021FF0B0047FFE5 /* BaseVC.swift in Sources */,
 				897FE8CF2026160C00D0DB5E /* SearchPhotoCell.swift in Sources */,
 				3B210447203521050072AF94 /* InAppHelper.swift in Sources */,
+				B4220F3D20AC890800D04F01 /* FaceBookPageVc.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

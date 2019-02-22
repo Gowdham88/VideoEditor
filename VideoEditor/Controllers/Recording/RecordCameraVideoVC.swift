@@ -90,7 +90,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     var sessionURL: NSURL!
     var loader: UIActivityIndicatorView!
     var loginButton: FBSDKLoginButton!
-    var liveVideo: FBSDKLiveVideo!
+   
     
     fileprivate var zoomScale                    = CGFloat(1.0)
     /// Variable for storing initial zoom scale before Pinch to Zoom begins
@@ -468,9 +468,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         }
         else
         {
+            
             self.createCameraPreview()
             self.InitCameraCapture()
             self.StartCameraCapture()
+           
         }
         
         print("2. isVideoPlay: \(isVideoPlay)")
@@ -478,7 +480,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     
     func startStreaming() {
         
-        self.liveVideo.start()
+       
         recordEventInfo.fbLive = true
         self.loader.startAnimating()
         self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
@@ -488,12 +490,11 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     
     func stopStreaming() {
-        
-        self.liveVideo.stop()
-        self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
-//        imageView?.image = UIImage(named: "record-button")
+  
         
     }
+    
+   
     
     public enum ImageFormat {
         case png
@@ -517,6 +518,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         if playerIsPlaying
         {
             avPlayer.pause()
+            self.playPauseButton.setBackgroundImage(UIImage.init(named: "play_gray"), for: .normal)
             
             self.trimEnd = avPlayer.currentTime()
             self.lastRecordedSecond = self.totalRecordedSecond
@@ -526,38 +528,15 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
             
             self.trimPositionArray.add(trimDict)
             
-            if fbAvailable == true {
-//                self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
-//                self.btnPause.imageView?.image = UIImage(named: "record-button")
-                self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
-                
-            } else {
-//                self.btnPause.imageView?.image = UIImage(named: "stop-button")
-                self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
-                
-                
-            }
+           
         }
         else
         {
             self.trimStart = avPlayer.currentTime()
             avPlayer.play()
+            self.playPauseButton.setBackgroundImage(UIImage.init(named: "pause_gray"), for: .normal)
             
-            if fbAvailable == true {
-               
-//                self.btnPause.imageView?.image = UIImage(named: "stop-button")
-                 self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
-                
-//                self.playPauseButton.setBackgroundImage(UIImage.init(named: "stop-button"), for: .normal)
-                
-            } else {
-                
-//           self.btnPause.imageView?.image = UIImage(named: "record-button")
-                 self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
-                
-//                self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
 
-            }
         }
         
     }
@@ -606,9 +585,8 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         let timeInterval: CMTime = CMTimeMakeWithSeconds(0.05, 1000)
         timeObserver = avPlayer.addPeriodicTimeObserver(forInterval: timeInterval,
                                                         queue: DispatchQueue.main) { (elapsedTime: CMTime) -> Void in
-                                                            
-                                                            //                                                             print("elapsedTime now:", CMTimeGetSeconds(elapsedTime))
-                                                            self.observeTime(elapsedTime: elapsedTime)
+                                                         
+            self.observeTime(elapsedTime: elapsedTime)
             } as AnyObject
         self.avPlayer.play()
         
@@ -660,7 +638,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 trimDict.setValue(self.trimEnd, forKey: "trimend")
                 
                 self.trimPositionArray.add(trimDict)
-                self.btnFinishRecordingClicked(UIButton.init())
+//                self.btnFinishRecordingClicked(UIButton.init())
             }
             
             
@@ -967,9 +945,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
                 
                 movieFileOutput.startRecording(to: URL(fileURLWithPath: outputFilePath1), recordingDelegate: self)
                 
-                self.liveVideo.url = URL(string: outputFilePath)
-                
-                self.liveVideo.start()
+               
 
                 //                self.isVideoRecording = true
             }
@@ -980,15 +956,6 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
     }
     @IBAction func btnPauseClicked(_ sender: Any) {
         
-        if fbAvailable == true {
-            
-            if !self.liveVideo.isStreaming {
-                startStreaming()
-            } else {
-                stopStreaming()
-            }
-            
-        }
         
         if (timer != nil)
         {
@@ -2945,12 +2912,16 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         scaledImageRect.origin.x    = (screenSize.width - scaledImageRect.size.width) / 2.0
         scaledImageRect.origin.y    = (screenSize.height - scaledImageRect.size.height) / 2.0
         
-        self.topSpace.constant = scaledImageRect.origin.y
-        self.leftSpace.constant = scaledImageRect.origin.x
-        self.rightSpace.constant = -scaledImageRect.origin.x
+        
+        
+        self.topSpace.constant    = scaledImageRect.origin.y
+        self.leftSpace.constant   = scaledImageRect.origin.x
+        self.rightSpace.constant  = -scaledImageRect.origin.x
         self.bottomSpace.constant = -scaledImageRect.origin.y
         
         self.topView.frame = scaledImageRect
+        
+         
         
         let rect: CGRect = CGRect.init(x: 0, y: 0, width: scaledImageRect.width, height: scaledImageRect.height)
         let transform: CGAffineTransform = CGAffineTransform.identity
@@ -3234,8 +3205,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
         {
             self.trimStart = self.currentTime
             //self.painter.movie.playerItem.currentTime()
-//            liveVideo.start()
-            liveVideo.update()
+      
         }
         
     }
@@ -3308,43 +3278,7 @@ class RecordCameraVideoVC: BaseVC, UITextFieldDelegate, UIImagePickerControllerD
 
         }
         
-//        if fbAvailable == true {
-//
-//            recordEventInfo.fbLive = true
-//
-//            self.liveVideo = FBSDKLiveVideo(
-//                delegate: self,
-//                previewSize: self.view.bounds,
-//                videoSize: CGSize(width: 1280, height: 720), device: self.painter.camera.inputCamera, path: outputFilePath1
-//            )
-//
-//            //            let myOverlay = UIView(frame: CGRect(x: 5, y: 5, width: self.view.bounds.size.width - 10, height: 30))
-//
-//            //myOverlay.backgroundColor = UIColor(colorLiteralRed: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-//
-//            //            myOverlay.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 0.5)
-//
-//            self.liveVideo.privacy = .me
-//            self.liveVideo.audience = "me"
-//
-//            self.loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-//            self.loader.frame = CGRect(x: 15, y: 15, width: 40, height: 40)
-//
-//            //            self.blurOverlay = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-//            //            self.blurOverlay.frame = self.view.bounds
-//
-//
-//            if !self.liveVideo.isStreaming {
-//
-//                startStreaming()
-//
-//            } else {
-//
-//                stopStreaming()
-//                recordEventInfo.fbLive = false
-//            }
-//
-//        }
+
         
         //        painter.startCameraRecording(with: URL(fileURLWithPath: outputFilePath1), size: self.videoSize!, metaData: nil)
     }
@@ -3990,49 +3924,4 @@ extension UIImage {
     }
 }
 
-extension RecordCameraVideoVC : FBSDKLiveVideoDelegate {
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, VideoUrl url: URL) {
-        
-        print(url)
-        
-    }
-    
-    
-    
-    
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStartWith session: RTMPConnection) {
-        
-//        self.btnPause.imageView?.image = UIImage(named: "stop-button")
-        self.btnPause.setImage(UIImage(named: "stop-button"), for: .normal)
-        
-//        self.playPauseButton.setBackgroundImage(UIImage.init(named: "stop-button"), for: .normal)
-        
-        self.loader.stopAnimating()
-        self.loader.removeFromSuperview()
-        self.btnPause.isEnabled = true
-        
-    }
-    
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didChange sessionState: FBSDKLiveVideoSessionState) {
-        
-        print("Session state changed to: \(sessionState)")
-    }
-    
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didStopWith session: RTMPConnection) {
-        
-        self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
-        
-//        self.btnPause.imageView?.image = UIImage(named: "record-button")
-//        self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
-        
-    }
-    
-    func liveVideo(_ liveVideo: FBSDKLiveVideo, didErrorWith error: Error) {
-        
-        self.btnPause.setImage(UIImage(named: "record-button"), for: .normal)
-        
-//        self.btnPause.imageView?.image = UIImage(named: "record-button")
-//        self.playPauseButton.setBackgroundImage(UIImage.init(named: "record-button"), for: .normal)
-        
-    }
-}
+

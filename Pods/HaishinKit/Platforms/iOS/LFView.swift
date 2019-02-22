@@ -18,7 +18,7 @@ open class LFView: UIView {
         }
     }
 
-    var orientation: AVCaptureVideoOrientation = .portrait {
+    var orientation: AVCaptureVideoOrientation = .landscapeLeft {
         didSet {
             layer.connection.map {
                 if $0.isVideoOrientationSupported {
@@ -29,7 +29,7 @@ open class LFView: UIView {
     }
     var position: AVCaptureDevice.Position = .front
     
-    var image : UIImage!
+    public var image : UIImage!
 
     private weak var currentStream: NetStream? {
         didSet {
@@ -66,11 +66,11 @@ open class LFView: UIView {
         stream.mixer.session.beginConfiguration()
         layer.session = stream.mixer.session
         orientation   = stream.mixer.videoIO.orientation
-        let myLayer = CALayer()
-        let myImage = image.cgImage
-        myLayer.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
-        myLayer.contents = myImage
-        layer.addSublayer(myLayer)
+//        let myLayer = CALayer()
+//        let myImage = image.cgImage
+//        myLayer.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
+//        myLayer.contents = myImage
+//        layer.addSublayer(myLayer)
         
         stream.mixer.session.commitConfiguration()
 

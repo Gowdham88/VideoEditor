@@ -44,6 +44,8 @@ final class VideoIOComponent: IOComponent {
             }
         }
     }
+    
+    public var image : UIImage!
 
     var position: AVCaptureDevice.Position = .back
 
@@ -53,7 +55,7 @@ final class VideoIOComponent: IOComponent {
         }
     }
 
-    var orientation: AVCaptureVideoOrientation = .portrait {
+    var orientation: AVCaptureVideoOrientation = .landscapeLeft {
         didSet {
             guard orientation != oldValue else {
                 return

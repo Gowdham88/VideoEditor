@@ -43,6 +43,13 @@ class StreamSettingVC: UIViewController {
         // Do any additional setup after loading the view.
         configureVideoSession()
         
+        self.loginButton = FBSDKLoginButton()
+        self.loginButton.publishPermissions = ["publish_actions"]
+        self.loginButton.loginBehavior = .native
+        self.loginButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: 100)
+        self.loginButton.delegate = self
+        self.view.addSubview(self.loginButton)
+        
     }
     
     
@@ -158,12 +165,52 @@ class StreamSettingVC: UIViewController {
         //============== CHECK FB linked and set fbavailable to true/false
         
         
-        fbAvailable = true
+        if FBSDKAccessToken.current() == nil {
+            
+            fbAvailable = false
+            
+        } else {
+            
+            fbAvailable = true
+        }
         //=============
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnPagesClicked(_ sender: Any) {
+        
+        if FBSDKAccessToken.current() == nil {
+
+            showAlert(title: "Hey", message: "Please login facebook")
+
+            fbAvailable = false
+
+            return
+
+        }
+
+        if !FBSDKAccessToken.current().hasGranted("publish_actions") &&  !FBSDKAccessToken.current().hasGranted("manage_pages") && !FBSDKAccessToken.current().hasGranted("publish_pages") {
+
+            if let buton = sender as? UIButton {
+
+                faceBookPageLogin(sender: buton)
+
+            }
+
+            fbAvailable = false
+
+        } else {
+
+            if let buton = sender as? UIButton {
+
+                 self.addFaceBookVc(sender: buton)
+
+            }
+
+
+        }
+        
+        
         txtEventName.isHidden = false
         
         lblScreenText.text = "FACEBOOK LIVE SETTINGS"
@@ -182,33 +229,46 @@ class StreamSettingVC: UIViewController {
         if(txtEventName.isHidden == true)
         {
             txtEventName.isHidden = false
-            txtPassword.isHidden = false
+            txtPassword.isHidden  = false
         }
         else
         {
             txtEventName.isHidden = false
-            txtPassword.isHidden = false
+            txtPassword.isHidden  = false
         }
         
-        self.loginButton = FBSDKLoginButton()
-        self.loginButton.publishPermissions = ["publish_actions"]
-        self.loginButton.loginBehavior = .native
-        self.loginButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: 60)
-        self.loginButton.delegate = self
-        self.view.addSubview(self.loginButton)
-        
         if FBSDKAccessToken.current() == nil {
-            //            self.view.insertSubview(self.blurOverlay, at: 1)
+            
+            showAlert(title: "Hey", message: "Please login facebook")
             
             fbAvailable = false
             
         } else {
             
-            //            self.recordButton.isHidden = false
-            
             fbAvailable = true
+            fbid = "me"
         }
         
+        
+    }
+    
+    func addFaceBookVc(sender: UIButton) {
+        
+        let storyBoard = UIStoryboard(name: "Others", bundle: nil)
+        let popoverContent = storyBoard.instantiateViewController(withIdentifier: "facebookpagelistvc") as! FaceBookPageVc
+        let navigationController = UINavigationController(rootViewController: popoverContent)
+        popoverContent.delegate = self
+        navigationController.modalPresentationStyle = UIModalPresentationStyle.popover
+        let  popover = navigationController.popoverPresentationController
+        
+        if let _popoverPresentationController = popover {
+            
+            navigationController.preferredContentSize  = CGSize(width: 320, height: 568)
+            _popoverPresentationController.sourceView  = sender
+            _popoverPresentationController.sourceRect  = CGRect(x: sender.bounds.midX, y: sender.bounds.maxY, width: 0, height: 0)
+            self.present(navigationController, animated: true, completion: nil)
+            
+        }
         
     }
     
@@ -225,7 +285,7 @@ class StreamSettingVC: UIViewController {
     
 }
 
-extension StreamSettingVC : FBSDKLoginButtonDelegate {
+extension StreamSettingVC : FBSDKLoginButtonDelegate,FaceBookPageVcDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
@@ -241,11 +301,117 @@ extension StreamSettingVC : FBSDKLoginButtonDelegate {
         //        self.blurOverlay.removeFromSuperview()
     }
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        
-        //        self.btnStartRecoding.isHidden = true
-        
+       
         fbAvailable = false
-        //        self.view.insertSubview(self.blurOverlay, at: 1)
+      
+    }
+    
+    func sendPageDetails(name: String, id: String) {
+        
+        fbAvailable = true
+        txtEventName.text = name
+        fbid = id
+    }
+    
+    func faceBookPageLogin(sender: UIButton) {
+        
+        let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        //        fbLoginManager.loginBehavior = .web
+        fbLoginManager.logIn(withReadPermissions: ["user_managed_groups"], from: self, handler: { (result, error) -> Void in
+            
+            if (error != nil){
+                
+                print(error!)
+                
+                self.showAlert(title: "Hey!", message: "Facebook login failed")
+                
+                
+                FBSDKLoginManager().logOut()
+                
+            } else if(result?.isCancelled)!{
+                
+                
+               self.showAlert(title: "Hey!", message: "Facebook login failed")
+                
+                FBSDKLoginManager().logOut()
+                
+            } else {
+    
+                if(FBSDKAccessToken.current() != nil) {
+                    
+                    if FBSDKAccessToken.current().hasGranted("user_managed_groups") {
+                        
+                        fbLoginManager.logIn(withPublishPermissions: ["publish_actions","manage_pages","publish_pages"], from: self) {
+                            (result: FBSDKLoginManagerLoginResult?, error: Error?) in
+                            
+                            
+                            if (error != nil){
+                                
+                                print(error!)
+                              
+                                self.showAlert(title: "Hey!", message: "Facebook login failed")
+                                
+                                FBSDKLoginManager().logOut()
+                                
+                            } else if(result?.isCancelled)!{
+                                
+                                self.showAlert(title: "Hey!", message: "Facebook login failed")
+                                
+                                
+                                FBSDKLoginManager().logOut()
+                                
+                            } else {
+                                
+                                
+                                
+                                if(FBSDKAccessToken.current() != nil) {
+                                    
+                                    if FBSDKAccessToken.current().hasGranted("publish_actions") &&  FBSDKAccessToken.current().hasGranted("manage_pages") && FBSDKAccessToken.current().hasGranted("publish_pages")  {
+                                        
+                                         self.addFaceBookVc(sender: sender)
+                                        
+                                        
+                                    } else {
+                                        
+                                        self.showAlert(title: "Hey!", message: "Requires publish action,manage pages,publish pages permisssions.")
+                                       
+                                        FBSDKLoginManager().logOut()
+                                        
+                                    }
+                                    return
+                                }
+                            }
+                            
+                        }
+                        
+                        
+                    } else {
+                        
+                        self.showAlert(title: "Hey!", message: "Requires user managed groups permission.")
+                        
+                    }
+                    return
+                }
+            }
+            
+        })
+        
+        
+        
+    }
+    
+    func showAlert(title : String,message : String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in
+            
+        }
+
+        alert.addAction(action1)
+        
+        self.present(alert, animated: true, completion: nil)
+        
+        
     }
     
     

@@ -207,10 +207,7 @@ open class FBSDKLiveVideo: NSObject {
     var lfView : LFView!
     
     var videoPath : String = ""
-    
-    
-    
-    
+     
     var isStreaming: Bool = false
     
     // MARK: - Internal API's
@@ -224,20 +221,61 @@ open class FBSDKLiveVideo: NSObject {
     
     var currentPosition: AVCaptureDevice.Position = .back
     
-    
+     var videoSize: CGSize?
     
   
 
     
-    required public init(delegate: FBSDKLiveVideoDelegate, previewSize: CGRect, videoSize: CGSize,path : String,fbvideoDelegate : AVMixerRecorderDelegate) {
+    required public init(delegate: FBSDKLiveVideoDelegate, previewSize: CGRect, videoSize: CGSize,path : String,fbvideoDelegate : AVMixerRecorderDelegate,videoSettingDict: Dictionary<String, Any>) {
         super.init()
         
         self.delegate = delegate
         
+        var sessionPreset: String = AVCaptureSession.Preset.hd1280x720.rawValue
+        let videoQuality: String = videoSettingDict["Quality"] as! String
+        
+        if videoQuality == Constants.HDQuality
+        {
+            sessionPreset = AVCaptureSession.Preset.hd1280x720.rawValue
+            self.videoSize = CGSize.init(width: 1280.0, height: 720.0)
+        }
+        else if videoQuality == Constants.FHDQuality
+        {
+            sessionPreset = AVCaptureSession.Preset.hd1920x1080.rawValue
+            self.videoSize = CGSize.init(width: 1920.0, height: 1080.0)
+        }
+        else if videoQuality == Constants.UltraQuality
+        {
+            sessionPreset = AVCaptureSession.Preset.hd4K3840x2160.rawValue
+            self.videoSize = CGSize.init(width: 3840.0, height: 2160.0)
+        }
+//        var frameSecondRate: Int32 = 30
+//        let FPSValue: String = self.videoSettingDict["FPS"] as! String
+//        if FPSValue == Constants.FPS30
+//        {
+//            frameSecondRate = 30
+//        }
+//        else
+//        {
+//            frameSecondRate = 60
+//        }
+        
+        let recordingSource: String = videoSettingDict["RecordingSource"] as! String
+        if recordingSource == Constants.FrontCamera
+        {
+            currentPosition = AVCaptureDevice.Position(rawValue: AVCaptureDevice.Position.front.rawValue)!
+        }
+        else
+        {
+            currentPosition = AVCaptureDevice.Position(rawValue: AVCaptureDevice.Position.back.rawValue)!
+        }
+        
+        
         rtmpStream = RTMPStream(connection: rtmpConnection)
         rtmpStream.syncOrientation = true
+       
         rtmpStream.captureSettings = [
-            "sessionPreset": AVCaptureSession.Preset.hd1280x720,
+            "sessionPreset": sessionPreset,
             "continuousAutofocus": true,
             "continuousExposure": true
         ]
@@ -251,16 +289,11 @@ open class FBSDKLiveVideo: NSObject {
         
         rtmpStream.mixer.recorder.delegate = fbvideoDelegate
         
-        let previewlayer = AVCaptureVideoPreviewLayer(session: rtmpStream.mixer.session)
-        let myLayer = CALayer()
-        let myImage = UIImage(named: "app_logo")?.cgImage
-        myLayer.frame = CGRect(x: 10, y: 10, width: 200, height: 200)
-        myLayer.contents = myImage
-        previewlayer.addSublayer(myLayer)
+       
         
         print(rtmpStream.mixer.recorder.delegate)
         
-        lfView  = LFView(frame: previewSize)
+        lfView  = LFView(frame: CGRect(x: 0, y: 0, width: previewSize.width, height: previewSize.height))
         
         rtmpStream.attachAudio(AVCaptureDevice.default(for: .audio)) { error in
             
@@ -269,13 +302,14 @@ open class FBSDKLiveVideo: NSObject {
             
         }
         
+        lfView.image = UIImage(named: "app_logo")
         
         videoPath = path
        
         lfView.attachStream(rtmpStream)
         preview = UIView(frame: previewSize)
         preview.addSubview(lfView)
-        preview.layer.addSublayer(previewlayer)
+        
      
         
     }
@@ -293,6 +327,9 @@ open class FBSDKLiveVideo: NSObject {
     // MARK: - Public API's
     
     func start() {
+        
+        print(self.audience)
+        
         guard FBSDKAccessToken.current().hasGranted("publish_actions") else {
             return self.delegate.liveVideo(self, didErrorWith: FBSDKLiveVideo.errorFromDescription(description: "The \"publish_actions\" permission has not been granted"))
         }

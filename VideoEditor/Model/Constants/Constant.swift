@@ -112,6 +112,7 @@ public let idLiveCameraVC = "liveCamera_view"
 public let idRecordCameraVideoVC = "recordCameraVideo_view"
 public let idFacebookCameraVideoVC = "facebookCameraVideo_view"
 public var fbAvailable = Bool()
+public var fbid : String = "me"
 
 
 //MARK:-

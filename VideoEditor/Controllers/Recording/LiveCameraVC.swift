@@ -597,15 +597,57 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     
     @IBAction func btnStartRecodingClicked(_ sender: UIButton) {
         
-//        if fbAvailable == true {
-//
-//            let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idFacebookCameraVideoVC) as! FaceBookLiveVideoVc
-//            redirectTo.recordEventInfo  = self.recordEventInfo
-//            redirectTo.videoSettingDict = self.videoSettingDict
-//            self.navigationController?.pushViewController(redirectTo, animated: true)
-//
-//            return
-//        }
+        switch AVAudioSession.sharedInstance().recordPermission() {
+        case AVAudioSessionRecordPermission.granted:
+            
+            if fbAvailable == true {
+                
+                let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idFacebookCameraVideoVC) as! FaceBookLiveVideoVc
+                redirectTo.recordEventInfo  = self.recordEventInfo
+                redirectTo.videoSettingDict = self.videoSettingDict
+                self.navigationController?.pushViewController(redirectTo, animated: true)
+                
+                return
+            }
+            
+            if self.selectedCameraSource != 3 &&  self.selectedCameraSource != 2 {
+                
+                self.OpenRecordingView()
+                
+            }
+            
+            
+        case AVAudioSessionRecordPermission.denied:
+            
+            showAlert(title: "Hey!", message: "Grant microphone access to record video.")
+            
+        case AVAudioSessionRecordPermission.undetermined:
+            
+            AVAudioSession.sharedInstance().requestRecordPermission({ (granted) in
+                
+                if granted {
+                    
+                    if fbAvailable == true {
+                        
+                        let redirectTo = loadVC(strStoryboardId: SB_LANDSCAPE, strVCId: idFacebookCameraVideoVC) as! FaceBookLiveVideoVc
+                        redirectTo.recordEventInfo  = self.recordEventInfo
+                        redirectTo.videoSettingDict = self.videoSettingDict
+                        self.navigationController?.pushViewController(redirectTo, animated: true)
+                        
+                        return
+                    }
+                    
+                    if self.selectedCameraSource != 3 &&  self.selectedCameraSource != 2 {
+                        
+                        self.OpenRecordingView()
+                        
+                    }
+                    
+                }
+            })
+        }
+        
+        
         
         if selectedCameraSource == 3
         {
@@ -617,10 +659,21 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             
             self.OpenURLTypeOptionSheet()
         }
-        else
-        {
-            self.OpenRecordingView()
+       
+        
+    }
+    
+    func showAlert(title : String,message : String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in
+            
         }
+        
+        alert.addAction(action1)
+        
+        self.present(alert, animated: true, completion: nil)
+        
         
     }
     
@@ -1357,6 +1410,14 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     func StartDownloadEnteredURL(videoURL: String)
     {
         
+        let task = self.activate().downloadTask(with: URL(string: videoURL)!)
+        task.resume()
+        
+    }
+    
+    func StartDownloadEnteredFacebookURL(videoURL: String)
+    {
+        
         print("StartDownloadEnteredURL")
         
         print("videoURL: \(videoURL)")
@@ -1372,6 +1433,18 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
         task.resume()
         
     }
+    
+    func StartDownloadEnteredYoutubeURL(videoURL: String)
+    {
+        
+        print("StartDownloadEnteredURL")
+        
+        let task = self.activate().downloadTask(with: URL(string: videoURL)!)
+        task.resume()
+        
+    }
+    
+    
     func StartProgress()
     {
         print("Start Loading Progress")
@@ -1511,7 +1584,10 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
                         
                         return
                     }
-                    self.StartDownloadEnteredURL(videoURL: URLString!)
+                    
+                    print(URLString!)
+                    
+                    self.StartDownloadEnteredYoutubeURL(videoURL: URLString!)
                 }
                 else
                 {
@@ -1528,7 +1604,7 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
     {
         print("Get url for facebook")
         
-        let requestURL = URL(string: "https://www.facebook.com/mrtvlivevideo/videos/2020045284982296")
+        let requestURL = URL(string: videoURL)
         
         let task = URLSession.shared.dataTask(with: requestURL!){
             (data, response, error) in
@@ -1537,133 +1613,43 @@ class LiveCameraVC: BaseVC, UIImagePickerControllerDelegate, URLSessionDelegate,
             
             print("decodedData: \(decodedData)")
             
-//            let separator = "og:video\" content=\""
-//
-//            if (decodedData?.contains(separator) != nil){
-//
-//                var contentArray = decodedData!.components(separatedBy: separator)
-//
-////                print("contentArray0: \(contentArray[0])")
-//                print("contentArray1: \(contentArray[1])")
-//
-//                let separator2 = " /><meta property"
-//
-//                var newContentArray = contentArray[1].components(separatedBy: separator2)
-//
-//                let videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
-//
-//                print("videoLink: \(videoLink)")
-//
-//                self.StartDownloadEnteredURL(videoURL: videoLink)
-//
-//            } else {
-//
-//                print("ERROR")
-//
-//                self.HideProgress()
-//                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
-//
-//                //                dispatch_get_main_queue().async(){
-//                //
-//                //                }//end dispatch_async
-//            } //end else
+            let separator = "og:video\" content=\""
+
+            if (decodedData?.contains(separator) != nil){
+
+                var contentArray = decodedData!.components(separatedBy: separator)
+
+//                print("contentArray0: \(contentArray[0])")
+                print("contentArray1: \(contentArray[1])")
+
+                let separator2 = " /><meta property"
+
+                var newContentArray = contentArray[1].components(separatedBy: separator2)
+
+                let videoLink = (newContentArray[0] as String).replacingOccurrences(of: "amp;", with: "")
+
+                print("videoLink: \(videoLink)")
+
+                self.StartDownloadEnteredFacebookURL(videoURL: videoLink)
+
+            } else {
+
+                print("ERROR")
+
+                self.HideProgress()
+                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occured while downloading video.", withTitle: "Alert")
+
+                //                dispatch_get_main_queue().async(){
+                //
+                //                }//end dispatch_async
+            } //end else
             
         }
         
         task.resume()
         
         
-        //        Alamofire.request(requestURL, method: .get).response { data in
-        //
-        //            let str = NSString(data: data, encoding: String.Encoding.utf8)
-        //
-        //            print(str)
-        //        }
-        
-        //        Alamofire.request(requestURL, method: .post, parameters: nil, encoding: URLEncoding.default, headers: nil)
-        //            .responseJSON { response in
-        //
-        //                switch response.result
-        //                {
-        //                case .success(_):
-        //
-        //                    print("Success")
-        //
-        //                    if response.result.value != nil
-        //                    {
-        //                        let dict = response.result.value as! NSDictionary
-        //
-        //                        if dict.value(forKey: "type") != nil
-        //                        {
-        //                            var finalURLStr: String = ""
-        //                            var isVideoAvailable: Bool = false
-        //                            let type: String = dict.value(forKey: "type") as! String
-        //                            if type == "success"
-        //                            {
-        //
-        //                                print("Success GetURLForFacebook:")
-        //
-        //                                if dict.value(forKey: "hd_download_url") != nil
-        //                                {
-        //                                    isVideoAvailable = true
-        //                                    finalURLStr = dict.value(forKey: "hd_download_url") as! String
-        //                                }
-        //                                else if dict.value(forKey: "sd_download_url") != nil
-        //                                {
-        //                                    isVideoAvailable = true
-        //                                    finalURLStr = dict.value(forKey: "sd_download_url") as! String
-        //                                }
-        //                            }
-        //                            if isVideoAvailable && !finalURLStr.isEmpty
-        //                            {
-        //
-        //                                print("Facebook : isVideoAvailable && !finalURLStr.isEmpty ")
-        //                                DispatchQueue.main.async {
-        //                                    self.StartDownloadEnteredURL(videoURL: finalURLStr)
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                print("Facebook : Else")
-        //
-        //                                DispatchQueue.main.async {
-        //                                    APP_DELEGATE.hideHUD()
-        //                                    APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-        //                                }
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            DispatchQueue.main.async {
-        //                                APP_DELEGATE.hideHUD()
-        //                                APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-        //                            }
-        //                        }
-        //
-        //                    }
-        //                    else
-        //                    {
-        //                        DispatchQueue.main.async {
-        //                            APP_DELEGATE.hideHUD()
-        //                            APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-        //                        }
-        //                    }
-        //                    break
-        //
-        //                case .failure(_):
-        //
-        //                    print("Failure")
-        //
-        //                    print(response.result.error!)
-        //                    DispatchQueue.main.async {
-        //                        APP_DELEGATE.hideHUD()
-        //                        APP_DELEGATE.displayMessageAlertWithMessage(alertMessage: "Error occurred, please try after some time.", withTitle: "Login")
-        //                    }
-        //
-        //                    break
-        //
-        //                }
-        //        }
+      
     }
     func OpenURLTypeOptionSheet()
     {
@@ -1816,6 +1802,7 @@ extension LiveCameraVC {
         //        try? FileManager.default.removeItem(at: location)
         
         self.selectedVideoURL = URL.init(fileURLWithPath: tempFolderPath)
+        
         DispatchQueue.main.async {
             
             self.HideProgress()

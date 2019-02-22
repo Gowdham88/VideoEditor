@@ -1,16 +1,18 @@
 //
-//  MusicSelectionCell.swift
+//  FacebookPageTableViewCell.swift
 //  VideoEditor
-
+//
+//  Created by CZ Ltd on 5/16/18.
+//  Copyright © 2018 Ark Inc. All rights reserved.
+//
 
 import UIKit
 
-class MusicSelectionCell: UITableViewCell {
-
-    @IBOutlet weak var btnPlay: UIButton!
-    @IBOutlet weak var btnCheck: UIButton!
-    @IBOutlet weak var lblMusicTitle  : UILabel!
-    @IBOutlet weak var lblMusicDescription : UILabel!
+class FacebookPageTableViewCell: UITableViewCell {
+    
+    
+    @IBOutlet weak var labelName: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -21,5 +23,5 @@ class MusicSelectionCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+
 }

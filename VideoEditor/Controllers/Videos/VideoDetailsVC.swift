@@ -1385,7 +1385,7 @@ class VideoDetailsVC: BaseVC, UITableViewDelegate, UITableViewDataSource, Highli
                 let cell = tableView.dequeueReusableCell(withIdentifier: "VolumeCell", for: indexPath) as! VolumeCell
                 cell.selectionStyle = .none
                 return cell
-            } else{
+            } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AudioAdjustCell", for: indexPath) as! AudioAdjustCell
                 cell.layoutIfNeeded()
                 self.view.layoutIfNeeded()
@@ -1465,7 +1465,12 @@ class VideoDetailsVC: BaseVC, UITableViewDelegate, UITableViewDataSource, Highli
                 {
                     elapsedTime = 0
                 }
-                cell.generateThumbnail(url: videoURL, atSecond: elapsedTime)
+                
+                print(recVideoClips.clipSecond)
+                print(recVideoClips.clipTagSecond)
+                print(elapsedTime)
+                
+                cell.generateThumbnail(url: videoURL, atSecond: recVideoClips.clipSecond)
             }
             
             if indexSelectedForHighlight == indexPath.row {
